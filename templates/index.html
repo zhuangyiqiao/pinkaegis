@@ -636,9 +636,10 @@
     </div>
   </div>
 
-  <!-- ══════════════════ 其余模块占位页 COMING SOON ══════════════════
-       未来开发时，将对应的 coming-soon 区块替换为实际内容即可
-  ══════════════════════════════════════════════════ -->
+  <!-- ══════════════════════════════════════════════════════════
+       其余 6 个功能模块
+       ══════════════════════════════════════════════════════════ -->
+
   <!-- ══════════════════ 学习笔记页 NOTES ══════════════════ -->
   <div class="page" id="page-notes">
     <div class="page-header">
@@ -647,58 +648,29 @@
       <p class="page-subtitle">零散的想法，在这里变成系统化的知识库。卡片式记录，灵活分类。</p>
     </div>
     <div class="page-body">
-      <!-- 顶部工具栏：新建 + 搜索 + 标签过滤 -->
       <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center">
         <button class="message-send" onclick="openNoteModal()" style="padding:8px 16px">+ 新建笔记</button>
-        <input 
-          id="noteSearch" 
-          class="message-input" 
-          type="text" 
-          placeholder="搜索笔记…" 
-          onkeyup="filterNotes()"
-          style="max-width:200px;padding:8px 12px;height:40px;margin:0;flex:1;min-width:150px">
+        <input id="noteSearch" class="message-input" type="text" placeholder="搜索笔记…" onkeyup="filterNotes()" style="max-width:200px;padding:8px 12px;height:40px;margin:0;flex:1;min-width:150px">
         <div style="display:flex;gap:8px;flex-wrap:wrap" id="tagFilters"></div>
       </div>
-
-      <!-- 笔记卡片网格 -->
       <div id="notesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px">
-        <div style="grid-column:1/-1;text-align:center;color:var(--ink3);padding:40px">
-          点击「新建笔记」来开始记录你的想法
-        </div>
+        <div style="grid-column:1/-1;text-align:center;color:var(--ink3);padding:40px">点击「新建笔记」来开始记录</div>
       </div>
-
-      <!-- 新建/编辑笔记对话框 -->
       <div id="noteModal" class="modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center">
         <div style="background:white;border-radius:16px;padding:24px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto">
           <div style="font-size:18px;font-weight:600;margin-bottom:16px">新建笔记</div>
           <input id="noteTitle" class="message-input" type="text" placeholder="笔记标题" style="margin-bottom:12px;width:100%">
-          <textarea id="noteContent" class="message-input" rows="6" placeholder="记录想法…" style="margin-bottom:12px;width:100%;font-size:13px"></textarea>
-          <div style="margin-bottom:12px">
-            <div style="font-size:12px;color:var(--ink3);margin-bottom:8px">添加标签（可多选）</div>
-            <div id="noteTags" style="display:flex;gap:8px;flex-wrap:wrap"></div>
-            <input id="customTag" class="message-input" type="text" placeholder="自定义标签（回车添加）" onkeydown="if(event.key==='Enter'){addCustomTag();event.preventDefault()}" style="margin-top:8px">
-          </div>
+          <textarea id="noteContent" class="message-input" rows="6" placeholder="记录想法…" style="margin-bottom:12px;width:100%"></textarea>
           <div style="display:flex;gap:8px;justify-content:flex-end">
-            <button onclick="closeNoteModal()" style="padding:8px 16px;background:var(--surface2);border:none;border-radius:8px;cursor:pointer">取消</button>
+            <button onclick="document.getElementById('noteModal').style.display='none'" style="padding:8px 16px;background:var(--surface2);border:none;border-radius:8px;cursor:pointer">取消</button>
             <button onclick="saveNote()" style="padding:8px 16px;background:var(--accent);color:white;border:none;border-radius:8px;cursor:pointer">保存</button>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- ══════════════════ 实习记录页 WORK ══════════════════ -->
-  <div class="page" id="page-work">
-    <div class="page-header">
-      <div class="page-eyebrow">career · 职业</div>
-      <h1 class="page-title">实习记录 💼</h1>
-      <p class="page-subtitle">每一天都在成长。工作日志、技能获得、定期复盘，记录职业轨迹。</p>
-    </div>
-    <div class="page-body">
-      <div style="display:flex;gap:20px">
-        <!-- 左侧统计卡 -->
-        <div style="flex-shrink:0;width:200px">
-          <div class="checklist-card" style="margin-bottom:12px">
-   !-- ══════════════════ 项目记录页 PROJECTS ══════════════════ -->
+
+  <!-- ══════════════════ 项目记录页 PROJECTS ══════════════════ -->
   <div class="page" id="page-projects">
     <div class="page-header">
       <div class="page-eyebrow">projects · 作品</div>
@@ -716,54 +688,33 @@
           <option value="planned">📋 计划</option>
         </select>
       </div>
-
-      <!-- 项目卡片网格 -->
       <div id="projectsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
-        <div style="grid-column:1/-1;text-align:center;color:var(--ink3);padding:40px">
-          还没有项目，点击「新建项目」添加第一个吧
-        </div>
+        <div style="grid-column:1/-1;text-align:center;color:var(--ink3);padding:40px">还没有项目，点击「新建项目」添加</div>
       </div>
-
-      <!-- 项目编辑框 -->
       <div id="projectModal" class="modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;overflow-y:auto">
         <div style="background:white;border-radius:16px;padding:24px;max-width:500px;width:90%;margin:20px auto">
           <div style="font-size:18px;font-weight:600;margin-bottom:16px">新建项目</div>
           <input id="projTitle" class="message-input" type="text" placeholder="项目名称" style="margin-bottom:12px;width:100%">
           <textarea id="projDesc" class="message-input" rows="3" placeholder="项目描述" style="margin-bottom:12px;width:100%"></textarea>
           <div style="display:flex;gap:12px;margin-bottom:12px">
-            <input id="projStart" class="message-input" type="date" placeholder="开始日期" style="flex:1">
-            <input id="projEnd" class="message-input" type="date" placeholder="结束日期（可选）" style="flex:1">
+            <input id="projStart" class="message-input" type="date" style="flex:1">
+            <input id="projEnd" class="message-input" type="date" style="flex:1">
           </div>
           <div style="margin-bottom:12px">
             <label style="display:block;margin-bottom:6px;font-size:12px;color:var(--ink3)">项目进度</label>
             <input id="projProgress" class="message-input" type="range" min="0" max="100" value="0" style="width:100%;margin-bottom:4px">
-            <span id="projProgressVal" style="font-size:12px;color:var(--ink2)">0%</span>
-          </div>
-          <div style="margin-bottom:12px">
-            <label style="display:block;margin-bottom:6px;font-size:12px;color:var(--ink3)">状态</label>
-            <select id="projStatus" class="message-input" style="width:100%">
-              <option value="planned">📋 计划</option>
-              <option value="in-progress">⏳ 进行中</option>
-              <option value="completed">✓ 已完成</option>
-            </select>
-          </div>
-          <div style="margin-bottom:12px">
-            <label style="display:block;margin-bottom:6px;font-size:12px;color:var(--ink3)">技能标签</label>
-            <input id="projSkills" class="message-input" type="text" placeholder="多个技能用逗号分隔（如: React, Node.js）" style="width:100%">
+            <span id="projProgressVal" style="font-size:12px">0%</span>
           </div>
           <div style="display:flex;gap:8px;justify-content:flex-end">
-            <button onclick="closeProjectModal()" style="padding:8px 16px;background:var(--surface2);border:none;border-radius:8px;cursor:pointer">取消</button>
+            <button onclick="document.getElementById('projectModal').style.display='none'" style="padding:8px 16px;background:var(--surface2);border:none;border-radius:8px;cursor:pointer">取消</button>
             <button onclick="saveProject()" style="padding:8px 16px;background:var(--accent);color:white;border:none;border-radius:8px;cursor:pointer">保存</button>
           </div>
         </div>
-      
-          </div>
-        </div>
+      </div>
+    </div>
+  </div>
 
-        <!-- 右侧日志时间轴 -->
-        <div style="flex:1;min-width:0">
-          <div style="display:flex;gap:8px;margin-bottom:16px">
-   !-- ══════════════════ 每日杂记页 JOURNAL ══════════════════ -->
+  <!-- ══════════════════ 每日杂记页 JOURNAL ══════════════════ -->
   <div class="page" id="page-journal">
     <div class="page-header">
       <div class="page-eyebrow">journal · 日记</div>
@@ -771,11 +722,77 @@
       <p class="page-subtitle">不评判、不完整。倾倒脑子里的一切，记录此刻的感受。</p>
     </div>
     <div class="page-body">
-      <!-- 快速记录区 Brain Dump Mode -->
       <div class="checklist-card" style="margin-bottom:20px;background:#FFF8E7;border:1px solid #E8DCC8">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;color:#C9A84C">
           <div style="font-weight:600">💭 思维排空模式</div>
-   !-- ══════════════════ 能量追踪页 ENERGY ══════════════════ -->
+        </div>
+        <textarea id="journalQuickInput" class="message-input" rows="4" placeholder="想到什么就写什么…" style="width:100%;margin-bottom:12px"></textarea>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button onclick="journalManager ? journalManager.setMood('😴') : null" style="background:none;border:none;cursor:pointer;font-size:24px">😴</button>
+          <button onclick="journalManager ? journalManager.setMood('😐') : null" style="background:none;border:none;cursor:pointer;font-size:24px">😐</button>
+          <button onclick="journalManager ? journalManager.setMood('🙂') : null" style="background:none;border:none;cursor:pointer;font-size:24px">🙂</button>
+          <button onclick="journalManager ? journalManager.setMood('😊') : null" style="background:none;border:none;cursor:pointer;font-size:24px">😊</button>
+          <button onclick="journalManager ? journalManager.setMood('🤩') : null" style="background:none;border:none;cursor:pointer;font-size:24px">🤩</button>
+        </div>
+        <button onclick="saveQuickJournal()" class="message-send" style="width:100%;text-align:center;margin-top:12px">保存这一刻</button>
+      </div>
+      <div style="display:flex;gap:12px;margin-bottom:16px">
+        <input id="journalSearch" class="message-input" type="text" placeholder="搜索日记…" onkeyup="filterJournals()" style="flex:1;height:40px;padding:8px 12px;margin:0">
+        <input id="journalDateFilter" class="message-input" type="date" onchange="filterJournals()" style="height:40px;padding:8px 12px;margin:0">
+      </div>
+      <div id="journalTimeline">
+        <div style="text-align:center;color:var(--ink3);padding:40px">还没有日记，先在上面写下此刻的想法</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ 实习记录页 WORK ══════════════════ -->
+  <div class="page" id="page-work">
+    <div class="page-header">
+      <div class="page-eyebrow">career · 职业</div>
+      <h1 class="page-title">实习记录 💼</h1>
+      <p class="page-subtitle">每一天都在成长。工作日志、技能获得、定期复盘，记录职业轨迹。</p>
+    </div>
+    <div class="page-body">
+      <div style="display:flex;gap:20px">
+        <div style="flex-shrink:0;width:200px">
+          <div class="checklist-card" style="margin-bottom:12px">
+            <div style="font-size:14px;font-weight:600;margin-bottom:8px">📊 统计数据</div>
+            <div style="font-size:13px;line-height:2;color:var(--ink2)">
+              <div>总工作天数：<span id="workDays">0</span></div>
+              <div>本月工时：<span id="monthHours">0</span>h</div>
+              <div>连续工作：<span id="consecutiveDays">0</span>天</div>
+            </div>
+          </div>
+          <button onclick="openWorkLogModal()" class="message-send" style="width:100%;text-align:center">+ 新建日志</button>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;gap:8px;margin-bottom:16px">
+            <input id="workSearch" class="message-input" type="text" placeholder="搜索日志…" onkeyup="filterWorkLogs()" style="flex:1;height:40px;padding:8px 12px;margin:0">
+          </div>
+          <div id="workTimeline">
+            <div style="text-align:center;color:var(--ink3);padding:20px">还没有工作日志</div>
+          </div>
+        </div>
+      </div>
+      <div id="workLogModal" class="modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;overflow-y:auto">
+        <div style="background:white;border-radius:16px;padding:24px;max-width:600px;width:90%;margin:20px auto">
+          <div style="font-size:18px;font-weight:600;margin-bottom:16px">工作日志</div>
+          <input id="workDate" class="message-input" type="date" style="margin-bottom:12px;width:100%">
+          <input id="workTitle" class="message-input" type="text" placeholder="今日工作重点" style="margin-bottom:12px;width:100%">
+          <textarea id="workTasks" class="message-input" rows="3" placeholder="完成的任务" style="margin-bottom:12px;width:100%"></textarea>
+          <textarea id="workLearnings" class="message-input" rows="2" placeholder="学到的知识" style="margin-bottom:12px;width:100%"></textarea>
+          <input id="workHours" class="message-input" type="number" placeholder="工作小时数" min="0" max="24" style="margin-bottom:12px;width:100%">
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button onclick="document.getElementById('workLogModal').style.display='none'" style="padding:8px 16px;background:var(--surface2);border:none;border-radius:8px;cursor:pointer">取消</button>
+            <button onclick="saveWorkLog()" style="padding:8px 16px;background:var(--accent);color:white;border:none;border-radius:8px;cursor:pointer">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ 能量追踪页 ENERGY ══════════════════ -->
   <div class="page" id="page-energy">
     <div class="page-header">
       <div class="page-eyebrow">wellness · 状态</div>
@@ -784,83 +801,18 @@
     </div>
     <div class="page-body">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
-        <!-- 今日能量记录 -->
         <div class="checklist-card">
-          <div style="font-size:14px;font-weight:600;margin-bottom:12px">📊 今日能量</div>
-   !-- ══════════════════ 关于我页 PROFILE ══════════════════ -->
-  <div class="page" id="page-profile">
-    <div class="page-header">
-      <div class="page-eyebrow">about · 关于</div>
-      <h1 class="page-title">关于我 🌿</h1>
-      <p class="page-subtitle">这是我的完整故事。简历、技能、成就，和我一起成长。</p>
-    </div>
-    <div class="page-body">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-        <!-- 左侧：个人信息 -->
-        <div>
-          <!-- 个人基本信息 -->
-          <div class="checklist-card" style="margin-bottom:16px">
-            <div style="font-size:14px;font-weight:600;margin-bottom:12px">👤 基本信息</div>
-            <input id="profileName" class="message-input" type="text" placeholder="你的名字" style="margin-bottom:8px;width:100%">
-            <input id="profileTitle" class="message-input" type="text" placeholder="职位/身份（如：UI 设计师）" style="margin-bottom:8px;width:100%">
-            <textarea id="profileBio" class="message-input" rows="3" placeholder="个人签名或简介" style="margin-bottom:8px;width:100%;font-size:13px"></textarea>
-            <button onclick="saveProfileBasic()" class="message-send" style="width:100%;text-align:center">保存信息</button>
-          </div>
-
-          <!-- 技能树 -->
-          <div class="checklist-card">
-            <div style="font-size:14px;font-weight:600;margin-bottom:12px">🌳 技能树</div>
-            <div id="skillsList" style="margin-bottom:12px">
-              <div style="font-size:12px;color:var(--ink3)">点击下方添加技能</div>
-            </div>
-            <div style="display:flex;gap:8px">
-              <input id="skillInput" class="message-input" type="text" placeholder="新技能名称" style="flex:1;padding:6px;height:32px;">
-              <button onclick="addSkill()" style="padding:6px 12px;background:var(--accent);color:white;border:none;border-radius:6px;cursor:pointer">+ 添加</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 右侧：成就和社交 -->
-        <div>
-          <!-- 社交链接 -->
-          <div class="checklist-card" style="margin-bottom:16px">
-            <div style="font-size:14px;font-weight:600;margin-bottom:12px">🔗 社交链接</div>
-            <div style="display:flex;flex-direction:column;gap:8px;font-size:12px">
-              <input id="linkGithub" class="message-input" type="text" placeholder="GitHub 主页链接" style="width:100%;padding:6px;height:32px;">
-              <input id="linkPortfolio" class="message-input" type="text" placeholder="个人作品集链接" style="width:100%;padding:6px;height:32px;">
-              <input id="linkLinkedin" class="message-input" type="text" placeholder="LinkedIn 主页" style="width:100%;padding:6px;height:32px;">
-              <input id="linkEmail" class="message-input" type="email" placeholder="联系邮箱" style="width:100%;padding:6px;height:32px;">
-            </div>
-            <button onclick="saveProfileLinks()" class="message-send" style="width:100%;margin-top:8px;text-align:center;font-size:12px">保存链接</button>
-          </div>
-
-          <!-- 成就荣誉 -->
-          <div class="checklist-card">
-            <div style="font-size:14px;font-weight:600;margin-bottom:12px">🏆 成就荣誉</div>
-            <div id="achievementsList" style="margin-bottom:12px;max-height:120px;overflow-y:auto">
-              <div style="font-size:12px;color:var(--ink3)">还没有成就，赶快去创造吧</div>
-            </div>
-            <div style="display:flex;gap:8px">
-              <input id="achievementInput" class="message-input" type="text" placeholder="新成就（如：完成3个项目）" style="flex:1;padding:6px;height:32px;">
-              <button onclick="addAchievement()" style="padding:6px 12px;background:var(--accent);color:white;border:none;border-radius:6px;cursor:pointer;font-size:12px">添加</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 底部：导出功能 -->
-      <div style="margin-top:20px;text-align:center">
-        <button onclick="exportProfile()" class="message-send" style="padding:12px 24px">📄 导出个人档案</button>
-      </div>
-
-      <!-- 预览模式 -->
-      <div id="profilePreview" style="display:none;margin-top:30px;padding:20px;background:var(--surface2);border-radius:12px">
-        <div style="text-align:center;margin:20px 0">
-          <div style="font-size:24px;font-weight:600" id="previewName">名字</div>
-          <div style="font-size:14px;color:var(--ink2);margin-bottom:12px" id="previewTitle">职位</div>
-          <button onclick="exportProfile()" style="padding:8px 16px;background:var(--accent);color:white;border:none;border-radius:8px">导出为 PDF</button>
-        </div>
-      
+          <div style="font-size:14px;font-weight:600;margin-bottom:12px">📊 今日记录</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div>
+              <div style="font-size:11px;color:var(--ink3);margin-bottom:4px">⚡ 能量值（1-5）</div>
+              <select id="energyLevel" class="message-input" style="width:100%;padding:6px;height:32px">
+                <option value="1">1 · 很低</option>
+                <option value="2">2 · 低</option>
+                <option value="3" selected>3 · 中</option>
+                <option value="4">4 · 高</option>
+                <option value="5">5 · 很高</option>
+              </select>
             </div>
             <div>
               <div style="font-size:11px;color:var(--ink3);margin-bottom:4px">😴 睡眠时长（小时）</div>
@@ -878,127 +830,83 @@
           </div>
           <button onclick="saveEnergyRecord()" class="message-send" style="width:100%;margin-top:12px;text-align:center">保存今日能量</button>
         </div>
-
-        <!-- 统计信息 -->
         <div class="checklist-card">
           <div style="font-size:14px;font-weight:600;margin-bottom:12px">📈 本周统计</div>
           <div style="font-size:13px;color:var(--ink2);line-height:2">
-            <div>🌙 平均睡眠：<span id="avgSleep">--</span> 小时</div>
-            <div>⚡ 平均能量：<span id="avgEnergy">--</span> 分</div>
-            <div>🧠 最佳时段：<span id="bestTime">数据收集中</span></div>
+            <div>🌙 平均睡眠：<span id="avgSleep">--</span>h</div>
+            <div>⚡ 平均能量：<span id="avgEnergy">--</span></div>
+            <div>🧠 最佳时段：<span id="bestTime">数据中</span></div>
             <div>😴 最疲惫日：<span id="worstDay">--</span></div>
           </div>
         </div>
       </div>
-
-      <!-- 7天能量趋势 -->
-      <div class="checklist-card" style="margin-bottom:20px">
+      <div class="checklist-card">
         <div style="font-size:14px;font-weight:600;margin-bottom:12px">📊 能量曲线（近7天）</div>
         <div id="energyChart" style="display:flex;align-items:flex-end;gap:8px;height:150px;justify-content:space-around">
-          <div style="text-align:center;color:var(--ink3)">数据加载中…</div>
+          <div style="color:var(--ink3)">加载中…</div>
         </div>
       </div>
-
-      <!-- 历史数据查看 -->
       <div class="checklist-card">
         <div style="font-size:14px;font-weight:600;margin-bottom:12px">📋 能量历史</div>
-        <div id="energyHistory" style="max-height:400px;overflow-y:auto">
+        <div id="energyHistory" style="max-height:300px;overflow-y:auto">
           <div style="text-align:center;color:var(--ink3);padding:20px">还没有数据</div>
         </div>
-      (this,'🙂')" style="background:none;border:none;cursor:pointer;font-size:22px" data-mood="🙂">🙂</button>
-              <button onclick="selectJournalMood(this,'😊')" style="background:none;border:none;cursor:pointer;font-size:22px" data-mood="😊">😊</button>
-              <button onclick="selectJournalMood(this,'🤩')" style="background:none;border:none;cursor:pointer;font-size:22px" data-mood="🤩">🤩</button>
-            </div>
-          </label>
-        </div>
-        <button onclick="saveQuickJournal()" class="message-send" style="width:100%;text-align:center">保存这一刻</button>
-      </div>
-
-      <!-- 历史记录查看 -->
-      <div style="display:flex;gap:12px;margin-bottom:16px">
-        <input id="journalSearch" class="message-input" type="text" placeholder="搜索日记…" onkeyup="filterJournals()" style="flex:1;height:40px;padding:8px 12px;margin:0">
-        <input id="journalDateFilter" class="message-input" type="date" onchange="filterJournals()" style="height:40px;padding:8px 12px;margin:0">
-      </div>
-
-      <!-- 日记时间轴 -->
-      <div id="journalTimeline">
-        <div style="text-align:center;color:var(--ink3);padding:40px">
-          还没有日记，先在上面写下此刻的想法吧
-        </div>
-      
-
-      <!-- 工作日志编辑框 -->
-      <div id="workLogModal" class="modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;overflow-y:auto">
-        <div style="background:white;border-radius:16px;padding:24px;max-width:600px;width:90%;margin:20px auto">
-          <div style="font-size:18px;font-weight:600;margin-bottom:16px">工作日志</div>
-          <input id="workDate" class="message-input" type="date" style="margin-bottom:12px;width:100%">
-          <input id="workTitle" class="message-input" type="text" placeholder="今日工作重点" style="margin-bottom:12px;width:100%">
-          <textarea id="workTasks" class="message-input" rows="4" placeholder="完成的任务（每行一条）" style="margin-bottom:12px;width:100%"></textarea>
-          <textarea id="workLearnings" class="message-input" rows="3" placeholder="学到的知识（每行一条）" style="margin-bottom:12px;width:100%"></textarea>
-          <input id="workHours" class="message-input" type="number" placeholder="工作小时数" min="0" max="24" style="margin-bottom:12px;width:100%">
-          <div style="margin-bottom:12px">
-            <label style="display:block;margin-bottom:8px;font-size:12px;color:var(--ink3)">工作心情</label>
-            <div style="display:flex;gap:8px">
-              <button class="mood-emoji" style="all:revert;border:none;cursor:pointer;font-size:24px" onclick="selectWorkMood(this,'😴')">😴 疲惫</button>
-              <button class="mood-emoji" style="all:revert;border:none;cursor:pointer;font-size:24px" onclick="selectWorkMood(this,'😐')">😐 平常</button>
-              <button class="mood-emoji" style="all:revert;border:none;cursor:pointer;font-size:24px" onclick="selectWorkMood(this,'😊')">😊 充实</button>
-              <button class="mood-emoji" style="all:revert;border:none;cursor:pointer;font-size:24px" onclick="selectWorkMood(this,'🤩')">🤩 兴奋</button>
-            </div>
-          </div>
-          <div style="display:flex;gap:8px;justify-content:flex-end">
-            <button onclick="closeWorkLogModal()" style="padding:8px 16px;background:var(--surface2);border:none;border-radius:8px;cursor:pointer">取消</button>
-            <button onclick="saveWorkLog()" style="padding:8px 16px;background:var(--accent);color:white;border:none;border-radius:8px;cursor:pointer">保存</button>
-          </div>
-        </div>
       </div>
     </div>
   </div>
-  <div class="page" id="page-projects">
-    <div class="page-header">
-      <div class="page-eyebrow">projects · 作品</div>
-      <h1 class="page-title">项目记录 📁</h1>
-    </div>
-    <div class="coming-soon">
-      <div class="coming-icon">📁</div>
-      <div class="coming-title">作品与项目档案</div>
-      <div class="coming-sub">个人项目、设计作品集、开源贡献、里程碑节点追踪。</div>
-      <div class="coming-tag">即将开放 · COMING SOON</div>
-    </div>
-  </div>
-  <div class="page" id="page-journal">
-    <div class="page-header">
-      <div class="page-eyebrow">journal · 日记</div>
-      <h1 class="page-title">每日杂记 📓</h1>
-    </div>
-    <div class="coming-soon">
-      <div class="coming-icon">📓</div>
-      <div class="coming-title">思绪的自由落地</div>
-      <div class="coming-sub">不设格式，不必完整。今天想说的、脑洞、感受，都可以倒在这里。支持 Brain Dump 快速模式。</div>
-      <div class="coming-tag">即将开放 · COMING SOON</div>
-    </div>
-  </div>
-  <div class="page" id="page-energy">
-    <div class="page-header">
-      <div class="page-eyebrow">wellness · 状态</div>
-      <h1 class="page-title">能量追踪 ⚡</h1>
-    </div>
-    <div class="coming-soon">
-      <div class="coming-icon">⚡</div>
-      <div class="coming-title">了解自己的能量节律</div>
-      <div class="coming-sub">ADHD 友好设计：记录今日情绪、睡眠、专注峰值时段。帮你找到属于自己的最佳节律。</div>
-      <div class="coming-tag">即将开放 · COMING SOON</div>
-    </div>
-  </div>
+
+  <!-- ══════════════════ 关于我页 PROFILE ══════════════════ -->
   <div class="page" id="page-profile">
     <div class="page-header">
       <div class="page-eyebrow">about · 关于</div>
       <h1 class="page-title">关于我 🌿</h1>
+      <p class="page-subtitle">这是我的完整故事。简历、技能、成就，和我一起成长。</p>
     </div>
-    <div class="coming-soon">
-      <div class="coming-icon">🌿</div>
-      <div class="coming-title">我是谁</div>
-      <div class="coming-sub">个人简历、自我介绍、技能树、个人成就。一个关于你的完整叙事。</div>
-      <div class="coming-tag">即将开放 · COMING SOON</div>
+    <div class="page-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div>
+          <div class="checklist-card" style="margin-bottom:16px">
+            <div style="font-size:14px;font-weight:600;margin-bottom:12px">👤 基本信息</div>
+            <input id="profileName" class="message-input" type="text" placeholder="你的名字" style="margin-bottom:8px;width:100%">
+            <input id="profileTitle" class="message-input" type="text" placeholder="职位/身份" style="margin-bottom:8px;width:100%">
+            <textarea id="profileBio" class="message-input" rows="3" placeholder="个人签名" style="margin-bottom:8px;width:100%"></textarea>
+            <button onclick="saveProfileBasic()" class="message-send" style="width:100%;text-align:center">保存</button>
+          </div>
+          <div class="checklist-card">
+            <div style="font-size:14px;font-weight:600;margin-bottom:12px">🌳 技能树</div>
+            <div id="skillsList" style="margin-bottom:12px;display:flex;flex-wrap:wrap;gap:6px">
+              <div style="font-size:12px;color:var(--ink3);width:100%">点击下方添加技能</div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <input id="skillInput" class="message-input" type="text" placeholder="新技能名称" style="flex:1;padding:6px;height:32px;">
+              <button onclick="addSkill()" style="padding:6px 12px;background:var(--accent);color:white;border:none;border-radius:6px;cursor:pointer">+ 添加</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="checklist-card" style="margin-bottom:16px">
+            <div style="font-size:14px;font-weight:600;margin-bottom:12px">🔗 社交链接</div>
+            <input id="linkGithub" class="message-input" type="text" placeholder="GitHub" style="width:100%;padding:6px;margin-bottom:6px;height:32px">
+            <input id="linkPortfolio" class="message-input" type="text" placeholder="个人作品集" style="width:100%;padding:6px;margin-bottom:6px;height:32px">
+            <input id="linkLinkedin" class="message-input" type="text" placeholder="LinkedIn" style="width:100%;padding:6px;margin-bottom:6px;height:32px">
+            <input id="linkEmail" class="message-input" type="email" placeholder="邮箱" style="width:100%;padding:6px;margin-bottom:8px;height:32px">
+            <button onclick="saveProfileLinks()" class="message-send" style="width:100%;text-align:center;font-size:12px">保存</button>
+          </div>
+          <div class="checklist-card">
+            <div style="font-size:14px;font-weight:600;margin-bottom:12px">🏆 成就</div>
+            <div id="achievementsList" style="margin-bottom:12px;display:flex;flex-wrap:wrap;gap:6px;max-height:100px;overflow-y:auto">
+              <div style="font-size:12px;color:var(--ink3);width:100%">点击下方添加</div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <input id="achievementInput" class="message-input" type="text" placeholder="新成就" style="flex:1;padding:6px;height:32px">
+              <button onclick="addAchievement()" style="padding:6px 12px;background:var(--accent);color:white;border:none;border-radius:6px;cursor:pointer;font-size:12px">添加</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:20px;text-align:center">
+        <button onclick="exportProfile()" class="message-send" style="padding:12px 24px">📄 导御档案</button>
+      </div>
     </div>
   </div>
 

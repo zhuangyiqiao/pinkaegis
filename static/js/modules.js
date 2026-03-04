@@ -880,17 +880,42 @@ ${Object.entries(profile.links).filter(([k, v]) => v).map(([k, v]) => `  • ${k
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   【全局变量声明】GLOBAL VARIABLES
+═══════════════════════════════════════════════════════════════ */
+let notesManager = null;
+let projectsManager = null;
+let journalManager = null;
+let workLogManager = null;
+let energyTracker = null;
+let profileManager = null;
+
+/* ═══════════════════════════════════════════════════════════════
    【页面加载初始化】PAGE INITIALIZATION
 ═══════════════════════════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 初始化所有管理器
-  notesManager = new NotesManager();
-  projectsManager = new ProjectsManager();
-  journalManager = new JournalManager();
-  workLogManager = new WorkLogManager();
-  energyTracker = new EnergyTracker();
-  profileManager = new ProfileManager();
+  try {
+    // 初始化所有管理器
+    notesManager = new NotesManager();
+    console.log('✅ NotesManager 加载成功');
+    
+    projectsManager = new ProjectsManager();
+    console.log('✅ ProjectsManager 加载成功');
+    
+    journalManager = new JournalManager();
+    console.log('✅ JournalManager 加载成功');
+    
+    workLogManager = new WorkLogManager();
+    console.log('✅ WorkLogManager 加载成功');
+    
+    energyTracker = new EnergyTracker();
+    console.log('✅ EnergyTracker 加载成功');
+    
+    profileManager = new ProfileManager();
+    console.log('✅ ProfileManager 加载成功');
 
-  console.log('✅ 所有功能模块已加载');
+    console.log('✅ 所有功能模块已加载');
+  } catch (error) {
+    console.error('❌ 模块加载失败:', error);
+  }
 });
