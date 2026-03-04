@@ -1,13 +1,15 @@
 """
-app.py — FOCUS 生活系统 Flask 后端
-====================================
+app.py — PINKAEGIS 生活系统 Flask 后端
+=====================================
+项目名称已修改：FOCUS → PINKAEGIS（match with domain: pinkaegis）
+
 功能：
   1. 渲染前端单页应用 (GET /)
   2. 留言板 RESTful API
        GET  /api/messages   — 返回全部留言（时间倒序）
        POST /api/messages   — 新增留言
 
-数据库：SQLite（本地文件 focus.db，自动创建）
+数据库：SQLite（本地文件 pinkaegis.db，自动创建）
 依赖：Flask, flask-cors
 安装：pip install flask flask-cors
 """
@@ -32,7 +34,8 @@ app = Flask(
 CORS(app)
 
 # SQLite 数据库文件路径（与 app.py 同目录）
-DB_PATH = os.path.join(os.path.dirname(__file__), 'focus.db')
+# 数据库文件已从 focus.db 改为 pinkaegis.db
+DB_PATH = os.path.join(os.path.dirname(__file__), 'pinkaegis.db')
 
 
 # ──────────────────────────────────────────────

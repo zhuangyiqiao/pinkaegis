@@ -1,16 +1,18 @@
-# FOCUS 生活系统 — 阿里云部署完整指南
+# PINKAEGIS 生活系统 — 阿里云部署完整指南
+
+> **项目重命名说明**：此项目原名为 FOCUS，现已更新为 PINKAEGIS（匹配域名）
 
 ---
 
 ## 一、项目文件结构
 
 ```
-focus-app/
+pinkaegis/
 ├── app.py                  # Flask 后端主程序
 ├── requirements.txt        # Python 依赖清单
-├── focus.db                # SQLite 数据库（首次运行自动创建）
-├── nginx_focus.conf        # Nginx 反向代理配置（可选）
-├── focus.service           # systemd 服务配置（开机自启）
+├── pinkaegis.db            # SQLite 数据库（首次运行自动创建）
+├── nginx_pinkaegis.conf    # Nginx 反向代理配置（可选）
+├── pinkaegis.service       # systemd 服务配置（开机自启）
 ├── logs/                   # 日志目录（需手动创建）
 │   ├── access.log
 │   └── error.log
@@ -29,7 +31,7 @@ focus-app/
 
 ```bash
 # 1. 进入项目目录
-cd focus-app
+cd pinkaegis-app
 
 # 2. 创建虚拟环境（推荐，避免污染系统Python）
 python3 -m venv venv
@@ -78,8 +80,8 @@ nginx -v
 **方式 A：使用 SCP 上传（从本地执行）**
 
 ```bash
-# 将整个 focus-app 目录上传到服务器的 /home/ubuntu/
-scp -r ./focus-app ubuntu@<你的服务器IP>:/home/ubuntu/
+# 将整个 pinkaegis-app 目录上传到服务器的 /home/ubuntu/
+scp -r ./pinkaegis-app ubuntu@<你的服务器IP>:/home/ubuntu/
 ```
 
 **方式 B：使用 Git（推荐，便于后续更新）**
@@ -87,7 +89,7 @@ scp -r ./focus-app ubuntu@<你的服务器IP>:/home/ubuntu/
 ```bash
 # 在服务器上执行
 cd /home/ubuntu
-git clone https://github.com/你的用户名/focus-app.git
+git clone https://github.com/你的用户名/pinkaegis-app.git
 ```
 
 ---
@@ -96,7 +98,7 @@ git clone https://github.com/你的用户名/focus-app.git
 
 ```bash
 # 进入项目目录
-cd /home/ubuntu/focus-app
+cd /home/ubuntu/pinkaegis-app
 
 # 创建 Python 虚拟环境
 python3 -m venv venv
@@ -110,12 +112,12 @@ pip install -r requirements.txt
 # 创建日志目录
 mkdir -p logs
 
-# 初始化数据库（会自动创建 focus.db 和 messages 表）
+# 初始化数据库（会自动创建 pinkaegis.db 和 messages 表）
 python app.py &
 # 看到 "[DB] 数据库已就绪" 后按 Ctrl+C 停止
 
 # 验证数据库创建成功
-ls -la focus.db
+ls -la pinkaegis.db
 ```
 
 ---
@@ -141,7 +143,7 @@ ls -la focus.db
 ### 3.6 测试直接运行
 
 ```bash
-cd /home/ubuntu/focus-app
+cd /home/ubuntu/pinkaegis-app
 source venv/bin/activate
 
 # 用 Gunicorn 启动（生产模式）
@@ -156,42 +158,42 @@ gunicorn --workers 2 --bind 0.0.0.0:5000 app:app
 ### 3.7 配置 systemd 开机自启（推荐）
 
 ```bash
-# 1. 将 focus.service 复制到 systemd 目录
-sudo cp /home/ubuntu/focus-app/focus.service /etc/systemd/system/
+# 1. 将 pinkaegis.service 复制到 systemd 目录
+sudo cp /home/ubuntu/pinkaegis-app/pinkaegis.service /etc/systemd/system/
 
 # 2. 重载 systemd 配置
 sudo systemctl daemon-reload
 
 # 3. 启动服务
-sudo systemctl start focus
+sudo systemctl start pinkaegis
 
 # 4. 设置开机自启
-sudo systemctl enable focus
+sudo systemctl enable pinkaegis
 
 # 5. 查看运行状态
-sudo systemctl status focus
+sudo systemctl status pinkaegis
 
 # 常用管理命令
-sudo systemctl stop focus       # 停止服务
-sudo systemctl restart focus    # 重启服务（更新代码后执行）
-journalctl -u focus -f          # 实时查看日志
+sudo systemctl stop pinkaegis       # 停止服务
+sudo systemctl restart pinkaegis    # 重启服务（更新代码后执行）
+journalctl -u pinkaegis -f          # 实时查看日志
 ```
 
-**验证 focus.service 内容**（确认路径与你的一致）：
+**验证 pinkaegis.service 内容**（确认路径与你的一致）：
 
 ```ini
 [Unit]
-Description=FOCUS 生活系统 Flask 应用
+Description=PINKAEGIS 生活系统 Flask 应用
 After=network.target
 
 [Service]
 User=ubuntu
-WorkingDirectory=/home/ubuntu/focus-app
-ExecStart=/home/ubuntu/focus-app/venv/bin/gunicorn \
+WorkingDirectory=/home/ubuntu/pinkaegis-app
+ExecStart=/home/ubuntu/pinkaegis-app/venv/bin/gunicorn \
     --workers 2 \
     --bind 127.0.0.1:5000 \
-    --access-logfile /home/ubuntu/focus-app/logs/access.log \
-    --error-logfile  /home/ubuntu/focus-app/logs/error.log \
+    --access-logfile /home/ubuntu/pinkaegis-app/logs/access.log \
+    --error-logfile  /home/ubuntu/pinkaegis-app/logs/error.log \
     app:app
 Restart=always
 RestartSec=5
@@ -206,16 +208,16 @@ WantedBy=multi-user.target
 
 ```bash
 # 1. 将 Nginx 配置复制到 sites-available
-sudo cp /home/ubuntu/focus-app/nginx_focus.conf \
-        /etc/nginx/sites-available/focus
+sudo cp /home/ubuntu/pinkaegis-app/nginx_pinkaegis.conf \
+        /etc/nginx/sites-available/pinkaegis
 
 # 2. 修改配置中的 server_name（替换为你的域名或IP）
-sudo nano /etc/nginx/sites-available/focus
-# 找到：server_name your-domain.com;
-# 改为：server_name 你的域名或公网IP;
+sudo nano /etc/nginx/sites-available/pinkaegis
+# 找到：server_name pinkaegis;
+# 改为：server_name 你的域名或公网IP;（例如：pinkaegis.com）
 
 # 3. 创建软链接（启用站点）
-sudo ln -s /etc/nginx/sites-available/focus \
+sudo ln -s /etc/nginx/sites-available/pinkaegis \
            /etc/nginx/sites-enabled/
 
 # 4. 测试 Nginx 配置语法
@@ -242,7 +244,7 @@ sudo systemctl enable nginx
 sudo apt install -y certbot python3-certbot-nginx
 
 # 自动获取证书并配置 Nginx（替换为你的真实域名）
-sudo certbot --nginx -d your-domain.com
+sudo certbot --nginx -d pinkaegis.com
 
 # 证书自动续期（Certbot 已配置 cron，可验证）
 sudo certbot renew --dry-run
@@ -256,20 +258,20 @@ sudo certbot renew --dry-run
 
 ```bash
 # 1. 上传新代码（SCP 方式）
-scp -r ./focus-app ubuntu@<IP>:/home/ubuntu/
+scp -r ./pinkaegis-app ubuntu@<IP>:/home/ubuntu/
 
 # 或 Git 方式
-cd /home/ubuntu/focus-app && git pull
+cd /home/ubuntu/pinkaegis-app && git pull
 
 # 2. 如有新依赖
 source venv/bin/activate
 pip install -r requirements.txt
 
 # 3. 重启服务
-sudo systemctl restart focus
+sudo systemctl restart pinkaegis
 
 # 4. 验证状态
-sudo systemctl status focus
+sudo systemctl status pinkaegis
 ```
 
 ---
@@ -338,14 +340,14 @@ sudo systemctl status focus
 | 问题 | 排查步骤 |
 |------|----------|
 | 浏览器无法访问 | 检查阿里云安全组端口是否开放 |
-| 502 Bad Gateway | `sudo systemctl status focus` 查看 Flask 是否正常运行 |
-| 静态资源 404 | 确认 `static/` 目录权限：`chmod -R 755 /home/ubuntu/focus-app/static` |
-| 数据库锁错误 | 检查是否有多个进程访问同一 focus.db，重启服务 |
+| 502 Bad Gateway | `sudo systemctl status pinkaegis` 查看 Flask 是否正常运行 |
+| 静态资源 404 | 确认 `static/` 目录权限：`chmod -R 755 /home/ubuntu/pinkaegis-app/static` |
+| 数据库锁错误 | 检查是否有多个进程访问同一 pinkaegis.db，重启服务 |
 | 留言提交无反应 | 打开浏览器开发者工具 → Network，检查 `/api/messages` 请求状态码 |
 
 ```bash
 # 查看 Flask 实时错误日志
-tail -f /home/ubuntu/focus-app/logs/error.log
+tail -f /home/ubuntu/pinkaegis-app/logs/error.log
 
 # 查看 Nginx 错误日志
 sudo tail -f /var/log/nginx/error.log

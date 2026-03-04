@@ -1,0 +1,22 @@
+[Unit]
+# 服务名称已更新：FOCUS → PINKAEGIS 生活系统
+# 部署时可重命名为 pinkaegis.service
+Description=PINKAEGIS 生活系统 Flask 应用
+After=network.target
+
+[Service]
+User=ubuntu
+# 工作目录已更新为 pinkaegis-app（请根据实际路径修改）
+WorkingDirectory=/home/ubuntu/pinkaegis-app
+# 使用 Gunicorn 生产服务器替代 Flask 内置开发服务器
+ExecStart=/home/ubuntu/pinkaegis-app/venv/bin/gunicorn \
+    --workers 2 \
+    --bind 127.0.0.1:5000 \
+    --access-logfile /home/ubuntu/pinkaegis-app/logs/access.log \
+    --error-logfile  /home/ubuntu/pinkaegis-app/logs/error.log \
+    app:app
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
