@@ -31,7 +31,7 @@ pinkaegis/
 
 ```bash
 # 1. 进入项目目录
-cd pinkaegis-app
+cd pinkaegis
 
 # 2. 创建虚拟环境（推荐，避免污染系统Python）
 python3 -m venv venv
@@ -80,8 +80,8 @@ nginx -v
 **方式 A：使用 SCP 上传（从本地执行）**
 
 ```bash
-# 将整个 pinkaegis-app 目录上传到服务器的 /home/ubuntu/
-scp -r ./pinkaegis-app ubuntu@<你的服务器IP>:/home/ubuntu/
+# 将整个 pinkaegis 目录上传到服务器的 /home/ubuntu/
+scp -r ./pinkaegis ubuntu@<你的服务器IP>:/home/ubuntu/
 ```
 
 **方式 B：使用 Git（推荐，便于后续更新）**
@@ -89,7 +89,7 @@ scp -r ./pinkaegis-app ubuntu@<你的服务器IP>:/home/ubuntu/
 ```bash
 # 在服务器上执行
 cd /home/ubuntu
-git clone https://github.com/你的用户名/pinkaegis-app.git
+git clone https://github.com/你的用户名/pinkaegis.git
 ```
 
 ---
@@ -98,7 +98,8 @@ git clone https://github.com/你的用户名/pinkaegis-app.git
 
 ```bash
 # 进入项目目录
-cd /home/ubuntu/pinkaegis-app
+cd /home/ubuntu/pinkaegis
+
 
 # 创建 Python 虚拟环境
 python3 -m venv venv
@@ -143,7 +144,7 @@ ls -la pinkaegis.db
 ### 3.6 测试直接运行
 
 ```bash
-cd /home/ubuntu/pinkaegis-app
+cd /home/ubuntu/pinkaegis
 source venv/bin/activate
 
 # 用 Gunicorn 启动（生产模式）
@@ -159,7 +160,7 @@ gunicorn --workers 2 --bind 0.0.0.0:5000 app:app
 
 ```bash
 # 1. 将 pinkaegis.service 复制到 systemd 目录
-sudo cp /home/ubuntu/pinkaegis-app/pinkaegis.service /etc/systemd/system/
+sudo cp /home/ubuntu/pinkaegis/pinkaegis.service /etc/systemd/system/
 
 # 2. 重载 systemd 配置
 sudo systemctl daemon-reload
@@ -188,12 +189,12 @@ After=network.target
 
 [Service]
 User=ubuntu
-WorkingDirectory=/home/ubuntu/pinkaegis-app
-ExecStart=/home/ubuntu/pinkaegis-app/venv/bin/gunicorn \
+WorkingDirectory=/home/ubuntu/pinkaegis
+ExecStart=/home/ubuntu/pinkaegis/venv/bin/gunicorn \
     --workers 2 \
     --bind 127.0.0.1:5000 \
-    --access-logfile /home/ubuntu/pinkaegis-app/logs/access.log \
-    --error-logfile  /home/ubuntu/pinkaegis-app/logs/error.log \
+    --access-logfile /home/ubuntu/pinkaegis/logs/access.log \
+    --error-logfile  /home/ubuntu/pinkaegis/logs/error.log \
     app:app
 Restart=always
 RestartSec=5
@@ -213,7 +214,7 @@ sudo cp /home/ubuntu/pinkaegis-app/nginx_pinkaegis.conf \
 
 # 2. 修改配置中的 server_name（替换为你的域名或IP）
 sudo nano /etc/nginx/sites-available/pinkaegis
-# 找到：server_name pinkaegis;
+# 找到：server_name pinkaegis.com;
 # 改为：server_name 你的域名或公网IP;（例如：pinkaegis.com）
 
 # 3. 创建软链接（启用站点）
@@ -258,10 +259,10 @@ sudo certbot renew --dry-run
 
 ```bash
 # 1. 上传新代码（SCP 方式）
-scp -r ./pinkaegis-app ubuntu@<IP>:/home/ubuntu/
+scp -r ./pinkaegis ubuntu@<IP>:/home/ubuntu/
 
 # 或 Git 方式
-cd /home/ubuntu/pinkaegis-app && git pull
+cd /home/ubuntu/pinkaegis && git pull
 
 # 2. 如有新依赖
 source venv/bin/activate
@@ -334,20 +335,19 @@ sudo systemctl status pinkaegis
 ```
 
 ---
-
 ## 六、常见问题排查
 
 | 问题 | 排查步骤 |
 |------|----------|
 | 浏览器无法访问 | 检查阿里云安全组端口是否开放 |
 | 502 Bad Gateway | `sudo systemctl status pinkaegis` 查看 Flask 是否正常运行 |
-| 静态资源 404 | 确认 `static/` 目录权限：`chmod -R 755 /home/ubuntu/pinkaegis-app/static` |
+| 静态资源 404 | 确认 `static/` 目录权限：`chmod -R 755 /home/ubuntu/pinkaegis/static` |
 | 数据库锁错误 | 检查是否有多个进程访问同一 pinkaegis.db，重启服务 |
 | 留言提交无反应 | 打开浏览器开发者工具 → Network，检查 `/api/messages` 请求状态码 |
 
 ```bash
 # 查看 Flask 实时错误日志
-tail -f /home/ubuntu/pinkaegis-app/logs/error.log
+tail -f /home/ubuntu/pinkaegis/logs/error.log
 
 # 查看 Nginx 错误日志
 sudo tail -f /var/log/nginx/error.log
