@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FOCUS — 我的生活系统</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<!-- 外链 CSS（从 static/css/style.css 加载）-->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<!-- 移动端汉堡菜单按钮（720px 以下显示）-->
+<button class="sidebar-toggle" id="sidebarToggle">☰</button>
+
+<!-- 移动端遮罩层：侧边栏展开时显示，点击关闭侧栏 -->
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- ══════════════════════════════════════════════
+     【左侧导航栏】固定在屏幕左侧
+     移动端通过 .open class + transform 滑入
+══════════════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <span class="logo-word">FOCUS</span>
+    <span class="logo-sub">我的生活系统</span>
+  </div>
+
+  <div class="sidebar-scroll">
+  <div class="nav-section">
+    <div class="nav-label">总览</div>
+    <div class="nav-item active" onclick="showPage('dashboard', this)">
+      <div class="nav-icon">🏠</div>
+      <span>主页</span>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">生活</div>
+    <div class="nav-item" onclick="showPage('checklist', this)">
+      <div class="nav-icon">✅</div>
+      <span>生活清单</span>
+      <span class="nav-badge">3</span>
+    </div>
+    <div class="nav-item" onclick="showPage('love', this)">
+      <div class="nav-icon">💌</div>
+      <span>恋爱手册</span>
+    </div>
+    <div class="nav-item" onclick="showPage('journal', this)">
+      <div class="nav-icon">📓</div>
+      <span>每日杂记</span>
+    </div>
+    <div class="nav-item" onclick="showPage('energy', this)">
+      <div class="nav-icon">⚡</div>
+      <span>能量追踪</span>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">成长</div>
+    <div class="nav-item" onclick="showPage('study', this)">
+      <div class="nav-icon">🎯</div>
+      <span>专注模式</span>
+    </div>
+    <div class="nav-item" onclick="showPage('notes', this)">
+      <div class="nav-icon">🧠</div>
+      <span>学习笔记</span>
+    </div>
+    <div class="nav-item" onclick="showPage('work', this)">
+      <div class="nav-icon">💼</div>
+      <span>实习记录</span>
+    </div>
+    <div class="nav-item" onclick="showPage('projects', this)">
+      <div class="nav-icon">📁</div>
+      <span>项目记录</span>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">关于我</div>
+    <div class="nav-item" onclick="showPage('profile', this)">
+      <div class="nav-icon">🌿</div>
+      <span>个人信息</span>
+    </div>
+  </div>
+
+  </div><!-- /sidebar-scroll -->
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-avatar">我</div>
+      <div>
+        <div class="user-name">我的空间</div>
+        <div class="user-status">✦ 今天很好</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════════════
+     【主内容区】所有页面都渲染在这里
+     默认只有 .active 的 .page 可见
+══════════════════════════════════════════════ -->
+<main class="main">
+
+  <!-- ══════════════════ 主页 DASHBOARD ══════════════════
+       结构：顶部信息栏 → 功能模块网格（个人信息+项目置首）→ 底部联系区
+  ══════════════════════════════════════════════════ -->
+  <div class="page active" id="page-dashboard">
+    <div class="page-header">
+      <div class="page-eyebrow">overview · 总览</div>
+      <h1 class="page-title">你好，欢迎回来 ✦</h1>
+      <p class="page-subtitle">一个属于你的安静角落，所有事情都在这里。</p>
+    </div>
+    <div class="page-body">
+
+      <!-- Top bar -->
+      <div class="dash-topbar">
+        <div class="dash-date-card">
+          <div class="date-big" id="dateDay">--</div>
+          <div class="date-meta">
+            <div class="date-weekday" id="dateWeekday">--</div>
+            <div class="date-month" id="dateMonth">--</div>
+          </div>
+          <div class="date-quote">"慢下来，才能看见所有的细节。"</div>
+        </div>
+        <div class="focus-timer-card">
+          <div class="focus-label">今日专注</div>
+          <div class="focus-time" id="dashTimer">25:00</div>
+          <div class="focus-btns">
+            <button class="focus-btn start" id="dashTimerBtn" onclick="toggleDashTimer()">开始</button>
+            <button class="focus-btn reset" onclick="resetDashTimer()">重置</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════
+           功能模块网格（4列×3行）
+           个人信息 & 项目记录置顶在第一行前两格，
+           其余模块依次排列。
+      ════════════════════════════════════════ -->
+      <div class="modules-grid">
+        <!-- ★ 置顶第1格：个人信息（第一行第一列）-->
+        <div class="module-card" style="--card-color:#7B5EA7;--card-bg:#F0EBF8" onclick="showPage('profile', null)">
+          <div class="module-icon-wrap">🌿</div>
+          <div class="module-name">个人信息</div>
+          <div class="module-desc">简历、自我介绍、个人成就展示。</div>
+          <div class="module-meta"><span class="module-count" style="background:#F0EBF8;color:#7B5EA7">About Me</span></div>
+        </div>
+        <!-- ★ 置顶第2格：项目记录（第一行第二列）-->
+        <div class="module-card" style="--card-color:#3D6D99;--card-bg:#E8F0F8" onclick="showPage('projects', null)">
+          <div class="module-icon-wrap">📁</div>
+          <div class="module-name">项目记录</div>
+          <div class="module-desc">个人项目、作品集、里程碑追踪。</div>
+          <div class="module-meta"><span class="module-count" style="background:#E8F0F8;color:#3D6D99">进行中 2</span></div>
+        </div>
+        <!-- 生活清单（第一行第三列）-->
+        <div class="module-card" style="--card-color:#2D6A4F;--card-bg:#D8F3DC" onclick="showPage('checklist', null)">
+          <div class="module-icon-wrap">✅</div>
+          <div class="module-name">生活清单</div>
+          <div class="module-desc">愿望、习惯、日常 To-Do，全部在这里打勾。</div>
+          <div class="module-meta"><span class="module-count">3 待完成</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#B5524F;--card-bg:#FDECEA" onclick="showPage('love', null)">
+          <div class="module-icon-wrap">💌</div>
+          <div class="module-name">恋爱手册</div>
+          <div class="module-desc">记录甜蜜时刻、重要纪念日与小心意。</div>
+          <div class="module-meta"><span class="module-count" style="background:#FDECEA;color:#B5524F">纪念日 · 5天后</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#3D6D99;--card-bg:#E8F0F8" onclick="showPage('study', null)">
+          <div class="module-icon-wrap">🎯</div>
+          <div class="module-name">专注模式</div>
+          <div class="module-desc">番茄钟 + 任务队列，帮你进入心流状态。</div>
+          <div class="module-meta"><span class="module-count" style="background:#E8F0F8;color:#3D6D99">今日 0 个番茄</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#7B5EA7;--card-bg:#F0EBF8" onclick="showPage('notes', null)">
+          <div class="module-icon-wrap">🧠</div>
+          <div class="module-name">学习笔记</div>
+          <div class="module-desc">思维导图、随手摘录、知识卡片。</div>
+          <div class="module-meta"><span class="module-count" style="background:#F0EBF8;color:#7B5EA7">12 条笔记</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#C9A84C;--card-bg:#FFF8E7" onclick="showPage('journal', null)">
+          <div class="module-icon-wrap">📓</div>
+          <div class="module-name">每日杂记</div>
+          <div class="module-desc">今天想说的话，今天的脑洞，都写在这里。</div>
+          <div class="module-meta"><span class="module-count" style="background:#FFF8E7;color:#C9A84C">连续写了 7 天</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#2D6A4F;--card-bg:#D8F3DC" onclick="showPage('work', null)">
+          <div class="module-icon-wrap">💼</div>
+          <div class="module-name">实习记录</div>
+          <div class="module-desc">工作日志、成长轨迹、技能图谱。</div>
+          <div class="module-meta"><span class="module-count">第 42 天</span></div>
+        </div>
+
+        <div class="module-card" style="--card-color:#B5524F;--card-bg:#FDECEA" onclick="showPage('energy', null)">
+          <div class="module-icon-wrap">⚡</div>
+          <div class="module-name">能量追踪</div>
+          <div class="module-desc">记录今日状态、睡眠、情绪波动趋势。</div>
+          <div class="module-meta"><span class="module-count" style="background:#FDECEA;color:#B5524F">ADHD 友好</span></div>
+        </div>
+
+        <div class="module-card" style="--card-color:#C9A84C;--card-bg:#FFF8E7" onclick="showPage('energy', null)">
+          <div class="module-icon-wrap">🌙</div>
+          <div class="module-name">睡眠日志</div>
+          <div class="module-desc">睡眠质量、入睡时间、起床记录分析。</div>
+          <div class="module-meta"><span class="module-count" style="background:#FFF8E7;color:#C9A84C">昨晚 7.5h</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#2D6A4F;--card-bg:#D8F3DC" onclick="showPage('journal', null)">
+          <div class="module-icon-wrap">💭</div>
+          <div class="module-name">思维排空</div>
+          <div class="module-desc">快速倾倒脑子里的一切，不评判，只释放。</div>
+          <div class="module-meta"><span class="module-count">Brain Dump</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#B5524F;--card-bg:#FDECEA" onclick="showPage('checklist', null)">
+          <div class="module-icon-wrap">🎨</div>
+          <div class="module-name">喜欢收藏</div>
+          <div class="module-desc">所有让你感到愉悦的事物清单。</div>
+          <div class="module-meta"><span class="module-count" style="background:#FDECEA;color:#B5524F">36 个收藏</span></div>
+        </div>
+      </div>
+
+      <!-- Bottom: contact + mood -->
+      <div class="dash-bottom">
+        <div class="contact-card">
+          <div class="card-title">联系我 / 留言 💬</div>
+          <div class="contact-links">
+            <div class="contact-chip">📧 邮件</div>
+            <div class="contact-chip">💬 微信</div>
+            <div class="contact-chip">🐦 推特</div>
+            <div class="contact-chip">💼 领英</div>
+            <div class="contact-chip">🐙 GitHub</div>
+          </div>
+          <div class="message-area">
+            <!-- 昵称输入框（id=msg-nickname，JS 读取）-->
+            <input
+              id="msg-nickname"
+              class="message-input"
+              type="text"
+              placeholder="你的昵称（可不填，默认匿名）"
+              style="margin-bottom:6px"
+            >
+            <!-- 留言内容（id=msg-content，JS 读取）-->
+            <textarea
+              id="msg-content"
+              class="message-input"
+              rows="3"
+              placeholder="给未来的我，或是路过的人留点什么……"
+            ></textarea>
+            <button class="message-send" onclick="sendMessage()">发送 ✦</button>
+          </div>
+          <!-- 留言列表（id=messages-list，JS 动态渲染）-->
+          <div id="messages-list" style="margin-top:16px;max-height:200px;overflow-y:auto;">
+            <div style="color:var(--ink3);font-size:13px">加载留言中……</div>
+          </div>
+        </div>
+        <div class="mood-card">
+          <div class="card-title">此刻的状态 🌡</div>
+          <div class="mood-emojis">
+            <div class="mood-emoji" onclick="selectMood(this)">😴<span>累</span></div>
+            <div class="mood-emoji" onclick="selectMood(this)">😐<span>平</span></div>
+            <div class="mood-emoji" onclick="selectMood(this)">🙂<span>还好</span></div>
+            <div class="mood-emoji" onclick="selectMood(this)">😊<span>好</span></div>
+            <div class="mood-emoji" onclick="selectMood(this)">🤩<span>棒</span></div>
+          </div>
+          <input class="mood-note" type="text" placeholder="一句话描述此刻……">
+          <button class="mood-save" onclick="saveMood()">记录今日状态 ✓</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════ 生活清单页 CHECKLIST ══════════════════ -->
+  <div class="page" id="page-checklist">
+    <div class="page-header">
+      <div class="page-eyebrow">life · 生活</div>
+      <h1 class="page-title">生活清单 ✅</h1>
+      <p class="page-subtitle">把杂乱的脑洞整理成清单，一件一件，慢慢来。</p>
+    </div>
+    <div class="page-body">
+      <div class="checklist-layout">
+        <!-- Left column -->
+        <div>
+          <div class="checklist-col-title">今日任务 · TODAY</div>
+          <div class="checklist-card">
+            <div class="checklist-card-header">
+              <div class="list-icon" style="background:#D8F3DC">✅</div>
+              <div class="list-card-title">今日必做</div>
+              <div class="list-progress">1 / 4</div>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
+            <div id="today-list">
+              <div class="check-item done" onclick="toggleCheck(this)">
+                <div class="checkmark">✓</div>
+                <div class="check-text">晨间 10 分钟冥想</div>
+                <div class="check-tag">早晨</div>
+              </div>
+              <div class="check-item" onclick="toggleCheck(this)">
+                <div class="checkmark"></div>
+                <div class="check-text">完成实习周报并发送给导师</div>
+                <div class="check-tag">工作</div>
+              </div>
+              <div class="check-item" onclick="toggleCheck(this)">
+                <div class="checkmark"></div>
+                <div class="check-text">整理笔记本里的碎片想法</div>
+                <div class="check-tag">成长</div>
+              </div>
+              <div class="check-item" onclick="toggleCheck(this)">
+                <div class="checkmark"></div>
+                <div class="check-text">散步 20 分钟，不带手机</div>
+                <div class="check-tag">身体</div>
+              </div>
+            </div>
+            <div class="add-item-row">
+              <input class="add-input" placeholder="添加今日任务…" id="todayInput" onkeydown="if(event.key==='Enter')addTask('today-list','todayInput')">
+              <button class="add-btn" onclick="addTask('today-list','todayInput')">+ 添加</button>
+            </div>
+          </div>
+
+          <div class="checklist-col-title" style="margin-top:8px">习惯追踪 · HABITS</div>
+          <div class="checklist-card">
+            <div class="checklist-card-header">
+              <div class="list-icon" style="background:#FFF8E7">🌱</div>
+              <div class="list-card-title">每日习惯</div>
+              <div class="list-progress">2 / 5</div>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:40%;background:var(--warm)"></div></div>
+            <div id="habit-list">
+              <div class="check-item done" onclick="toggleCheck(this)">
+                <div class="checkmark">✓</div>
+                <div class="check-text">喝 8 杯水</div>
+              </div>
+              <div class="check-item done" onclick="toggleCheck(this)">
+                <div class="checkmark">✓</div>
+                <div class="check-text">读书 30 分钟</div>
+              </div>
+              <div class="check-item" onclick="toggleCheck(this)">
+                <div class="checkmark"></div>
+                <div class="check-text">不刷手机超过 2 小时</div>
+              </div>
+              <div class="check-item" onclick="toggleCheck(this)">
+                <div class="checkmark"></div>
+                <div class="check-text">写当日感恩三件事</div>
+              </div>
+              <div class="check-item" onclick="toggleCheck(this)">
+                <div class="checkmark"></div>
+                <div class="check-text">睡前拉伸 10 分钟</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column -->
+        <div>
+          <div class="checklist-col-title">愿望清单 · WISHLIST</div>
+          <div class="checklist-card">
+            <div class="checklist-card-header">
+              <div class="list-icon" style="background:#F0EBF8">🌟</div>
+              <div class="list-card-title">想做的事</div>
+            </div>
+            <div id="wish-list">
+              <div class="check-item" onclick="toggleCheck(this)">
+                <div class="checkmark"></div>
+                <div class="check-text">去京都看枫叶</div>
+                <div class="check-tag" style="background:#F0EBF8;color:#7B5EA7">旅行</div>
+              </div>
+              <div class="check-item" onclick="toggleCheck(this)">
+                <div class="checkmark"></div>
+                <div class="check-text">学会做一道法式料理</div>
+                <div class="check-tag" style="background:#F0EBF8;color:#7B5EA7">生活</div>
+              </div>
+              <div class="check-item" onclick="toggleCheck(this)">
+                <div class="checkmark"></div>
+                <div class="check-text">读完《人类简史》</div>
+                <div class="check-tag" style="background:#F0EBF8;color:#7B5EA7">阅读</div>
+              </div>
+              <div class="check-item done" onclick="toggleCheck(this)">
+                <div class="checkmark">✓</div>
+                <div class="check-text">建立一个属于自己的数字空间</div>
+                <div class="check-tag" style="background:#F0EBF8;color:#7B5EA7">数字</div>
+              </div>
+            </div>
+            <div class="add-item-row">
+              <input class="add-input" placeholder="加入愿望清单…" id="wishInput" onkeydown="if(event.key==='Enter')addTask('wish-list','wishInput')">
+              <button class="add-btn" style="background:#7B5EA7" onclick="addTask('wish-list','wishInput')">+ 添加</button>
+            </div>
+          </div>
+
+          <div class="checklist-col-title" style="margin-top:8px">喜欢的事物 · I LOVE</div>
+          <div class="checklist-card">
+            <div class="checklist-card-header">
+              <div class="list-icon" style="background:#FDECEA">🎨</div>
+              <div class="list-card-title">喜欢收藏</div>
+            </div>
+            <div class="likes-grid">
+              <div class="like-chip"><div class="like-emoji">🎵</div><div class="like-text">爵士乐</div></div>
+              <div class="like-chip"><div class="like-emoji">📚</div><div class="like-text">独立书店</div></div>
+              <div class="like-chip"><div class="like-emoji">☕</div><div class="like-text">手冲咖啡</div></div>
+              <div class="like-chip"><div class="like-emoji">🌿</div><div class="like-text">植物观察</div></div>
+              <div class="like-chip"><div class="like-emoji">🎨</div><div class="like-text">色彩搭配</div></div>
+              <div class="like-chip"><div class="like-emoji">🌙</div><div class="like-text">夜晚散步</div></div>
+              <div class="like-chip"><div class="like-emoji">🍜</div><div class="like-text">热汤面</div></div>
+              <div class="like-chip"><div class="like-emoji">🎬</div><div class="like-text">文艺电影</div></div>
+              <div class="like-chip"><div class="like-emoji">✍️</div><div class="like-text">手写字</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 恋爱手册页 LOVE JOURNAL ──
+       Y = 我（用户本人），M = 对方
+       在一起时间：2026年1月28日
+       初次约会：2026年2月20日
+  -->
+  <div class="page" id="page-love">
+    <div class="page-header">
+      <div class="page-eyebrow">love · 情感</div>
+      <h1 class="page-title">恋爱手册 💌</h1>
+      <p class="page-subtitle">Y 与 M 的故事，每一个值得被记住的温柔瞬间。</p>
+    </div>
+    <div class="page-body">
+      <div class="love-layout">
+        <!-- ── 左侧：时间轴记录 ── -->
+        <div>
+          <div class="checklist-col-title">记录时间线 · TIMELINE</div>
+          <div class="timeline">
+
+            <!-- 里程碑：在一起 2026.01.28 -->
+            <div class="timeline-item">
+              <div class="tl-dot milestone">💞</div>
+              <div class="tl-content">
+                <div class="tl-date">2026 · 01 · 28  |  在一起纪念日 ✦</div>
+                <div class="tl-title">Y 与 M，在一起了 🌸</div>
+                <div class="tl-body">那一天，Y 终于说出了心里藏了很久的话。M 听完沉默了几秒，然后笑着说"好"。从那天起，两个人的故事正式开始了。</div>
+                <div class="tl-tag tag-rose">里程碑</div>
+              </div>
+            </div>
+
+            <!-- 第一次约会 2026.02.20 -->
+            <div class="timeline-item">
+              <div class="tl-dot milestone">🌹</div>
+              <div class="tl-content">
+                <div class="tl-date">2026 · 02 · 20  |  初次约会</div>
+                <div class="tl-title">Y 与 M 的第一次约会 ☕</div>
+                <div class="tl-body">在一起后第一次正式约会。两个人都有点紧张，却也都在假装很自然。后来 M 说那天是她最喜欢的一天之一，Y 把这句话记在了这里。</div>
+                <div class="tl-tag tag-warm">初次约会</div>
+              </div>
+            </div>
+
+            <!-- 日常记录占位，方便未来补充 -->
+            <div class="timeline-item">
+              <div class="tl-dot">💭</div>
+              <div class="tl-content">
+                <div class="tl-date">此处留白，等待新的故事</div>
+                <div class="tl-title">下一个值得记住的瞬间</div>
+                <div class="tl-body">故事还在继续。点击下方按钮，记录属于 Y 与 M 的新时刻。</div>
+                <div class="tl-tag tag-green">待记录</div>
+              </div>
+            </div>
+
+          </div>
+          <!-- 添加新记录按钮 -->
+          <button class="new-entry-btn" onclick="showToast('📝 新记录功能即将开放')">+ 记录新的时刻</button>
+        </div>
+
+        <!-- ── 右侧：数据看板 ── -->
+        <div class="love-panel">
+
+          <!-- 数字统计卡 -->
+          <div class="panel-card">
+            <div class="panel-card-title">💕 Y 与 M 的数字</div>
+            <div class="love-stats">
+              <div class="love-stat">
+                <!-- daysTogether 由 JS 根据 2026-01-28 自动计算 -->
+                <div class="stat-label">在一起</div>
+                <div class="stat-val" id="daysTogether">-- 天</div>
+              </div>
+              <div class="love-stat">
+                <!-- firstDate 由 JS 自动计算初次约会距今天数 -->
+                <div class="stat-label">初次约会至今</div>
+                <div class="stat-val" id="daysFirstDate">-- 天</div>
+              </div>
+              <div class="love-stat">
+                <div class="stat-label">记录的时刻</div>
+                <div class="stat-val">3 个</div>
+              </div>
+              <div class="love-stat">
+                <div class="stat-label">下一个纪念日</div>
+                <div class="stat-val" id="nextAnniversary">计算中</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 即将到来提醒 -->
+          <div class="panel-card">
+            <div class="panel-card-title">🔔 即将到来</div>
+            <div class="remind-list">
+              <div class="remind-item">
+                <!-- 一周年：2027.01.28 -->
+                <div class="remind-dot"></div>
+                <div class="remind-text">2027 · 01 · 28 · Y 与 M 一周年 🎂</div>
+              </div>
+              <div class="remind-item">
+                <div class="remind-dot" style="background:var(--warm)"></div>
+                <div class="remind-text">持续更新中…… 给 M 的惊喜</div>
+              </div>
+              <div class="remind-item">
+                <div class="remind-dot" style="background:var(--blue)"></div>
+                <div class="remind-text">期待下一次约会 🌸</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- M 说过的话 -->
+          <div class="panel-card">
+            <div class="panel-card-title">✨ M 说过的话</div>
+            <div style="font-style:italic;font-size:14px;color:var(--ink2);line-height:1.8;font-family:'DM Serif Display',serif;">
+              "好。"
+            </div>
+            <div style="margin-top:10px;font-size:12px;color:var(--ink3);font-family:'JetBrains Mono',monospace;font-weight:300;">
+              — 2026 · 01 · 28 · 那一天最重要的一个字
+            </div>
+          </div>
+
+          <!-- 想对 M 说的话（快速记录）-->
+          <div class="panel-card">
+            <div class="panel-card-title">📝 想对 M 说</div>
+            <textarea class="message-input" rows="3" placeholder="此刻想说的话……" style="font-size:13px"></textarea>
+            <button class="message-send" style="margin-top:10px;width:100%;text-align:center" onclick="showToast('💌 已悄悄记录下来')">保存这句话</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ 专注模式页 FOCUS ══════════════════ -->
+  <div class="page" id="page-study">
+    <div class="page-header">
+      <div class="page-eyebrow">focus · 专注</div>
+      <h1 class="page-title">专注模式 🎯</h1>
+      <p class="page-subtitle">番茄工作法 · 屏蔽噪音，进入心流。</p>
+    </div>
+    <div class="page-body">
+      <div class="focus-layout">
+        <!-- Big timer -->
+        <div class="big-timer-card">
+          <div class="big-timer-label">POMODORO TIMER</div>
+          <div class="big-timer-display" id="bigTimer">25:00</div>
+          <div class="big-timer-mode">
+            <button class="mode-btn active" onclick="setMode(this,25)">专注 25min</button>
+            <button class="mode-btn" onclick="setMode(this,5)">短休 5min</button>
+            <button class="mode-btn" onclick="setMode(this,15)">长休 15min</button>
+          </div>
+          <div class="big-btns">
+            <button class="big-start-btn" id="bigTimerBtn" onclick="toggleBigTimer()">开始专注</button>
+            <button class="big-reset-btn" onclick="resetBigTimer()">重置</button>
+          </div>
+        </div>
+
+        <!-- Task queue -->
+        <div class="task-queue">
+          <div class="checklist-col-title" style="margin-bottom:12px">任务队列 · QUEUE</div>
+          <div id="task-queue-list">
+            <div class="task-item">
+              <div class="task-pri pri-high"></div>
+              <div class="task-info">
+                <div class="task-name">完成实习周报</div>
+                <div class="task-time">预计 · 30min</div>
+              </div>
+              <div class="task-check" onclick="toggleTaskCheck(this)"></div>
+            </div>
+            <div class="task-item">
+              <div class="task-pri pri-mid"></div>
+              <div class="task-info">
+                <div class="task-name">整理设计稿反馈</div>
+                <div class="task-time">预计 · 45min</div>
+              </div>
+              <div class="task-check" onclick="toggleTaskCheck(this)"></div>
+            </div>
+            <div class="task-item">
+              <div class="task-pri pri-low"></div>
+              <div class="task-info">
+                <div class="task-name">读《用户体验要素》第三章</div>
+                <div class="task-time">预计 · 20min</div>
+              </div>
+              <div class="task-check" onclick="toggleTaskCheck(this)"></div>
+            </div>
+            <div class="task-item">
+              <div class="task-pri pri-low"></div>
+              <div class="task-info">
+                <div class="task-name">回复导师的邮件</div>
+                <div class="task-time">预计 · 15min</div>
+              </div>
+              <div class="task-check" onclick="toggleTaskCheck(this)"></div>
+            </div>
+          </div>
+          <div class="add-item-row" style="margin-top:16px">
+            <input class="add-input" placeholder="添加任务…" id="taskInput" onkeydown="if(event.key==='Enter')addQueueTask()">
+            <button class="add-btn" onclick="addQueueTask()">+ 加入</button>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-small">
+          <div class="checklist-col-title" style="margin-bottom:4px">今日战果 · TODAY</div>
+          <div class="stat-row">
+            <div class="stat-row-label">🍅 完成番茄数</div>
+            <div class="stat-row-val" id="pomodoroCount">0</div>
+          </div>
+          <div class="mini-bar"><div class="mini-bar-fill" id="pomodoroBar" style="width:0%"></div></div>
+          <div class="stat-row">
+            <div class="stat-row-label">⏱ 累计专注时长</div>
+            <div class="stat-row-val" id="totalFocus">0 min</div>
+          </div>
+          <div style="height:1px;background:var(--border);margin:4px 0"></div>
+          <div class="checklist-col-title" style="margin-bottom:4px;margin-top:4px">本周平均 · WEEK</div>
+          <div class="stat-row">
+            <div class="stat-row-label">📅 日均专注</div>
+            <div class="stat-row-val">3.2h</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-row-label">🏆 最长连续</div>
+            <div class="stat-row-val">4 个</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-row-label">😴 平均休息</div>
+            <div class="stat-row-val">6 min</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ 其余模块占位页 COMING SOON ══════════════════
+       未来开发时，将对应的 coming-soon 区块替换为实际内容即可
+  ══════════════════════════════════════════════════ -->
+  <div class="page" id="page-notes">
+    <div class="page-header">
+      <div class="page-eyebrow">knowledge · 知识</div>
+      <h1 class="page-title">学习笔记 🧠</h1>
+    </div>
+    <div class="coming-soon">
+      <div class="coming-icon">🧠</div>
+      <div class="coming-title">知识花园正在生长</div>
+      <div class="coming-sub">这里将有卡片式笔记、标签分类、关键词搜索。把零散的想法变成系统化的知识树。</div>
+      <div class="coming-tag">即将开放 · COMING SOON</div>
+    </div>
+  </div>
+  <div class="page" id="page-work">
+    <div class="page-header">
+      <div class="page-eyebrow">career · 职业</div>
+      <h1 class="page-title">实习记录 💼</h1>
+    </div>
+    <div class="coming-soon">
+      <div class="coming-icon">💼</div>
+      <div class="coming-title">职业成长轨迹</div>
+      <div class="coming-sub">工作日志、技能图谱、导师反馈、阶段复盘。每一步都值得被记录。</div>
+      <div class="coming-tag">即将开放 · COMING SOON</div>
+    </div>
+  </div>
+  <div class="page" id="page-projects">
+    <div class="page-header">
+      <div class="page-eyebrow">projects · 作品</div>
+      <h1 class="page-title">项目记录 📁</h1>
+    </div>
+    <div class="coming-soon">
+      <div class="coming-icon">📁</div>
+      <div class="coming-title">作品与项目档案</div>
+      <div class="coming-sub">个人项目、设计作品集、开源贡献、里程碑节点追踪。</div>
+      <div class="coming-tag">即将开放 · COMING SOON</div>
+    </div>
+  </div>
+  <div class="page" id="page-journal">
+    <div class="page-header">
+      <div class="page-eyebrow">journal · 日记</div>
+      <h1 class="page-title">每日杂记 📓</h1>
+    </div>
+    <div class="coming-soon">
+      <div class="coming-icon">📓</div>
+      <div class="coming-title">思绪的自由落地</div>
+      <div class="coming-sub">不设格式，不必完整。今天想说的、脑洞、感受，都可以倒在这里。支持 Brain Dump 快速模式。</div>
+      <div class="coming-tag">即将开放 · COMING SOON</div>
+    </div>
+  </div>
+  <div class="page" id="page-energy">
+    <div class="page-header">
+      <div class="page-eyebrow">wellness · 状态</div>
+      <h1 class="page-title">能量追踪 ⚡</h1>
+    </div>
+    <div class="coming-soon">
+      <div class="coming-icon">⚡</div>
+      <div class="coming-title">了解自己的能量节律</div>
+      <div class="coming-sub">ADHD 友好设计：记录今日情绪、睡眠、专注峰值时段。帮你找到属于自己的最佳节律。</div>
+      <div class="coming-tag">即将开放 · COMING SOON</div>
+    </div>
+  </div>
+  <div class="page" id="page-profile">
+    <div class="page-header">
+      <div class="page-eyebrow">about · 关于</div>
+      <h1 class="page-title">关于我 🌿</h1>
+    </div>
+    <div class="coming-soon">
+      <div class="coming-icon">🌿</div>
+      <div class="coming-title">我是谁</div>
+      <div class="coming-sub">个人简历、自我介绍、技能树、个人成就。一个关于你的完整叙事。</div>
+      <div class="coming-tag">即将开放 · COMING SOON</div>
+    </div>
+  </div>
+
+</main>
+
+<!-- 全局轻提示（右下角弹窗）-->
+<div class="toast" id="toast"></div>
+
+<!-- 外链 JS（从 static/js/app.js 加载）-->
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
