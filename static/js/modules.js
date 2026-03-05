@@ -141,6 +141,10 @@ function openNoteModal() {
   renderNoteTagButtons();
 }
 
+function closeNoteModal() {
+  document.getElementById('noteModal').style.display = 'none';
+}
+
 function renderNoteTagButtons() {
   const container = document.getElementById('noteTags');
   container.innerHTML = ['知识', '想法', '摘录', '灵感'].map(tag =>
