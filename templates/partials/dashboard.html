@@ -1,0 +1,166 @@
+  <!-- ══════════════════ 主页 DASHBOARD ══════════════════
+       结构：顶部信息栏 → 功能模块网格（个人信息+项目置首）→ 底部联系区
+  ══════════════════════════════════════════════════ -->
+  <div class="page active" id="page-dashboard">
+    <div class="page-header">
+      <div class="page-eyebrow">overview · 总览</div>
+      <h1 class="page-title">你好，欢迎回来 ✦</h1>
+      <p class="page-subtitle">一个属于你的安静角落，所有事情都在这里。</p>
+    </div>
+    <div class="page-body">
+
+      <!-- Top bar -->
+      <div class="dash-topbar">
+        <div class="dash-date-card">
+          <div class="date-big" id="dateDay">--</div>
+          <div class="date-meta">
+            <div class="date-weekday" id="dateWeekday">--</div>
+            <div class="date-month" id="dateMonth">--</div>
+          </div>
+          <div class="date-quote">"慢下来，才能看见所有的细节。"</div>
+        </div>
+        <div class="focus-timer-card">
+          <div class="focus-label">今日专注</div>
+          <div class="focus-time" id="dashTimer">25:00</div>
+          <div class="focus-btns">
+            <button class="focus-btn start" id="dashTimerBtn" onclick="toggleDashTimer()">开始</button>
+            <button class="focus-btn reset" onclick="resetDashTimer()">重置</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════
+           功能模块网格（4列×3行）
+           个人信息 & 项目记录置顶在第一行前两格，
+           其余模块依次排列。
+      ════════════════════════════════════════ -->
+      <div class="modules-grid">
+        <!-- ★ 置顶第1格：个人信息（第一行第一列）-->
+        <div class="module-card" style="--card-color:#7B5EA7;--card-bg:#F0EBF8" onclick="showPage('profile', null)">
+          <div class="module-icon-wrap">🌿</div>
+          <div class="module-name">个人信息</div>
+          <div class="module-desc">简历、自我介绍、个人成就展示。</div>
+          <div class="module-meta"><span class="module-count" style="background:#F0EBF8;color:#7B5EA7">About Me</span></div>
+        </div>
+        <!-- ★ 置顶第2格：项目记录（第一行第二列）-->
+        <div class="module-card" style="--card-color:#3D6D99;--card-bg:#E8F0F8" onclick="showPage('projects', null)">
+          <div class="module-icon-wrap">📁</div>
+          <div class="module-name">项目记录</div>
+          <div class="module-desc">个人项目、作品集、里程碑追踪。</div>
+          <div class="module-meta"><span class="module-count" style="background:#E8F0F8;color:#3D6D99">进行中 2</span></div>
+        </div>
+        <!-- 生活清单（第一行第三列）-->
+        <div class="module-card" style="--card-color:#2D6A4F;--card-bg:#D8F3DC" onclick="showPage('checklist', null)">
+          <div class="module-icon-wrap">✅</div>
+          <div class="module-name">生活清单</div>
+          <div class="module-desc">愿望、习惯、日常 To-Do，全部在这里打勾。</div>
+          <div class="module-meta"><span class="module-count">3 待完成</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#B5524F;--card-bg:#FDECEA" onclick="showPage('love', null)">
+          <div class="module-icon-wrap">💌</div>
+          <div class="module-name">恋爱手册</div>
+          <div class="module-desc">记录甜蜜时刻、重要纪念日与小心意。</div>
+          <div class="module-meta"><span class="module-count" style="background:#FDECEA;color:#B5524F">纪念日 · 5天后</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#3D6D99;--card-bg:#E8F0F8" onclick="showPage('study', null)">
+          <div class="module-icon-wrap">🎯</div>
+          <div class="module-name">专注模式</div>
+          <div class="module-desc">番茄钟 + 任务队列，帮你进入心流状态。</div>
+          <div class="module-meta"><span class="module-count" style="background:#E8F0F8;color:#3D6D99">今日 0 个番茄</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#7B5EA7;--card-bg:#F0EBF8" onclick="showPage('notes', null)">
+          <div class="module-icon-wrap">🧠</div>
+          <div class="module-name">学习笔记</div>
+          <div class="module-desc">思维导图、随手摘录、知识卡片。</div>
+          <div class="module-meta"><span class="module-count" style="background:#F0EBF8;color:#7B5EA7">12 条笔记</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#C9A84C;--card-bg:#FFF8E7" onclick="showPage('journal', null)">
+          <div class="module-icon-wrap">📓</div>
+          <div class="module-name">每日杂记</div>
+          <div class="module-desc">今天想说的话，今天的脑洞，都写在这里。</div>
+          <div class="module-meta"><span class="module-count" style="background:#FFF8E7;color:#C9A84C">连续写了 7 天</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#2D6A4F;--card-bg:#D8F3DC" onclick="showPage('work', null)">
+          <div class="module-icon-wrap">💼</div>
+          <div class="module-name">实习记录</div>
+          <div class="module-desc">工作日志、成长轨迹、技能图谱。</div>
+          <div class="module-meta"><span class="module-count">第 42 天</span></div>
+        </div>
+
+        <div class="module-card" style="--card-color:#B5524F;--card-bg:#FDECEA" onclick="showPage('energy', null)">
+          <div class="module-icon-wrap">⚡</div>
+          <div class="module-name">能量追踪</div>
+          <div class="module-desc">记录今日状态、睡眠、情绪波动趋势。</div>
+          <div class="module-meta"><span class="module-count" style="background:#FDECEA;color:#B5524F">ADHD 友好</span></div>
+        </div>
+
+        <div class="module-card" style="--card-color:#C9A84C;--card-bg:#FFF8E7" onclick="showPage('energy', null)">
+          <div class="module-icon-wrap">🌙</div>
+          <div class="module-name">睡眠日志</div>
+          <div class="module-desc">睡眠质量、入睡时间、起床记录分析。</div>
+          <div class="module-meta"><span class="module-count" style="background:#FFF8E7;color:#C9A84C">昨晚 7.5h</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#2D6A4F;--card-bg:#D8F3DC" onclick="showPage('journal', null)">
+          <div class="module-icon-wrap">💭</div>
+          <div class="module-name">思维排空</div>
+          <div class="module-desc">快速倾倒脑子里的一切，不评判，只释放。</div>
+          <div class="module-meta"><span class="module-count">Brain Dump</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#B5524F;--card-bg:#FDECEA" onclick="showPage('checklist', null)">
+          <div class="module-icon-wrap">🎨</div>
+          <div class="module-name">喜欢收藏</div>
+          <div class="module-desc">所有让你感到愉悦的事物清单。</div>
+          <div class="module-meta"><span class="module-count" style="background:#FDECEA;color:#B5524F">36 个收藏</span></div>
+        </div>
+      </div>
+
+      <!-- Bottom: contact + mood -->
+      <div class="dash-bottom">
+        <div class="contact-card">
+          <div class="card-title">联系我 / 留言 💬</div>
+          <div class="contact-links">
+            <div class="contact-chip">📧 邮件</div>
+            <div class="contact-chip">💬 微信</div>
+            <div class="contact-chip">🐦 推特</div>
+            <div class="contact-chip">💼 领英</div>
+            <div class="contact-chip">🐙 GitHub</div>
+          </div>
+          <div class="message-area">
+            <!-- 昵称输入框（id=msg-nickname，JS 读取）-->
+            <input
+              id="msg-nickname"
+              class="message-input"
+              type="text"
+              placeholder="你的昵称（可不填，默认匿名）"
+              style="margin-bottom:6px"
+            >
+            <!-- 留言内容（id=msg-content，JS 读取）-->
+            <textarea
+              id="msg-content"
+              class="message-input"
+              rows="3"
+              placeholder="给未来的我，或是路过的人留点什么……"
+            ></textarea>
+            <button class="message-send" onclick="sendMessage()">发送 ✦</button>
+          </div>
+          <!-- 留言列表（id=messages-list，JS 动态渲染）-->
+          <div id="messages-list" style="margin-top:16px;max-height:200px;overflow-y:auto;">
+            <div style="color:var(--ink3);font-size:13px">加载留言中……</div>
+          </div>
+        </div>
+        <div class="mood-card">
+          <div class="card-title">此刻的状态 🌡</div>
+          <div class="mood-emojis">
+            <div class="mood-emoji" onclick="selectMood(this)">😴<span>累</span></div>
+            <div class="mood-emoji" onclick="selectMood(this)">😐<span>平</span></div>
+            <div class="mood-emoji" onclick="selectMood(this)">🙂<span>还好</span></div>
+            <div class="mood-emoji" onclick="selectMood(this)">😊<span>好</span></div>
+            <div class="mood-emoji" onclick="selectMood(this)">🤩<span>棒</span></div>
+          </div>
+          <input id="moodNote" class="mood-note" type="text" placeholder="一句话描述此刻……">
+          <button class="mood-save" onclick="saveMood()">记录今日状态 ✓</button>
+        </div>
+      </div>
+
+    </div>
+  </div>

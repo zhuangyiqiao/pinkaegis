@@ -42,6 +42,9 @@
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('overlay');
 
+  // 确保初始化时遮罩为隐藏，避免在 CSS/缓存/断点冲突时覆盖主内容
+  if (overlay) overlay.style.display = 'none';
+
   // 汉堡菜单按钮点击事件
   document.getElementById('sidebarToggle').addEventListener('click', () => {
     sidebar.classList.toggle('open');
@@ -69,6 +72,19 @@
     document.getElementById('dateMonth').textContent = months[now.getMonth()] + ' · ' + now.getFullYear();
   }
   updateDate(); // 页面加载时立即执行
+
+  // 简单诊断：在 DOMContentLoaded 打印 overlay 与 dashboard 状态，便于调试覆盖问题
+  window.addEventListener('DOMContentLoaded', () => {
+    try {
+      const ov = document.getElementById('overlay');
+      const dash = document.getElementById('page-dashboard');
+      console.log('DIAG: overlay inline display=', ov?.style.display, 'computed=', ov ? window.getComputedStyle(ov).display : 'none');
+      console.log('DIAG: overlay z-index=', ov ? window.getComputedStyle(ov).zIndex : 'n/a');
+      console.log('DIAG: dashboard computed display=', dash ? window.getComputedStyle(dash).display : 'n/a');
+    } catch (e) {
+      console.warn('DIAG: error checking overlay/dashboard', e);
+    }
+  });
 
   /* ══════════════════════════════════════════════════════
      【恋爱天数计算】LOVE DAYS COUNTER
