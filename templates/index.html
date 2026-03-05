@@ -909,7 +909,7 @@
         </div>
       </div>
       <div style="margin-top:20px;text-align:center">
-        <button onclick="exportProfile()" class="message-send" style="padding:12px 24px">📄 导御档案</button>
+        <button onclick="exportProfile()" class="message-send" style="padding:12px 24px">📄 导出档案</button>
       </div>
     </div>
   </div>
@@ -918,6 +918,53 @@
 
 <!-- 全局轻提示（右下角弹窗）-->
 <div class="toast" id="toast"></div>
+
+<!-- 初始化脚本 -->
+<script>
+  // 确保页面基本显示正常
+  console.log('=== PINKAEGIS 页面加载开始 ===');
+  
+  // 检查重要元素是否存在
+  const requiredElements = ['page-dashboard', 'sidebar', 'main', 'toast'];
+  requiredElements.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      console.log(`✅ 元素 #${id} 加载成功`);
+    } else {
+      console.warn(`⚠️ 元素 #${id} 未找到`);
+    }
+  });
+
+  // 确保dashboard页面显示
+  window.addEventListener('load', () => {
+    console.log('=== window load 事件触发 ===');
+    const dashboard = document.getElementById('page-dashboard');
+    if (dashboard && !dashboard.classList.contains('active')) {
+      console.log('修复：添加 active class 到 dashboard');
+      dashboard.classList.add('active');
+    }
+  });
+
+  // 定义全局showPage备用方案
+  if (typeof showPage === 'undefined') {
+    console.warn('⚠️ showPage 未定义，使用备用方案');
+    window.showPage = function(pageId, navEl) {
+      const pages = document.querySelectorAll('.page');
+      const navItems = document.querySelectorAll('.nav-item');
+      
+      pages.forEach(p => p.classList.remove('active'));
+      navItems.forEach(n => n.classList.remove('active'));
+      
+      const target = document.getElementById('page-' + pageId);
+      if (target) {
+        target.classList.add('active');
+        console.log(`✅ 显示页面: ${pageId}`);
+      } else {
+        console.error(`❌ 找不到页面: page-${pageId}`);
+      }
+    };
+  }
+</script>
 
 <!-- 外链 JS（从 static/js/app.js 加载）-->
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
