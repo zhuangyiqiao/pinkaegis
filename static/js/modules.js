@@ -133,30 +133,27 @@ class NotesManager {
   }
 }
 
-// 页面初始化时创建实例
-let notesManager;
-
 function openNoteModal() {
+  if (!notesManager) return;
   document.getElementById('noteModal').style.display = 'flex';
   document.getElementById('noteTitle').value = '';
   document.getElementById('noteContent').value = '';
   renderNoteTagButtons();
 }
 
-function closeNoteModal() {
-  document.getElementById('noteModal').style.display = 'none';
-}
-
 function renderNoteTagButtons() {
   const container = document.getElementById('noteTags');
   container.innerHTML = ['知识', '想法', '摘录', '灵感'].map(tag =>
-    `<button onclick="toggleNoteTag(this)" data-tag="${tag}" style="background:var(--surface2);border:1px solid var(--border);padding:4px 8px;border-radius:4px;cursor:pointer;font-size:11px">${tag}</button>`
+    `<button onclick="toggleNoteTag(this)" data-tag="${tag}" data-selected="0" style="background:var(--surface2);border:1px solid var(--border);padding:4px 8px;border-radius:4px;cursor:pointer;font-size:11px">${tag}</button>`
   ).join('');
 }
 
 function toggleNoteTag(btn) {
-  btn.style.background = btn.style.background === 'var(--surface2)' ? 'var(--purple-bg)' : 'var(--surface2)';
-  btn.style.color = btn.style.background === 'var(--surface2)' ? 'inherit' : 'var(--purple)';
+  const isSelected = btn.dataset.selected === '1';
+  btn.dataset.selected = isSelected ? '0' : '1';
+  btn.style.background = isSelected ? 'var(--surface2)' : 'var(--purple-bg)';
+  btn.style.color = isSelected ? 'inherit' : 'var(--purple)';
+  btn.style.borderColor = isSelected ? 'var(--border)' : 'var(--purple-bg)';
 }
 
 function addCustomTag() {
@@ -174,11 +171,10 @@ function addCustomTag() {
 }
 
 function saveNote() {
+  if (!notesManager) return;
   const title = document.getElementById('noteTitle').value;
   const content = document.getElementById('noteContent').value;
-  const tags = Array.from(document.querySelectorAll('#noteTags button'))
-    .filter(btn => window.getComputedStyle(btn).background.includes('rgb'))
-    .filter(btn => window.getComputedStyle(btn).background !== 'rgb(240, 235, 248)')
+  const tags = Array.from(document.querySelectorAll('#noteTags button[data-selected="1"]'))
     .map(btn => btn.dataset.tag);
 
   if (notesManager.createNote(title, content, tags)) {
@@ -192,6 +188,7 @@ function saveNote() {
 }
 
 function filterNotes() {
+  if (!notesManager) return;
   const query = document.getElementById('noteSearch').value;
   notesManager.renderNotes(notesManager.search(query));
 }
@@ -281,8 +278,6 @@ class ProjectsManager {
   }
 }
 
-let projectsManager;
-
 function openProjectModal() {
   document.getElementById('projectModal').style.display = 'flex';
   document.getElementById('projTitle').value = '';
@@ -298,6 +293,7 @@ function closeProjectModal() {
 }
 
 function saveProject() {
+  if (!projectsManager) return;
   const title = document.getElementById('projTitle').value;
   const desc = document.getElementById('projDesc').value;
   if (!title || !desc) {
@@ -309,8 +305,8 @@ function saveProject() {
     document.getElementById('projStart').value,
     document.getElementById('projEnd').value,
     document.getElementById('projProgress').value,
-    document.getElementById('projStatus').value,
-    document.getElementById('projSkills').value
+    'planned',
+    ''
   );
   showToast('🎉 项目已创建');
   closeProjectModal();
@@ -384,6 +380,10 @@ class JournalManager {
     this.renderTimeline();
   }
 
+  setMood(mood) {
+    this.currentMood = mood;
+  }
+
   renderTimeline(entries = this.entries) {
     const timeline = document.getElementById('journalTimeline');
     if (!timeline) return;
@@ -416,29 +416,33 @@ class JournalManager {
   }
 }
 
-let journalManager;
-
 function selectJournalMood(btn, mood) {
-  document.querySelectorAll('#quickJournal > div:first-child button').forEach(b => b.style.opacity = '0.5');
-  btn.style.opacity = '1';
-  journalManager.currentMood = mood;
+  if (btn && btn.parentElement) {
+    Array.from(btn.parentElement.querySelectorAll('button')).forEach(b => b.style.opacity = '0.5');
+    btn.style.opacity = '1';
+  }
+  if (journalManager) {
+    journalManager.currentMood = mood;
+  }
 }
 
 function saveQuickJournal() {
-  const content = document.getElementById('quickJournal').value;
+  const input = document.getElementById('journalQuickInput');
+  const content = input ? input.value : '';
   if (!content.trim()) {
     showToast('✏️ 请先写点什么');
     return;
   }
-  if (journalManager.createEntry(content, journalManager.currentMood)) {
+  if (journalManager && journalManager.createEntry(content, journalManager.currentMood || '🙂')) {
     showToast('📝 日记已保存');
-    document.getElementById('quickJournal').value = '';
+    if (input) input.value = '';
     journalManager.currentMood = null;
     journalManager.renderTimeline();
   }
 }
 
 function filterJournals() {
+  if (!journalManager) return;
   const query = document.getElementById('journalSearch').value.toLowerCase();
   const dateFilter = document.getElementById('journalDateFilter').value;
   const filtered = journalManager.entries.filter(e => {
@@ -547,8 +551,6 @@ class WorkLogManager {
   }
 }
 
-let workLogManager;
-
 function openWorkLogModal() {
   document.getElementById('workLogModal').style.display = 'flex';
   document.getElementById('workDate').value = new Date().toISOString().split('T')[0];
@@ -574,14 +576,13 @@ function saveWorkLog() {
   const tasks = document.getElementById('workTasks').value;
   const learnings = document.getElementById('workLearnings').value;
   const hours = document.getElementById('workHours').value;
-  const mood = document.querySelector('[data-mood]')?.dataset.mood || '😐';
 
   if (!date) {
     showToast('⚠️ 请选择日期');
     return;
   }
 
-  if (workLogManager.createLog(date, title, tasks, learnings, hours, mood)) {
+  if (workLogManager && workLogManager.createLog(date, title, tasks, learnings, hours, '😐')) {
     showToast('📋 日志已保存');
     closeWorkLogModal();
     workLogManager.updateStats();
@@ -590,6 +591,7 @@ function saveWorkLog() {
 }
 
 function filterWorkLogs() {
+  if (!workLogManager) return;
   const query = document.getElementById('workSearch').value.toLowerCase();
   const filtered = workLogManager.logs.filter(l =>
     l.title.toLowerCase().includes(query) ||
@@ -682,43 +684,44 @@ class EnergyTracker {
   }
 }
 
-let energyTracker;
-
 let currentEnergy = 0;
 let currentFocus = 0;
 
 function setEnergy(btn, val) {
-  document.querySelectorAll('.message-input').forEach(b => {
-    if (b.parentElement === btn.parentElement) {
-      b.forEach(el => el.style.opacity = '0.5');
-    }
-  });
-  btn.style.opacity = '1';
+  if (btn && btn.parentElement) {
+    Array.from(btn.parentElement.querySelectorAll('button')).forEach(b => b.style.opacity = '0.5');
+    btn.style.opacity = '1';
+  }
   currentEnergy = val;
 }
 
 function setFocus(btn, val) {
-  document.querySelectorAll('.message-input').forEach(b => {
-    if (b.parentElement === btn.parentElement) {
-      b.forEach(el => el.style.opacity = '0.5');
-    }
-  });
-  btn.style.opacity = '1';
+  if (btn && btn.parentElement) {
+    Array.from(btn.parentElement.querySelectorAll('button')).forEach(b => b.style.opacity = '0.5');
+    btn.style.opacity = '1';
+  }
   currentFocus = val;
 }
 
 function saveEnergyRecord() {
-  const sleep = parseFloat(document.getElementById('energySleep').value) || 0;
-  if (currentEnergy === 0) {
+  const levelEl = document.getElementById('energyLevel');
+  const sleepEl = document.getElementById('energySleep');
+  const level = levelEl ? parseInt(levelEl.value) : currentEnergy;
+  const sleep = sleepEl ? parseFloat(sleepEl.value) : 0;
+  
+  if (level === 0 || currentEnergy === 0) {
     showToast('⚠️ 请选择能量值');
     return;
   }
-  energyTracker.createRecord(currentEnergy, sleep, currentFocus);
-  showToast('⚡ 能量记录已保存');
-  currentEnergy = 0;
-  currentFocus = 0;
-  energyTracker.updateStats();
-  energyTracker.renderChart();
+  
+  if (energyTracker) {
+    energyTracker.createRecord(level, sleep, currentFocus);
+    showToast('⚡ 能量记录已保存');
+    currentEnergy = 0;
+    currentFocus = 0;
+    energyTracker.updateStats();
+    energyTracker.renderChart();
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -803,17 +806,18 @@ class ProfileManager {
   }
 }
 
-let profileManager;
-
 function saveProfileBasic() {
-  profileManager.profile.name = document.getElementById('profileName').value;
-  profileManager.profile.title = document.getElementById('profileTitle').value;
-  profileManager.profile.bio = document.getElementById('profileBio').value;
-  profileManager.save();
-  showToast('💾 信息已保存');
+  if (profileManager) {
+    profileManager.profile.name = document.getElementById('profileName').value;
+    profileManager.profile.title = document.getElementById('profileTitle').value;
+    profileManager.profile.bio = document.getElementById('profileBio').value;
+    profileManager.save();
+    showToast('💾 信息已保存');
+  }
 }
 
 function addSkill() {
+  if (!profileManager) return;
   const input = document.getElementById('skillInput');
   const skill = input.value.trim();
   if (skill && !profileManager.profile.skills.includes(skill)) {
@@ -826,6 +830,7 @@ function addSkill() {
 }
 
 function addAchievement() {
+  if (!profileManager) return;
   const input = document.getElementById('achievementInput');
   const ach = input.value.trim();
   if (ach) {
@@ -838,6 +843,7 @@ function addAchievement() {
 }
 
 function saveProfileLinks() {
+  if (!profileManager) return;
   profileManager.profile.links = {
     github: document.getElementById('linkGithub').value,
     portfolio: document.getElementById('linkPortfolio').value,
@@ -849,6 +855,7 @@ function saveProfileLinks() {
 }
 
 function exportProfile() {
+  if (!profileManager) return;
   const profile = profileManager.profile;
   const content = `
 PINKAEGIS 个人档案
