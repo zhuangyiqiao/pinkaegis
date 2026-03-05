@@ -1237,7 +1237,7 @@
     }
     .sidebar.open { transform: translateX(0); }
     .sidebar-toggle { display: flex; }  /* 显示汉堡按钮 */
-    .overlay { display: block; }        /* 遮罩可见 */
+    /* 遮罩由 JS 控制显示状态（通过 overlay.style.display） */
     .main { margin-left: 0; }           /* 主内容区不再偏移 */
     .modules-grid { grid-template-columns: repeat(2, 1fr); }  /* 网格变 2 列 */
     .page-header, .page-body { padding-left: 20px; padding-right: 20px; }
