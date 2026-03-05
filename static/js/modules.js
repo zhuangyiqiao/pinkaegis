@@ -1,44 +1,44 @@
-﻿/**
- * 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
- * PINKAEGIS 鍔熻兘妯″潡鎵╁睍
- * 鍖呭惈锛氱瑪璁般€侀」鐩€佹棩璁般€佸伐浣滄棩蹇椼€佽兘閲忚拷韪€佷釜浜烘。妗?
- * 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
+/**
+ * ══════════════════════════════════════════════════════════════════════════════
+ * PINKAEGIS 功能模块扩展
+ * 包含：笔记、项目、日记、工作日志、能量追踪、个人档案
+ * ══════════════════════════════════════════════════════════════════════════════
  */
 
-/* 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?
-   銆愬涔犵瑪璁版ā鍧椼€慛OTES MANAGER
-   鍔熻兘锛氬垱寤恒€佸垹闄ゃ€佹悳绱€佹爣绛捐繃婊ょ瑪璁?
-   瀛樺偍锛歀ocalStorage (pinkaegis_notes)
-鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?*/
+/* ═══════════════════════════════════════════════════════════════
+   【学习笔记模块】NOTES MANAGER
+   功能：创建、删除、搜索、标签过滤笔记
+   存储：LocalStorage (pinkaegis_notes)
+═══════════════════════════════════════════════════════════════ */
 
 class NotesManager {
   constructor() {
     this.notes = [];
-    this.defaultTags = ['鐭ヨ瘑', '鎯虫硶', '鎽樺綍', '鐏垫劅'];
+    this.defaultTags = ['知识', '想法', '摘录', '灵感'];
     this.load();
     this.renderNotes();
     this.renderTagFilters();
   }
 
-  // 浠?LocalStorage 鍔犺浇
+  // 从 LocalStorage 加载
   load() {
     const data = localStorage.getItem('pinkaegis_notes');
     if (data) {
       try {
         this.notes = JSON.parse(data);
       } catch (e) {
-        console.error('绗旇鍔犺浇澶辫触:', e);
+        console.error('笔记加载失败:', e);
         this.notes = [];
       }
     }
   }
 
-  // 淇濆瓨鍒?LocalStorage
+  // 保存到 LocalStorage
   save() {
     localStorage.setItem('pinkaegis_notes', JSON.stringify(this.notes));
   }
 
-  // 鍒涘缓鏂扮瑪璁?
+  // 创建新笔记
   createNote(title, content, tags) {
     if (!title.trim() || !content.trim()) return false;
     const note = {
@@ -54,14 +54,14 @@ class NotesManager {
     return true;
   }
 
-  // 鍒犻櫎绗旇
+  // 删除笔记
   deleteNote(id) {
     this.notes = this.notes.filter(n => n.id !== id);
     this.save();
     this.renderNotes();
   }
 
-  // 鑾峰彇鎵€鏈夊敮涓€鐨勬爣绛?
+  // 获取所有唯一的标签
   getAllTags() {
     const tags = new Set(this.defaultTags);
     this.notes.forEach(n => {
@@ -70,13 +70,13 @@ class NotesManager {
     return Array.from(tags);
   }
 
-  // 鎸夋爣绛捐繃婊?
+  // 按标签过滤
   filterByTag(tag) {
     if (!tag) return this.notes;
     return this.notes.filter(n => n.tags && n.tags.includes(tag));
   }
 
-  // 鎼滅储绗旇锛堟爣棰?+ 鍐呭锛?
+  // 搜索笔记（标题 + 内容）
   search(query) {
     if (!query) return this.notes;
     const q = query.toLowerCase();
@@ -86,13 +86,13 @@ class NotesManager {
     );
   }
 
-  // 娓叉煋绗旇鍗＄墖
+  // 渲染笔记卡片
   renderNotes(notes = this.notes) {
     const grid = document.getElementById('notesGrid');
     if (!grid) return;
 
     if (notes.length === 0) {
-      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--ink3);padding:40px">娌℃湁鎵惧埌鐩稿叧绗旇</div>';
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--ink3);padding:40px">没有找到相关笔记</div>';
       return;
     }
 
@@ -108,7 +108,7 @@ class NotesManager {
               <div style="font-weight:600;color:var(--ink);margin-bottom:4px;word-break:break-word">${escHtml(note.title)}</div>
               <div style="font-size:11px;color:var(--ink3)">${date}</div>
             </div>
-            <button onclick="notesManager.deleteNote(${note.id})" style="background:none;border:none;color:var(--ink3);cursor:pointer;font-size:16px">鉁?/button>
+            <button onclick="notesManager.deleteNote(${note.id})" style="background:none;border:none;color:var(--ink3);cursor:pointer;font-size:16px">✕</button>
           </div>
           <div style="color:var(--ink2);font-size:13px;line-height:1.5;margin-bottom:8px;max-height:80px;overflow:hidden;text-overflow:ellipsis">
             ${escHtml(note.content).substring(0, 200)}${note.content.length > 200 ? '...' : ''}
@@ -119,7 +119,7 @@ class NotesManager {
     }).join('');
   }
 
-  // 娓叉煋鏍囩杩囨护鍣?
+  // 渲染标签过滤器
   renderTagFilters() {
     const container = document.getElementById('tagFilters');
     if (!container) return;
@@ -133,8 +133,10 @@ class NotesManager {
   }
 }
 
+// 页面初始化时创建实例
+let notesManager;
+
 function openNoteModal() {
-  if (!notesManager) return;
   document.getElementById('noteModal').style.display = 'flex';
   document.getElementById('noteTitle').value = '';
   document.getElementById('noteContent').value = '';
@@ -147,17 +149,14 @@ function closeNoteModal() {
 
 function renderNoteTagButtons() {
   const container = document.getElementById('noteTags');
-  container.innerHTML = ['鐭ヨ瘑', '鎯虫硶', '鎽樺綍', '鐏垫劅'].map(tag =>
-    `<button onclick="toggleNoteTag(this)" data-tag="${tag}" data-selected="0" style="background:var(--surface2);border:1px solid var(--border);padding:4px 8px;border-radius:4px;cursor:pointer;font-size:11px">${tag}</button>`
+  container.innerHTML = ['知识', '想法', '摘录', '灵感'].map(tag =>
+    `<button onclick="toggleNoteTag(this)" data-tag="${tag}" style="background:var(--surface2);border:1px solid var(--border);padding:4px 8px;border-radius:4px;cursor:pointer;font-size:11px">${tag}</button>`
   ).join('');
 }
 
 function toggleNoteTag(btn) {
-  const isSelected = btn.dataset.selected === '1';
-  btn.dataset.selected = isSelected ? '0' : '1';
-  btn.style.background = isSelected ? 'var(--surface2)' : 'var(--purple-bg)';
-  btn.style.color = isSelected ? 'inherit' : 'var(--purple)';
-  btn.style.borderColor = isSelected ? 'var(--border)' : 'var(--purple-bg)';
+  btn.style.background = btn.style.background === 'var(--surface2)' ? 'var(--purple-bg)' : 'var(--surface2)';
+  btn.style.color = btn.style.background === 'var(--surface2)' ? 'inherit' : 'var(--purple)';
 }
 
 function addCustomTag() {
@@ -175,32 +174,32 @@ function addCustomTag() {
 }
 
 function saveNote() {
-  if (!notesManager) return;
   const title = document.getElementById('noteTitle').value;
   const content = document.getElementById('noteContent').value;
-  const tags = Array.from(document.querySelectorAll('#noteTags button[data-selected="1"]'))
+  const tags = Array.from(document.querySelectorAll('#noteTags button'))
+    .filter(btn => window.getComputedStyle(btn).background.includes('rgb'))
+    .filter(btn => window.getComputedStyle(btn).background !== 'rgb(240, 235, 248)')
     .map(btn => btn.dataset.tag);
 
   if (notesManager.createNote(title, content, tags)) {
-    showToast('鉁?绗旇宸蹭繚瀛?);
+    showToast('✨ 笔记已保存');
     closeNoteModal();
     notesManager.renderNotes();
     notesManager.renderTagFilters();
   } else {
-    showToast('鈿狅笍 鏍囬鍜屽唴瀹逛笉鑳戒负绌?);
+    showToast('⚠️ 标题和内容不能为空');
   }
 }
 
 function filterNotes() {
-  if (!notesManager) return;
   const query = document.getElementById('noteSearch').value;
   notesManager.renderNotes(notesManager.search(query));
 }
 
-/* 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?
-   銆愰」鐩褰曟ā鍧椼€慞ROJECTS MANAGER
-   鍔熻兘锛氶」鐩垱寤恒€佽繘搴﹁拷韪€佹妧鑳芥爣绛俱€佺姸鎬佺鐞?
-鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?*/
+/* ═══════════════════════════════════════════════════════════════
+   【项目记录模块】PROJECTS MANAGER
+   功能：项目创建、进度追踪、技能标签、状态管理
+═══════════════════════════════════════════════════════════════ */
 
 class ProjectsManager {
   constructor() {
@@ -252,13 +251,13 @@ class ProjectsManager {
     if (!grid) return;
 
     if (projects.length === 0) {
-      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--ink3);padding:40px">娌℃湁鎵惧埌鐩稿叧椤圭洰</div>';
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--ink3);padding:40px">没有找到相关项目</div>';
       return;
     }
 
     grid.innerHTML = projects.map(proj => {
-      const statusIcon = { 'completed': '鉁?, 'in-progress': '鈴?, 'planned': '馃搵' }[proj.status];
-      const statusText = { 'completed': '宸插畬鎴?, 'in-progress': '杩涜涓?, 'planned': '璁″垝' }[proj.status];
+      const statusIcon = { 'completed': '✓', 'in-progress': '⏳', 'planned': '📋' }[proj.status];
+      const statusText = { 'completed': '已完成', 'in-progress': '进行中', 'planned': '计划' }[proj.status];
       const skillsHtml = proj.skills.map(s => 
         `<span style="display:inline-block;background:var(--blue-bg);color:var(--blue);padding:3px 8px;border-radius:4px;font-size:10px;margin-right:4px">${s}</span>`
       ).join('');
@@ -267,9 +266,9 @@ class ProjectsManager {
         <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:16px;position:relative">
           <div style="display:flex;justify-content:space-between;margin-bottom:8px">
             <div style="font-weight:600;color:var(--ink)">${escHtml(proj.title)}</div>
-            <button onclick="projectsManager.deleteProject(${proj.id})" style="background:none;border:none;color:var(--ink3);cursor:pointer">鉁?/button>
+            <button onclick="projectsManager.deleteProject(${proj.id})" style="background:none;border:none;color:var(--ink3);cursor:pointer">✕</button>
           </div>
-          <div style="font-size:11px;color:var(--ink3);margin-bottom:8px">${startStr} 路 ${statusIcon} ${statusText}</div>
+          <div style="font-size:11px;color:var(--ink3);margin-bottom:8px">${startStr} · ${statusIcon} ${statusText}</div>
           <div style="color:var(--ink2);font-size:12px;line-height:1.4;margin-bottom:8px">${escHtml(proj.desc).substring(0, 80)}${proj.desc.length > 80 ? '...' : ''}</div>
           <div style="background:var(--surface2);height:6px;border-radius:3px;overflow:hidden;margin-bottom:8px">
             <div style="background:var(--accent);height:100%;width:${proj.progress}%;transition:width 0.3s"></div>
@@ -281,6 +280,8 @@ class ProjectsManager {
     }).join('');
   }
 }
+
+let projectsManager;
 
 function openProjectModal() {
   document.getElementById('projectModal').style.display = 'flex';
@@ -297,11 +298,10 @@ function closeProjectModal() {
 }
 
 function saveProject() {
-  if (!projectsManager) return;
   const title = document.getElementById('projTitle').value;
   const desc = document.getElementById('projDesc').value;
   if (!title || !desc) {
-    showToast('鈿狅笍 椤圭洰鍚嶇О鍜屾弿杩颁笉鑳戒负绌?);
+    showToast('⚠️ 项目名称和描述不能为空');
     return;
   }
   projectsManager.createProject(
@@ -309,10 +309,10 @@ function saveProject() {
     document.getElementById('projStart').value,
     document.getElementById('projEnd').value,
     document.getElementById('projProgress').value,
-    'planned',
-    ''
+    document.getElementById('projStatus').value,
+    document.getElementById('projSkills').value
   );
-  showToast('馃帀 椤圭洰宸插垱寤?);
+  showToast('🎉 项目已创建');
   closeProjectModal();
   projectsManager.renderProjects();
 }
@@ -337,10 +337,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-/* 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?
-   銆愭瘡鏃ユ潅璁版ā鍧椼€慗OURNAL MANAGER
-   鍔熻兘锛氬揩閫熻褰曘€佸績鎯呮爣绛俱€佹椂闂磋酱鏄剧ず銆佹悳绱㈣繃婊?
-鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?*/
+/* ═══════════════════════════════════════════════════════════════
+   【每日杂记模块】JOURNAL MANAGER
+   功能：快速记录、心情标签、时间轴显示、搜索过滤
+═══════════════════════════════════════════════════════════════ */
 
 class JournalManager {
   constructor() {
@@ -369,7 +369,7 @@ class JournalManager {
     const entry = {
       id: Date.now(),
       content: content.trim(),
-      mood: mood || '馃檪',
+      mood: mood || '🙂',
       date: new Date().toISOString(),
       createdAt: new Date().toISOString()
     };
@@ -384,16 +384,12 @@ class JournalManager {
     this.renderTimeline();
   }
 
-  setMood(mood) {
-    this.currentMood = mood;
-  }
-
   renderTimeline(entries = this.entries) {
     const timeline = document.getElementById('journalTimeline');
     if (!timeline) return;
 
     if (entries.length === 0) {
-      timeline.innerHTML = '<div style="text-align:center;color:var(--ink3);padding:40px">杩樻病鏈夋棩璁帮紝鍏堝湪涓婇潰鍐欎笅姝ゅ埢鐨勬兂娉曞惂</div>';
+      timeline.innerHTML = '<div style="text-align:center;color:var(--ink3);padding:40px">还没有日记，先在上面写下此刻的想法吧</div>';
       return;
     }
 
@@ -410,7 +406,7 @@ class JournalManager {
           <div style="flex:1;background:white;border:1px solid var(--border);border-radius:12px;padding:16px;position:relative">
             <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
               <div style="font-size:11px;color:var(--ink3);font-family:monospace">${timeStr}</div>
-              <button onclick="journalManager.deleteEntry(${entry.id})" style="background:none;border:none;color:var(--ink3);cursor:pointer">鉁?/button>
+              <button onclick="journalManager.deleteEntry(${entry.id})" style="background:none;border:none;color:var(--ink3);cursor:pointer">✕</button>
             </div>
             <div style="color:var(--ink2);font-size:13px;line-height:1.6;white-space:pre-wrap;word-wrap:break-word">${escHtml(entry.content)}</div>
           </div>
@@ -420,33 +416,29 @@ class JournalManager {
   }
 }
 
+let journalManager;
+
 function selectJournalMood(btn, mood) {
-  if (btn && btn.parentElement) {
-    Array.from(btn.parentElement.querySelectorAll('button')).forEach(b => b.style.opacity = '0.5');
-    btn.style.opacity = '1';
-  }
-  if (journalManager) {
-    journalManager.currentMood = mood;
-  }
+  document.querySelectorAll('#quickJournal > div:first-child button').forEach(b => b.style.opacity = '0.5');
+  btn.style.opacity = '1';
+  journalManager.currentMood = mood;
 }
 
 function saveQuickJournal() {
-  const input = document.getElementById('journalQuickInput');
-  const content = input ? input.value : '';
+  const content = document.getElementById('quickJournal').value;
   if (!content.trim()) {
-    showToast('鉁忥笍 璇峰厛鍐欑偣浠€涔?);
+    showToast('✏️ 请先写点什么');
     return;
   }
-  if (journalManager && journalManager.createEntry(content, journalManager.currentMood || '馃檪')) {
-    showToast('馃摑 鏃ヨ宸蹭繚瀛?);
-    if (input) input.value = '';
+  if (journalManager.createEntry(content, journalManager.currentMood)) {
+    showToast('📝 日记已保存');
+    document.getElementById('quickJournal').value = '';
     journalManager.currentMood = null;
     journalManager.renderTimeline();
   }
 }
 
 function filterJournals() {
-  if (!journalManager) return;
   const query = document.getElementById('journalSearch').value.toLowerCase();
   const dateFilter = document.getElementById('journalDateFilter').value;
   const filtered = journalManager.entries.filter(e => {
@@ -457,15 +449,15 @@ function filterJournals() {
   journalManager.renderTimeline(filtered);
 }
 
-/* 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?
-   銆愬疄涔犺褰曟ā鍧椼€慦ORK LOG MANAGER
-   鍔熻兘锛氭棩蹇楄褰曘€佹椂闂寸粺璁°€佸績鎯呮爣绛俱€佸鐩樼瑪璁?
-鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?*/
+/* ═══════════════════════════════════════════════════════════════
+   【实习记录模块】WORK LOG MANAGER
+   功能：日志记录、时间统计、心情标签、复盘笔记
+═══════════════════════════════════════════════════════════════ */
 
 class WorkLogManager {
   constructor() {
     this.logs = [];
-    this.startDate = new Date('2026-01-15'); // 瀹炰範寮€濮嬫棩鏈燂紙鍙嚜瀹氫箟锛?
+    this.startDate = new Date('2026-01-15'); // 实习开始日期（可自定义）
     this.load();
     this.updateStats();
     this.renderTimeline();
@@ -522,7 +514,7 @@ class WorkLogManager {
     if (!timeline) return;
 
     if (logs.length === 0) {
-      timeline.innerHTML = '<div style="text-align:center;color:var(--ink3);padding:40px">鏆傛棤鏃ュ織</div>';
+      timeline.innerHTML = '<div style="text-align:center;color:var(--ink3);padding:40px">暂无日志</div>';
       return;
     }
 
@@ -534,14 +526,14 @@ class WorkLogManager {
         <div style="background:white;border-left:3px solid var(--accent);border-radius:8px;padding:16px;margin-bottom:12px">
           <div style="display:flex;justify-content:space-between;margin-bottom:8px">
             <div>
-              <div style="font-weight:600;color:var(--ink)">${escHtml(log.title) || '宸ヤ綔鏃ュ織'}</div>
-              <div style="font-size:12px;color:var(--ink3)">1锔忊儯 ${dateStr} 路 ${log.mood || '馃槓'}</div>
+              <div style="font-weight:600;color:var(--ink)">${escHtml(log.title) || '工作日志'}</div>
+              <div style="font-size:12px;color:var(--ink3)">1️⃣ ${dateStr} · ${log.mood || '😐'}</div>
             </div>
-            <button onclick="workLogManager.deleteLog(${log.id})" style="background:none;border:none;color:var(--ink3);cursor:pointer">鉁?/button>
+            <button onclick="workLogManager.deleteLog(${log.id})" style="background:none;border:none;color:var(--ink3);cursor:pointer">✕</button>
           </div>
-          ${log.tasks.length > 0 ? `<div style="margin-bottom:8px"><div style="font-size:12px;font-weight:600;color:var(--ink2)">鉁?瀹屾垚浠诲姟</div><ul style="margin:4px 0">${tasksHtml}</ul></div>` : ''}
-          ${log.learnings.length > 0 ? `<div style="margin-bottom:8px"><div style="font-size:12px;font-weight:600;color:var(--ink2)">馃挕 瀛﹀埌鐨勭煡璇?/div><ul style="margin:4px 0">${learningsHtml}</ul></div>` : ''}
-          <div style="font-size:12px;color:var(--ink2)">鈴?宸ヤ綔鏃舵暟锛?{log.hours}h</div>
+          ${log.tasks.length > 0 ? `<div style="margin-bottom:8px"><div style="font-size:12px;font-weight:600;color:var(--ink2)">✓ 完成任务</div><ul style="margin:4px 0">${tasksHtml}</ul></div>` : ''}
+          ${log.learnings.length > 0 ? `<div style="margin-bottom:8px"><div style="font-size:12px;font-weight:600;color:var(--ink2)">💡 学到的知识</div><ul style="margin:4px 0">${learningsHtml}</ul></div>` : ''}
+          <div style="font-size:12px;color:var(--ink2)">⏰ 工作时数：${log.hours}h</div>
         </div>
       `;
     }).join('');
@@ -554,6 +546,8 @@ class WorkLogManager {
     this.renderTimeline();
   }
 }
+
+let workLogManager;
 
 function openWorkLogModal() {
   document.getElementById('workLogModal').style.display = 'flex';
@@ -580,14 +574,15 @@ function saveWorkLog() {
   const tasks = document.getElementById('workTasks').value;
   const learnings = document.getElementById('workLearnings').value;
   const hours = document.getElementById('workHours').value;
+  const mood = document.querySelector('[data-mood]')?.dataset.mood || '😐';
 
   if (!date) {
-    showToast('鈿狅笍 璇烽€夋嫨鏃ユ湡');
+    showToast('⚠️ 请选择日期');
     return;
   }
 
-  if (workLogManager && workLogManager.createLog(date, title, tasks, learnings, hours, '馃槓')) {
-    showToast('馃搵 鏃ュ織宸蹭繚瀛?);
+  if (workLogManager.createLog(date, title, tasks, learnings, hours, mood)) {
+    showToast('📋 日志已保存');
     closeWorkLogModal();
     workLogManager.updateStats();
     workLogManager.renderTimeline();
@@ -595,7 +590,6 @@ function saveWorkLog() {
 }
 
 function filterWorkLogs() {
-  if (!workLogManager) return;
   const query = document.getElementById('workSearch').value.toLowerCase();
   const filtered = workLogManager.logs.filter(l =>
     l.title.toLowerCase().includes(query) ||
@@ -605,10 +599,10 @@ function filterWorkLogs() {
   workLogManager.renderTimeline(filtered);
 }
 
-/* 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?
-   銆愯兘閲忚拷韪ā鍧椼€慐NERGY TRACKER
-   鍔熻兘锛氭棩甯歌兘閲忚褰曘€佺潯鐪犺拷韪€佽秼鍔垮垎鏋?
-鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?*/
+/* ═══════════════════════════════════════════════════════════════
+   【能量追踪模块】ENERGY TRACKER
+   功能：日常能量记录、睡眠追踪、趋势分析
+═══════════════════════════════════════════════════════════════ */
 
 class EnergyTracker {
   constructor() {
@@ -666,7 +660,7 @@ class EnergyTracker {
 
     document.getElementById('avgSleep').textContent = avgSleep;
     document.getElementById('avgEnergy').textContent = avgEnergy;
-    document.getElementById('bestTime').textContent = '涓嬪崍14:00-16:00';
+    document.getElementById('bestTime').textContent = '下午14:00-16:00';
     document.getElementById('worstDay').textContent = last7.length > 0 ? last7.sort((a, b) => a.energy - b.energy)[0].date : '--';
   }
 
@@ -688,50 +682,49 @@ class EnergyTracker {
   }
 }
 
+let energyTracker;
+
 let currentEnergy = 0;
 let currentFocus = 0;
 
 function setEnergy(btn, val) {
-  if (btn && btn.parentElement) {
-    Array.from(btn.parentElement.querySelectorAll('button')).forEach(b => b.style.opacity = '0.5');
-    btn.style.opacity = '1';
-  }
+  document.querySelectorAll('.message-input').forEach(b => {
+    if (b.parentElement === btn.parentElement) {
+      b.forEach(el => el.style.opacity = '0.5');
+    }
+  });
+  btn.style.opacity = '1';
   currentEnergy = val;
 }
 
 function setFocus(btn, val) {
-  if (btn && btn.parentElement) {
-    Array.from(btn.parentElement.querySelectorAll('button')).forEach(b => b.style.opacity = '0.5');
-    btn.style.opacity = '1';
-  }
+  document.querySelectorAll('.message-input').forEach(b => {
+    if (b.parentElement === btn.parentElement) {
+      b.forEach(el => el.style.opacity = '0.5');
+    }
+  });
+  btn.style.opacity = '1';
   currentFocus = val;
 }
 
 function saveEnergyRecord() {
-  const levelEl = document.getElementById('energyLevel');
-  const sleepEl = document.getElementById('energySleep');
-  const level = levelEl ? parseInt(levelEl.value) : currentEnergy;
-  const sleep = sleepEl ? parseFloat(sleepEl.value) : 0;
-  
-  if (level === 0 || currentEnergy === 0) {
-    showToast('鈿狅笍 璇烽€夋嫨鑳介噺鍊?);
+  const sleep = parseFloat(document.getElementById('energySleep').value) || 0;
+  if (currentEnergy === 0) {
+    showToast('⚠️ 请选择能量值');
     return;
   }
-  
-  if (energyTracker) {
-    energyTracker.createRecord(level, sleep, currentFocus);
-    showToast('鈿?鑳介噺璁板綍宸蹭繚瀛?);
-    currentEnergy = 0;
-    currentFocus = 0;
-    energyTracker.updateStats();
-    energyTracker.renderChart();
-  }
+  energyTracker.createRecord(currentEnergy, sleep, currentFocus);
+  showToast('⚡ 能量记录已保存');
+  currentEnergy = 0;
+  currentFocus = 0;
+  energyTracker.updateStats();
+  energyTracker.renderChart();
 }
 
-/* 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?
-   銆愪釜浜烘。妗堟ā鍧椼€慞ROFILE MANAGER
-   鍔熻兘锛氫釜浜轰俊鎭紪杈戙€佹妧鑳界鐞嗐€佹垚灏卞睍绀恒€佹。妗堝鍑?
-鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?*/
+/* ═══════════════════════════════════════════════════════════════
+   【个人档案模块】PROFILE MANAGER
+   功能：个人信息编辑、技能管理、成就展示、档案导出
+═══════════════════════════════════════════════════════════════ */
 
 class ProfileManager {
   constructor() {
@@ -752,7 +745,7 @@ class ProfileManager {
       try {
         this.profile = JSON.parse(data);
       } catch (e) {
-        //淇濇寔榛樿鍊?
+        //保持默认值
       }
     }
     this.render();
@@ -769,12 +762,12 @@ class ProfileManager {
 
     const skillsList = document.getElementById('skillsList');
     if (this.profile.skills.length === 0) {
-      skillsList.innerHTML = '<div style="font-size:12px;color:var(--ink3)">鐐瑰嚮涓嬫柟娣诲姞鎶€鑳?/div>';
+      skillsList.innerHTML = '<div style="font-size:12px;color:var(--ink3)">点击下方添加技能</div>';
     } else {
       skillsList.innerHTML = this.profile.skills.map((skill, i) => 
         `<div style="background:var(--surface2);padding:8px 12px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:13px">
           ${skill}
-          <button onclick="profileManager.deleteSkill(${i})" style="background:none;border:none;color:var(--ink3);cursor:pointer">鉁?/button>
+          <button onclick="profileManager.deleteSkill(${i})" style="background:none;border:none;color:var(--ink3);cursor:pointer">✕</button>
         </div>`
       ).join('');
     }
@@ -786,12 +779,12 @@ class ProfileManager {
 
     const achList = document.getElementById('achievementsList');
     if (this.profile.achievements.length === 0) {
-      achList.innerHTML = '<div style="font-size:12px;color:var(--ink3)">杩樻病鏈夋垚灏憋紝璧跺揩鍘诲垱閫犲惂</div>';
+      achList.innerHTML = '<div style="font-size:12px;color:var(--ink3)">还没有成就，赶快去创造吧</div>';
     } else {
       achList.innerHTML = this.profile.achievements.map((ach, i) =>
         `<div style="background:var(--warm-bg);color:var(--warm);padding:8px 12px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:13px">
-          馃弳 ${ach}
-          <button onclick="profileManager.deleteAchievement(${i})" style="background:none;border:none;color:var(--warm);cursor:pointer">鉁?/button>
+          🏆 ${ach}
+          <button onclick="profileManager.deleteAchievement(${i})" style="background:none;border:none;color:var(--warm);cursor:pointer">✕</button>
         </div>`
       ).join('');
     }
@@ -810,18 +803,17 @@ class ProfileManager {
   }
 }
 
+let profileManager;
+
 function saveProfileBasic() {
-  if (profileManager) {
-    profileManager.profile.name = document.getElementById('profileName').value;
-    profileManager.profile.title = document.getElementById('profileTitle').value;
-    profileManager.profile.bio = document.getElementById('profileBio').value;
-    profileManager.save();
-    showToast('馃捑 淇℃伅宸蹭繚瀛?);
-  }
+  profileManager.profile.name = document.getElementById('profileName').value;
+  profileManager.profile.title = document.getElementById('profileTitle').value;
+  profileManager.profile.bio = document.getElementById('profileBio').value;
+  profileManager.save();
+  showToast('💾 信息已保存');
 }
 
 function addSkill() {
-  if (!profileManager) return;
   const input = document.getElementById('skillInput');
   const skill = input.value.trim();
   if (skill && !profileManager.profile.skills.includes(skill)) {
@@ -829,12 +821,11 @@ function addSkill() {
     profileManager.save();
     input.value = '';
     profileManager.render();
-    showToast('鉁?鎶€鑳藉凡娣诲姞');
+    showToast('✨ 技能已添加');
   }
 }
 
 function addAchievement() {
-  if (!profileManager) return;
   const input = document.getElementById('achievementInput');
   const ach = input.value.trim();
   if (ach) {
@@ -842,12 +833,11 @@ function addAchievement() {
     profileManager.save();
     input.value = '';
     profileManager.render();
-    showToast('馃弳 鎴愬氨宸叉坊鍔?);
+    showToast('🏆 成就已添加');
   }
 }
 
 function saveProfileLinks() {
-  if (!profileManager) return;
   profileManager.profile.links = {
     github: document.getElementById('linkGithub').value,
     portfolio: document.getElementById('linkPortfolio').value,
@@ -855,29 +845,28 @@ function saveProfileLinks() {
     email: document.getElementById('linkEmail').value
   };
   profileManager.save();
-  showToast('馃敆 閾炬帴宸蹭繚瀛?);
+  showToast('🔗 链接已保存');
 }
 
 function exportProfile() {
-  if (!profileManager) return;
   const profile = profileManager.profile;
   const content = `
-PINKAEGIS 涓汉妗ｆ
+PINKAEGIS 个人档案
 ================
 
-馃懁 ${profile.name || '鏈懡鍚?} 路 ${profile.title || '鏈缃?}
+👤 ${profile.name || '未命名'} · ${profile.title || '未设置'}
 ${profile.bio}
 
-馃尦 鎶€鑳芥爲
-${profile.skills.map(s => '  鉁?' + s).join('\n') || '  锛堟殏鏃犳妧鑳斤級'}
+🌳 技能树
+${profile.skills.map(s => '  ✓ ' + s).join('\n') || '  （暂无技能）'}
 
-馃弳 鎴愬氨
-${profile.achievements.map(a => '  馃弳 ' + a).join('\n') || '  锛堟殏鏃犳垚灏憋級'}
+🏆 成就
+${profile.achievements.map(a => '  🏆 ' + a).join('\n') || '  （暂无成就）'}
 
-馃敆 绀句氦
-${Object.entries(profile.links).filter(([k, v]) => v).map(([k, v]) => `  鈥?${k}: ${v}`).join('\n') || '  锛堟殏鏃犻摼鎺ワ級'}
+🔗 社交
+${Object.entries(profile.links).filter(([k, v]) => v).map(([k, v]) => `  • ${k}: ${v}`).join('\n') || '  （暂无链接）'}
 
-瀵煎嚭鏃堕棿: ${new Date().toLocaleString('zh-CN')}
+导出时间: ${new Date().toLocaleString('zh-CN')}
   `;
   
   const file = new Blob([content], {type: 'text/plain'});
@@ -887,49 +876,40 @@ ${Object.entries(profile.links).filter(([k, v]) => v).map(([k, v]) => `  鈥?${k
   a.download = `${profile.name || 'profile'}_${new Date().getTime()}.txt`;
   a.click();
   URL.revokeObjectURL(url);
-  showToast('馃搫 妗ｆ宸插鍑?);
+  showToast('📄 档案已导出');
 }
 
-/* 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?
-   銆愬叏灞€鍙橀噺澹版槑銆慓LOBAL VARIABLES
-鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?*/
-let notesManager = null;
-let projectsManager = null;
-let journalManager = null;
-let workLogManager = null;
-let energyTracker = null;
-let profileManager = null;
+/* ═══════════════════════════════════════════════════════════════
+   【全局变量声明】GLOBAL VARIABLES
+═══════════════════════════════════════════════════════════════ */
 
-/* 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?
-   銆愰〉闈㈠姞杞藉垵濮嬪寲銆慞AGE INITIALIZATION
-鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?*/
+/* ═══════════════════════════════════════════════════════════════
+   【页面加载初始化】PAGE INITIALIZATION
+═══════════════════════════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
   try {
-    // 鍒濆鍖栨墍鏈夌鐞嗗櫒
+    // 初始化所有管理器
     notesManager = new NotesManager();
-    console.log('鉁?NotesManager 鍔犺浇鎴愬姛');
+    console.log('✅ NotesManager 加载成功');
     
     projectsManager = new ProjectsManager();
-    console.log('鉁?ProjectsManager 鍔犺浇鎴愬姛');
+    console.log('✅ ProjectsManager 加载成功');
     
     journalManager = new JournalManager();
-    console.log('鉁?JournalManager 鍔犺浇鎴愬姛');
+    console.log('✅ JournalManager 加载成功');
     
     workLogManager = new WorkLogManager();
-    console.log('鉁?WorkLogManager 鍔犺浇鎴愬姛');
+    console.log('✅ WorkLogManager 加载成功');
     
     energyTracker = new EnergyTracker();
-    console.log('鉁?EnergyTracker 鍔犺浇鎴愬姛');
+    console.log('✅ EnergyTracker 加载成功');
     
     profileManager = new ProfileManager();
-    console.log('鉁?ProfileManager 鍔犺浇鎴愬姛');
+    console.log('✅ ProfileManager 加载成功');
 
-    console.log('鉁?鎵€鏈夊姛鑳芥ā鍧楀凡鍔犺浇');
+    console.log('✅ 所有功能模块已加载');
   } catch (error) {
-    console.error('鉂?妯″潡鍔犺浇澶辫触:', error);
+    console.error('❌ 模块加载失败:', error);
   }
 });
-
-// [Fix] 鍒犻櫎涓存椂椤甸潰娓叉煋璋冭瘯杈撳嚭锛岄伩鍏嶆帶鍒跺彴鍣煶涓庤鍒?
-

@@ -1,187 +1,352 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- 椤甸潰鏍囬宸叉洿鏂帮細FOCUS 鈫?PINKAEGIS -->
-<title>PINKAEGIS 鈥?鎴戠殑鐢熸椿绯荤粺</title>
+<!-- 页面标题已更新：FOCUS → PINKAEGIS -->
+<title>PINKAEGIS — 我的生活系统</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
-<!-- 澶栭摼 CSS锛堜粠 static/css/style.css 鍔犺浇锛?->
+<!-- 外链 CSS（从 static/css/style.css 加载）-->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=asset_version) }}">
 </head>
 <body>
-<!-- 绉诲姩绔眽鍫¤彍鍗曟寜閽紙720px 浠ヤ笅鏄剧ず锛?->
-<button class="sidebar-toggle" id="sidebarToggle">鈽?/button>
+<!-- 移动端汉堡菜单按钮（720px 以下显示）-->
+<button class="sidebar-toggle" id="sidebarToggle">☰</button>
 
-<!-- 绉诲姩绔伄缃╁眰锛氫晶杈规爮灞曞紑鏃舵樉绀猴紝鐐瑰嚮鍏抽棴渚ф爮 -->
+<!-- 移动端遮罩层：侧边栏展开时显示，点击关闭侧栏 -->
 <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
-<!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
-     銆愬乏渚у鑸爮銆戝浐瀹氬湪灞忓箷宸︿晶
-     绉诲姩绔€氳繃 .open class + transform 婊戝叆
-鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 -->
+<!-- ══════════════════════════════════════════════
+     【左侧导航栏】固定在屏幕左侧
+     移动端通过 .open class + transform 滑入
+══════════════════════════════════════════════ -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
-    <!-- Logo 宸叉洿鏂帮細FOCUS 鈫?PINKAEGIS -->
+    <!-- Logo 已更新：FOCUS → PINKAEGIS -->
     <span class="logo-word">PINKAEGIS</span>
-    <span class="logo-sub">鎴戠殑鐢熸椿绯荤粺</span>
+    <span class="logo-sub">我的生活系统</span>
   </div>
 
   <div class="sidebar-scroll">
   <div class="nav-section">
-    <div class="nav-label">鎬昏</div>
+    <div class="nav-label">总览</div>
     <div class="nav-item active" onclick="showPage('dashboard', this)">
-      <div class="nav-icon">馃彔</div>
-      <span>涓婚〉</span>
+      <div class="nav-icon">🏠</div>
+      <span>主页</span>
     </div>
   </div>
 
   <div class="nav-section">
-    <div class="nav-label">鐢熸椿</div>
+    <div class="nav-label">生活</div>
     <div class="nav-item" onclick="showPage('checklist', this)">
-      <div class="nav-icon">鉁?/div>
-      <span>鐢熸椿娓呭崟</span>
+      <div class="nav-icon">✅</div>
+      <span>生活清单</span>
       <span class="nav-badge">3</span>
     </div>
     <div class="nav-item" onclick="showPage('love', this)">
-      <div class="nav-icon">馃拰</div>
-      <span>鎭嬬埍鎵嬪唽</span>
+      <div class="nav-icon">💌</div>
+      <span>恋爱手册</span>
     </div>
     <div class="nav-item" onclick="showPage('journal', this)">
-      <div class="nav-icon">馃摀</div>
-      <span>姣忔棩鏉傝</span>
+      <div class="nav-icon">📓</div>
+      <span>每日杂记</span>
     </div>
     <div class="nav-item" onclick="showPage('energy', this)">
-      <div class="nav-icon">鈿?/div>
-      <span>鑳介噺杩借釜</span>
+      <div class="nav-icon">⚡</div>
+      <span>能量追踪</span>
     </div>
   </div>
 
   <div class="nav-section">
-    <div class="nav-label">鎴愰暱</div>
+    <div class="nav-label">成长</div>
     <div class="nav-item" onclick="showPage('study', this)">
-      <div class="nav-icon">馃幆</div>
-      <span>涓撴敞妯″紡</span>
+      <div class="nav-icon">🎯</div>
+      <span>专注模式</span>
     </div>
     <div class="nav-item" onclick="showPage('notes', this)">
-      <div class="nav-icon">馃</div>
-      <span>瀛︿範绗旇</span>
+      <div class="nav-icon">🧠</div>
+      <span>学习笔记</span>
     </div>
     <div class="nav-item" onclick="showPage('work', this)">
-      <div class="nav-icon">馃捈</div>
-      <span>瀹炰範璁板綍</span>
+      <div class="nav-icon">💼</div>
+      <span>实习记录</span>
     </div>
     <div class="nav-item" onclick="showPage('projects', this)">
-      <div class="nav-icon">馃搧</div>
-      <span>椤圭洰璁板綍</span>
+      <div class="nav-icon">📁</div>
+      <span>项目记录</span>
     </div>
   </div>
 
   <div class="nav-section">
-    <div class="nav-label">鍏充簬鎴?/div>
+    <div class="nav-label">关于我</div>
     <div class="nav-item" onclick="showPage('profile', this)">
-      <div class="nav-icon">馃尶</div>
-      <span>涓汉淇℃伅</span>
+      <div class="nav-icon">🌿</div>
+      <span>个人信息</span>
     </div>
   </div>
 
   </div><!-- /sidebar-scroll -->
   <div class="sidebar-footer">
     <div class="user-card">
-      <div class="user-avatar">鎴?/div>
+      <div class="user-avatar">我</div>
       <div>
-        <div class="user-name">鎴戠殑绌洪棿</div>
-        <div class="user-status">鉁?浠婂ぉ寰堝ソ</div>
+        <div class="user-name">我的空间</div>
+        <div class="user-status">✦ 今天很好</div>
       </div>
     </div>
   </div>
 </aside>
 
-<!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
-     銆愪富鍐呭鍖恒€戞墍鏈夐〉闈㈤兘娓叉煋鍦ㄨ繖閲?
-     榛樿鍙湁 .active 鐨?.page 鍙
-鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 -->
+<!-- ══════════════════════════════════════════════
+     【主内容区】所有页面都渲染在这里
+     默认只有 .active 的 .page 可见
+══════════════════════════════════════════════ -->
 <main class="main">
 
-  {% include 'partials/dashboard.html' %}
+  <!-- ══════════════════ 主页 DASHBOARD ══════════════════
+       结构：顶部信息栏 → 功能模块网格（个人信息+项目置首）→ 底部联系区
+  ══════════════════════════════════════════════════ -->
+  <div class="page active" id="page-dashboard">
+    <div class="page-header">
+      <div class="page-eyebrow">overview · 总览</div>
+      <h1 class="page-title">你好，欢迎回来 ✦</h1>
+      <p class="page-subtitle">一个属于你的安静角落，所有事情都在这里。</p>
+    </div>
+    <div class="page-body">
 
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 鐢熸椿娓呭崟椤?CHECKLIST 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 -->
+      <!-- Top bar -->
+      <div class="dash-topbar">
+        <div class="dash-date-card">
+          <div class="date-big" id="dateDay">--</div>
+          <div class="date-meta">
+            <div class="date-weekday" id="dateWeekday">--</div>
+            <div class="date-month" id="dateMonth">--</div>
+          </div>
+          <div class="date-quote">"慢下来，才能看见所有的细节。"</div>
+        </div>
+        <div class="focus-timer-card">
+          <div class="focus-label">今日专注</div>
+          <div class="focus-time" id="dashTimer">25:00</div>
+          <div class="focus-btns">
+            <button class="focus-btn start" id="dashTimerBtn" onclick="toggleDashTimer()">开始</button>
+            <button class="focus-btn reset" onclick="resetDashTimer()">重置</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════
+           功能模块网格（4列×3行）
+           个人信息 & 项目记录置顶在第一行前两格，
+           其余模块依次排列。
+      ════════════════════════════════════════ -->
+      <div class="modules-grid">
+        <!-- ★ 置顶第1格：个人信息（第一行第一列）-->
+        <div class="module-card" style="--card-color:#7B5EA7;--card-bg:#F0EBF8" onclick="showPage('profile', null)">
+          <div class="module-icon-wrap">🌿</div>
+          <div class="module-name">个人信息</div>
+          <div class="module-desc">简历、自我介绍、个人成就展示。</div>
+          <div class="module-meta"><span class="module-count" style="background:#F0EBF8;color:#7B5EA7">About Me</span></div>
+        </div>
+        <!-- ★ 置顶第2格：项目记录（第一行第二列）-->
+        <div class="module-card" style="--card-color:#3D6D99;--card-bg:#E8F0F8" onclick="showPage('projects', null)">
+          <div class="module-icon-wrap">📁</div>
+          <div class="module-name">项目记录</div>
+          <div class="module-desc">个人项目、作品集、里程碑追踪。</div>
+          <div class="module-meta"><span class="module-count" style="background:#E8F0F8;color:#3D6D99">进行中 2</span></div>
+        </div>
+        <!-- 生活清单（第一行第三列）-->
+        <div class="module-card" style="--card-color:#2D6A4F;--card-bg:#D8F3DC" onclick="showPage('checklist', null)">
+          <div class="module-icon-wrap">✅</div>
+          <div class="module-name">生活清单</div>
+          <div class="module-desc">愿望、习惯、日常 To-Do，全部在这里打勾。</div>
+          <div class="module-meta"><span class="module-count">3 待完成</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#B5524F;--card-bg:#FDECEA" onclick="showPage('love', null)">
+          <div class="module-icon-wrap">💌</div>
+          <div class="module-name">恋爱手册</div>
+          <div class="module-desc">记录甜蜜时刻、重要纪念日与小心意。</div>
+          <div class="module-meta"><span class="module-count" style="background:#FDECEA;color:#B5524F">纪念日 · 5天后</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#3D6D99;--card-bg:#E8F0F8" onclick="showPage('study', null)">
+          <div class="module-icon-wrap">🎯</div>
+          <div class="module-name">专注模式</div>
+          <div class="module-desc">番茄钟 + 任务队列，帮你进入心流状态。</div>
+          <div class="module-meta"><span class="module-count" style="background:#E8F0F8;color:#3D6D99">今日 0 个番茄</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#7B5EA7;--card-bg:#F0EBF8" onclick="showPage('notes', null)">
+          <div class="module-icon-wrap">🧠</div>
+          <div class="module-name">学习笔记</div>
+          <div class="module-desc">思维导图、随手摘录、知识卡片。</div>
+          <div class="module-meta"><span class="module-count" style="background:#F0EBF8;color:#7B5EA7">12 条笔记</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#C9A84C;--card-bg:#FFF8E7" onclick="showPage('journal', null)">
+          <div class="module-icon-wrap">📓</div>
+          <div class="module-name">每日杂记</div>
+          <div class="module-desc">今天想说的话，今天的脑洞，都写在这里。</div>
+          <div class="module-meta"><span class="module-count" style="background:#FFF8E7;color:#C9A84C">连续写了 7 天</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#2D6A4F;--card-bg:#D8F3DC" onclick="showPage('work', null)">
+          <div class="module-icon-wrap">💼</div>
+          <div class="module-name">实习记录</div>
+          <div class="module-desc">工作日志、成长轨迹、技能图谱。</div>
+          <div class="module-meta"><span class="module-count">第 42 天</span></div>
+        </div>
+
+        <div class="module-card" style="--card-color:#B5524F;--card-bg:#FDECEA" onclick="showPage('energy', null)">
+          <div class="module-icon-wrap">⚡</div>
+          <div class="module-name">能量追踪</div>
+          <div class="module-desc">记录今日状态、睡眠、情绪波动趋势。</div>
+          <div class="module-meta"><span class="module-count" style="background:#FDECEA;color:#B5524F">ADHD 友好</span></div>
+        </div>
+
+        <div class="module-card" style="--card-color:#C9A84C;--card-bg:#FFF8E7" onclick="showPage('energy', null)">
+          <div class="module-icon-wrap">🌙</div>
+          <div class="module-name">睡眠日志</div>
+          <div class="module-desc">睡眠质量、入睡时间、起床记录分析。</div>
+          <div class="module-meta"><span class="module-count" style="background:#FFF8E7;color:#C9A84C">昨晚 7.5h</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#2D6A4F;--card-bg:#D8F3DC" onclick="showPage('journal', null)">
+          <div class="module-icon-wrap">💭</div>
+          <div class="module-name">思维排空</div>
+          <div class="module-desc">快速倾倒脑子里的一切，不评判，只释放。</div>
+          <div class="module-meta"><span class="module-count">Brain Dump</span></div>
+        </div>
+        <div class="module-card" style="--card-color:#B5524F;--card-bg:#FDECEA" onclick="showPage('checklist', null)">
+          <div class="module-icon-wrap">🎨</div>
+          <div class="module-name">喜欢收藏</div>
+          <div class="module-desc">所有让你感到愉悦的事物清单。</div>
+          <div class="module-meta"><span class="module-count" style="background:#FDECEA;color:#B5524F">36 个收藏</span></div>
+        </div>
+      </div>
+
+      <!-- Bottom: contact + mood -->
+      <div class="dash-bottom">
+        <div class="contact-card">
+          <div class="card-title">联系我 / 留言 💬</div>
+          <div class="contact-links">
+            <div class="contact-chip">📧 邮件</div>
+            <div class="contact-chip">💬 微信</div>
+            <div class="contact-chip">🐦 推特</div>
+            <div class="contact-chip">💼 领英</div>
+            <div class="contact-chip">🐙 GitHub</div>
+          </div>
+          <div class="message-area">
+            <!-- 昵称输入框（id=msg-nickname，JS 读取）-->
+            <input
+              id="msg-nickname"
+              class="message-input"
+              type="text"
+              placeholder="你的昵称（可不填，默认匿名）"
+              style="margin-bottom:6px"
+            >
+            <!-- 留言内容（id=msg-content，JS 读取）-->
+            <textarea
+              id="msg-content"
+              class="message-input"
+              rows="3"
+              placeholder="给未来的我，或是路过的人留点什么……"
+            ></textarea>
+            <button class="message-send" onclick="sendMessage()">发送 ✦</button>
+          </div>
+          <!-- 留言列表（id=messages-list，JS 动态渲染）-->
+          <div id="messages-list" style="margin-top:16px;max-height:200px;overflow-y:auto;">
+            <div style="color:var(--ink3);font-size:13px">加载留言中……</div>
+          </div>
+        </div>
+        <div class="mood-card">
+          <div class="card-title">此刻的状态 🌡</div>
+          <div class="mood-emojis">
+            <div class="mood-emoji" onclick="selectMood(this)">😴<span>累</span></div>
+            <div class="mood-emoji" onclick="selectMood(this)">😐<span>平</span></div>
+            <div class="mood-emoji" onclick="selectMood(this)">🙂<span>还好</span></div>
+            <div class="mood-emoji" onclick="selectMood(this)">😊<span>好</span></div>
+            <div class="mood-emoji" onclick="selectMood(this)">🤩<span>棒</span></div>
+          </div>
+          <input class="mood-note" type="text" placeholder="一句话描述此刻……">
+          <button class="mood-save" onclick="saveMood()">记录今日状态 ✓</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════ 生活清单页 CHECKLIST ══════════════════ -->
   <div class="page" id="page-checklist">
     <div class="page-header">
-      <div class="page-eyebrow">life 路 鐢熸椿</div>
-      <h1 class="page-title">鐢熸椿娓呭崟 鉁?/h1>
-      <p class="page-subtitle">鎶婃潅涔辩殑鑴戞礊鏁寸悊鎴愭竻鍗曪紝涓€浠朵竴浠讹紝鎱㈡參鏉ャ€?/p>
+      <div class="page-eyebrow">life · 生活</div>
+      <h1 class="page-title">生活清单 ✅</h1>
+      <p class="page-subtitle">把杂乱的脑洞整理成清单，一件一件，慢慢来。</p>
     </div>
     <div class="page-body">
       <div class="checklist-layout">
         <!-- Left column -->
         <div>
-          <div class="checklist-col-title">浠婃棩浠诲姟 路 TODAY</div>
+          <div class="checklist-col-title">今日任务 · TODAY</div>
           <div class="checklist-card">
             <div class="checklist-card-header">
-              <div class="list-icon" style="background:#D8F3DC">鉁?/div>
-              <div class="list-card-title">浠婃棩蹇呭仛</div>
+              <div class="list-icon" style="background:#D8F3DC">✅</div>
+              <div class="list-card-title">今日必做</div>
               <div class="list-progress">1 / 4</div>
             </div>
             <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
             <div id="today-list">
               <div class="check-item done" onclick="toggleCheck(this)">
-                <div class="checkmark">鉁?/div>
-                <div class="check-text">鏅ㄩ棿 10 鍒嗛挓鍐ユ兂</div>
-                <div class="check-tag">鏃╂櫒</div>
+                <div class="checkmark">✓</div>
+                <div class="check-text">晨间 10 分钟冥想</div>
+                <div class="check-tag">早晨</div>
               </div>
               <div class="check-item" onclick="toggleCheck(this)">
                 <div class="checkmark"></div>
-                <div class="check-text">瀹屾垚瀹炰範鍛ㄦ姤骞跺彂閫佺粰瀵煎笀</div>
-                <div class="check-tag">宸ヤ綔</div>
+                <div class="check-text">完成实习周报并发送给导师</div>
+                <div class="check-tag">工作</div>
               </div>
               <div class="check-item" onclick="toggleCheck(this)">
                 <div class="checkmark"></div>
-                <div class="check-text">鏁寸悊绗旇鏈噷鐨勭鐗囨兂娉?/div>
-                <div class="check-tag">鎴愰暱</div>
+                <div class="check-text">整理笔记本里的碎片想法</div>
+                <div class="check-tag">成长</div>
               </div>
               <div class="check-item" onclick="toggleCheck(this)">
                 <div class="checkmark"></div>
-                <div class="check-text">鏁ｆ 20 鍒嗛挓锛屼笉甯︽墜鏈?/div>
-                <div class="check-tag">韬綋</div>
+                <div class="check-text">散步 20 分钟，不带手机</div>
+                <div class="check-tag">身体</div>
               </div>
             </div>
             <div class="add-item-row">
-              <input class="add-input" placeholder="娣诲姞浠婃棩浠诲姟鈥? id="todayInput" onkeydown="if(event.key==='Enter')addTask('today-list','todayInput')">
-              <button class="add-btn" onclick="addTask('today-list','todayInput')">+ 娣诲姞</button>
+              <input class="add-input" placeholder="添加今日任务…" id="todayInput" onkeydown="if(event.key==='Enter')addTask('today-list','todayInput')">
+              <button class="add-btn" onclick="addTask('today-list','todayInput')">+ 添加</button>
             </div>
           </div>
 
-          <div class="checklist-col-title" style="margin-top:8px">涔犳儻杩借釜 路 HABITS</div>
+          <div class="checklist-col-title" style="margin-top:8px">习惯追踪 · HABITS</div>
           <div class="checklist-card">
             <div class="checklist-card-header">
-              <div class="list-icon" style="background:#FFF8E7">馃尡</div>
-              <div class="list-card-title">姣忔棩涔犳儻</div>
+              <div class="list-icon" style="background:#FFF8E7">🌱</div>
+              <div class="list-card-title">每日习惯</div>
               <div class="list-progress">2 / 5</div>
             </div>
             <div class="progress-bar"><div class="progress-fill" style="width:40%;background:var(--warm)"></div></div>
             <div id="habit-list">
               <div class="check-item done" onclick="toggleCheck(this)">
-                <div class="checkmark">鉁?/div>
-                <div class="check-text">鍠?8 鏉按</div>
+                <div class="checkmark">✓</div>
+                <div class="check-text">喝 8 杯水</div>
               </div>
               <div class="check-item done" onclick="toggleCheck(this)">
-                <div class="checkmark">鉁?/div>
-                <div class="check-text">璇讳功 30 鍒嗛挓</div>
+                <div class="checkmark">✓</div>
+                <div class="check-text">读书 30 分钟</div>
               </div>
               <div class="check-item" onclick="toggleCheck(this)">
                 <div class="checkmark"></div>
-                <div class="check-text">涓嶅埛鎵嬫満瓒呰繃 2 灏忔椂</div>
+                <div class="check-text">不刷手机超过 2 小时</div>
               </div>
               <div class="check-item" onclick="toggleCheck(this)">
                 <div class="checkmark"></div>
-                <div class="check-text">鍐欏綋鏃ユ劅鎭╀笁浠朵簨</div>
+                <div class="check-text">写当日感恩三件事</div>
               </div>
               <div class="check-item" onclick="toggleCheck(this)">
                 <div class="checkmark"></div>
-                <div class="check-text">鐫″墠鎷変几 10 鍒嗛挓</div>
+                <div class="check-text">睡前拉伸 10 分钟</div>
               </div>
             </div>
           </div>
@@ -189,56 +354,56 @@
 
         <!-- Right column -->
         <div>
-          <div class="checklist-col-title">鎰挎湜娓呭崟 路 WISHLIST</div>
+          <div class="checklist-col-title">愿望清单 · WISHLIST</div>
           <div class="checklist-card">
             <div class="checklist-card-header">
-              <div class="list-icon" style="background:#F0EBF8">馃専</div>
-              <div class="list-card-title">鎯冲仛鐨勪簨</div>
+              <div class="list-icon" style="background:#F0EBF8">🌟</div>
+              <div class="list-card-title">想做的事</div>
             </div>
             <div id="wish-list">
               <div class="check-item" onclick="toggleCheck(this)">
                 <div class="checkmark"></div>
-                <div class="check-text">鍘讳含閮界湅鏋彾</div>
-                <div class="check-tag" style="background:#F0EBF8;color:#7B5EA7">鏃呰</div>
+                <div class="check-text">去京都看枫叶</div>
+                <div class="check-tag" style="background:#F0EBF8;color:#7B5EA7">旅行</div>
               </div>
               <div class="check-item" onclick="toggleCheck(this)">
                 <div class="checkmark"></div>
-                <div class="check-text">瀛︿細鍋氫竴閬撴硶寮忔枡鐞?/div>
-                <div class="check-tag" style="background:#F0EBF8;color:#7B5EA7">鐢熸椿</div>
+                <div class="check-text">学会做一道法式料理</div>
+                <div class="check-tag" style="background:#F0EBF8;color:#7B5EA7">生活</div>
               </div>
               <div class="check-item" onclick="toggleCheck(this)">
                 <div class="checkmark"></div>
-                <div class="check-text">璇诲畬銆婁汉绫荤畝鍙层€?/div>
-                <div class="check-tag" style="background:#F0EBF8;color:#7B5EA7">闃呰</div>
+                <div class="check-text">读完《人类简史》</div>
+                <div class="check-tag" style="background:#F0EBF8;color:#7B5EA7">阅读</div>
               </div>
               <div class="check-item done" onclick="toggleCheck(this)">
-                <div class="checkmark">鉁?/div>
-                <div class="check-text">寤虹珛涓€涓睘浜庤嚜宸辩殑鏁板瓧绌洪棿</div>
-                <div class="check-tag" style="background:#F0EBF8;color:#7B5EA7">鏁板瓧</div>
+                <div class="checkmark">✓</div>
+                <div class="check-text">建立一个属于自己的数字空间</div>
+                <div class="check-tag" style="background:#F0EBF8;color:#7B5EA7">数字</div>
               </div>
             </div>
             <div class="add-item-row">
-              <input class="add-input" placeholder="鍔犲叆鎰挎湜娓呭崟鈥? id="wishInput" onkeydown="if(event.key==='Enter')addTask('wish-list','wishInput')">
-              <button class="add-btn" style="background:#7B5EA7" onclick="addTask('wish-list','wishInput')">+ 娣诲姞</button>
+              <input class="add-input" placeholder="加入愿望清单…" id="wishInput" onkeydown="if(event.key==='Enter')addTask('wish-list','wishInput')">
+              <button class="add-btn" style="background:#7B5EA7" onclick="addTask('wish-list','wishInput')">+ 添加</button>
             </div>
           </div>
 
-          <div class="checklist-col-title" style="margin-top:8px">鍠滄鐨勪簨鐗?路 I LOVE</div>
+          <div class="checklist-col-title" style="margin-top:8px">喜欢的事物 · I LOVE</div>
           <div class="checklist-card">
             <div class="checklist-card-header">
-              <div class="list-icon" style="background:#FDECEA">馃帹</div>
-              <div class="list-card-title">鍠滄鏀惰棌</div>
+              <div class="list-icon" style="background:#FDECEA">🎨</div>
+              <div class="list-card-title">喜欢收藏</div>
             </div>
             <div class="likes-grid">
-              <div class="like-chip"><div class="like-emoji">馃幍</div><div class="like-text">鐖靛＋涔?/div></div>
-              <div class="like-chip"><div class="like-emoji">馃摎</div><div class="like-text">鐙珛涔﹀簵</div></div>
-              <div class="like-chip"><div class="like-emoji">鈽?/div><div class="like-text">鎵嬪啿鍜栧暋</div></div>
-              <div class="like-chip"><div class="like-emoji">馃尶</div><div class="like-text">妞嶇墿瑙傚療</div></div>
-              <div class="like-chip"><div class="like-emoji">馃帹</div><div class="like-text">鑹插僵鎼厤</div></div>
-              <div class="like-chip"><div class="like-emoji">馃寵</div><div class="like-text">澶滄櫄鏁ｆ</div></div>
-              <div class="like-chip"><div class="like-emoji">馃崪</div><div class="like-text">鐑堡闈?/div></div>
-              <div class="like-chip"><div class="like-emoji">馃幀</div><div class="like-text">鏂囪壓鐢靛奖</div></div>
-              <div class="like-chip"><div class="like-emoji">鉁嶏笍</div><div class="like-text">鎵嬪啓瀛?/div></div>
+              <div class="like-chip"><div class="like-emoji">🎵</div><div class="like-text">爵士乐</div></div>
+              <div class="like-chip"><div class="like-emoji">📚</div><div class="like-text">独立书店</div></div>
+              <div class="like-chip"><div class="like-emoji">☕</div><div class="like-text">手冲咖啡</div></div>
+              <div class="like-chip"><div class="like-emoji">🌿</div><div class="like-text">植物观察</div></div>
+              <div class="like-chip"><div class="like-emoji">🎨</div><div class="like-text">色彩搭配</div></div>
+              <div class="like-chip"><div class="like-emoji">🌙</div><div class="like-text">夜晚散步</div></div>
+              <div class="like-chip"><div class="like-emoji">🍜</div><div class="like-text">热汤面</div></div>
+              <div class="like-chip"><div class="like-emoji">🎬</div><div class="like-text">文艺电影</div></div>
+              <div class="like-chip"><div class="like-emoji">✍️</div><div class="like-text">手写字</div></div>
             </div>
           </div>
         </div>
@@ -246,126 +411,126 @@
     </div>
   </div>
 
-  <!-- 鈹€鈹€ 鎭嬬埍鎵嬪唽椤?LOVE JOURNAL 鈹€鈹€
-       Y = 鎴戯紙鐢ㄦ埛鏈汉锛夛紝M = 瀵规柟
-       鍦ㄤ竴璧锋椂闂达細2026骞?鏈?8鏃?
-       鍒濇绾︿細锛?026骞?鏈?0鏃?
+  <!-- ── 恋爱手册页 LOVE JOURNAL ──
+       Y = 我（用户本人），M = 对方
+       在一起时间：2026年1月28日
+       初次约会：2026年2月20日
   -->
   <div class="page" id="page-love">
     <div class="page-header">
-      <div class="page-eyebrow">love 路 鎯呮劅</div>
-      <h1 class="page-title">鎭嬬埍鎵嬪唽 馃拰</h1>
-      <p class="page-subtitle">Y 涓?M 鐨勬晠浜嬶紝姣忎竴涓€煎緱琚浣忕殑娓╂煍鐬棿銆?/p>
+      <div class="page-eyebrow">love · 情感</div>
+      <h1 class="page-title">恋爱手册 💌</h1>
+      <p class="page-subtitle">Y 与 M 的故事，每一个值得被记住的温柔瞬间。</p>
     </div>
     <div class="page-body">
       <div class="love-layout">
-        <!-- 鈹€鈹€ 宸︿晶锛氭椂闂磋酱璁板綍 鈹€鈹€ -->
+        <!-- ── 左侧：时间轴记录 ── -->
         <div>
-          <div class="checklist-col-title">璁板綍鏃堕棿绾?路 TIMELINE</div>
+          <div class="checklist-col-title">记录时间线 · TIMELINE</div>
           <div class="timeline">
 
-            <!-- 閲岀▼纰戯細鍦ㄤ竴璧?2026.01.28 -->
+            <!-- 里程碑：在一起 2026.01.28 -->
             <div class="timeline-item">
-              <div class="tl-dot milestone">馃挒</div>
+              <div class="tl-dot milestone">💞</div>
               <div class="tl-content">
-                <div class="tl-date">2026 路 01 路 28  |  鍦ㄤ竴璧风邯蹇垫棩 鉁?/div>
-                <div class="tl-title">Y 涓?M锛屽湪涓€璧蜂簡 馃尭</div>
-                <div class="tl-body">閭ｄ竴澶╋紝Y 缁堜簬璇村嚭浜嗗績閲岃棌浜嗗緢涔呯殑璇濄€侻 鍚畬娌夐粯浜嗗嚑绉掞紝鐒跺悗绗戠潃璇?濂?銆備粠閭ｅぉ璧凤紝涓や釜浜虹殑鏁呬簨姝ｅ紡寮€濮嬩簡銆?/div>
-                <div class="tl-tag tag-rose">閲岀▼纰?/div>
+                <div class="tl-date">2026 · 01 · 28  |  在一起纪念日 ✦</div>
+                <div class="tl-title">Y 与 M，在一起了 🌸</div>
+                <div class="tl-body">那一天，Y 终于说出了心里藏了很久的话。M 听完沉默了几秒，然后笑着说"好"。从那天起，两个人的故事正式开始了。</div>
+                <div class="tl-tag tag-rose">里程碑</div>
               </div>
             </div>
 
-            <!-- 绗竴娆＄害浼?2026.02.20 -->
+            <!-- 第一次约会 2026.02.20 -->
             <div class="timeline-item">
-              <div class="tl-dot milestone">馃尮</div>
+              <div class="tl-dot milestone">🌹</div>
               <div class="tl-content">
-                <div class="tl-date">2026 路 02 路 20  |  鍒濇绾︿細</div>
-                <div class="tl-title">Y 涓?M 鐨勭涓€娆＄害浼?鈽?/div>
-                <div class="tl-body">鍦ㄤ竴璧峰悗绗竴娆℃寮忕害浼氥€備袱涓汉閮芥湁鐐圭揣寮狅紝鍗翠篃閮藉湪鍋囪寰堣嚜鐒躲€傚悗鏉?M 璇撮偅澶╂槸濂规渶鍠滄鐨勪竴澶╀箣涓€锛孻 鎶婅繖鍙ヨ瘽璁板湪浜嗚繖閲屻€?/div>
-                <div class="tl-tag tag-warm">鍒濇绾︿細</div>
+                <div class="tl-date">2026 · 02 · 20  |  初次约会</div>
+                <div class="tl-title">Y 与 M 的第一次约会 ☕</div>
+                <div class="tl-body">在一起后第一次正式约会。两个人都有点紧张，却也都在假装很自然。后来 M 说那天是她最喜欢的一天之一，Y 把这句话记在了这里。</div>
+                <div class="tl-tag tag-warm">初次约会</div>
               </div>
             </div>
 
-            <!-- 鏃ュ父璁板綍鍗犱綅锛屾柟渚挎湭鏉ヨˉ鍏?-->
+            <!-- 日常记录占位，方便未来补充 -->
             <div class="timeline-item">
-              <div class="tl-dot">馃挱</div>
+              <div class="tl-dot">💭</div>
               <div class="tl-content">
-                <div class="tl-date">姝ゅ鐣欑櫧锛岀瓑寰呮柊鐨勬晠浜?/div>
-                <div class="tl-title">涓嬩竴涓€煎緱璁颁綇鐨勭灛闂?/div>
-                <div class="tl-body">鏁呬簨杩樺湪缁х画銆傜偣鍑讳笅鏂规寜閽紝璁板綍灞炰簬 Y 涓?M 鐨勬柊鏃跺埢銆?/div>
-                <div class="tl-tag tag-green">寰呰褰?/div>
+                <div class="tl-date">此处留白，等待新的故事</div>
+                <div class="tl-title">下一个值得记住的瞬间</div>
+                <div class="tl-body">故事还在继续。点击下方按钮，记录属于 Y 与 M 的新时刻。</div>
+                <div class="tl-tag tag-green">待记录</div>
               </div>
             </div>
 
           </div>
-          <!-- 娣诲姞鏂拌褰曟寜閽?-->
-          <button class="new-entry-btn" onclick="showToast('馃摑 鏂拌褰曞姛鑳藉嵆灏嗗紑鏀?)">+ 璁板綍鏂扮殑鏃跺埢</button>
+          <!-- 添加新记录按钮 -->
+          <button class="new-entry-btn" onclick="showToast('📝 新记录功能即将开放')">+ 记录新的时刻</button>
         </div>
 
-        <!-- 鈹€鈹€ 鍙充晶锛氭暟鎹湅鏉?鈹€鈹€ -->
+        <!-- ── 右侧：数据看板 ── -->
         <div class="love-panel">
 
-          <!-- 鏁板瓧缁熻鍗?-->
+          <!-- 数字统计卡 -->
           <div class="panel-card">
-            <div class="panel-card-title">馃挄 Y 涓?M 鐨勬暟瀛?/div>
+            <div class="panel-card-title">💕 Y 与 M 的数字</div>
             <div class="love-stats">
               <div class="love-stat">
-                <!-- daysTogether 鐢?JS 鏍规嵁 2026-01-28 鑷姩璁＄畻 -->
-                <div class="stat-label">鍦ㄤ竴璧?/div>
-                <div class="stat-val" id="daysTogether">-- 澶?/div>
+                <!-- daysTogether 由 JS 根据 2026-01-28 自动计算 -->
+                <div class="stat-label">在一起</div>
+                <div class="stat-val" id="daysTogether">-- 天</div>
               </div>
               <div class="love-stat">
-                <!-- firstDate 鐢?JS 鑷姩璁＄畻鍒濇绾︿細璺濅粖澶╂暟 -->
-                <div class="stat-label">鍒濇绾︿細鑷充粖</div>
-                <div class="stat-val" id="daysFirstDate">-- 澶?/div>
+                <!-- firstDate 由 JS 自动计算初次约会距今天数 -->
+                <div class="stat-label">初次约会至今</div>
+                <div class="stat-val" id="daysFirstDate">-- 天</div>
               </div>
               <div class="love-stat">
-                <div class="stat-label">璁板綍鐨勬椂鍒?/div>
-                <div class="stat-val">3 涓?/div>
+                <div class="stat-label">记录的时刻</div>
+                <div class="stat-val">3 个</div>
               </div>
               <div class="love-stat">
-                <div class="stat-label">涓嬩竴涓邯蹇垫棩</div>
-                <div class="stat-val" id="nextAnniversary">璁＄畻涓?/div>
+                <div class="stat-label">下一个纪念日</div>
+                <div class="stat-val" id="nextAnniversary">计算中</div>
               </div>
             </div>
           </div>
 
-          <!-- 鍗冲皢鍒版潵鎻愰啋 -->
+          <!-- 即将到来提醒 -->
           <div class="panel-card">
-            <div class="panel-card-title">馃敂 鍗冲皢鍒版潵</div>
+            <div class="panel-card-title">🔔 即将到来</div>
             <div class="remind-list">
               <div class="remind-item">
-                <!-- 涓€鍛ㄥ勾锛?027.01.28 -->
+                <!-- 一周年：2027.01.28 -->
                 <div class="remind-dot"></div>
-                <div class="remind-text">2027 路 01 路 28 路 Y 涓?M 涓€鍛ㄥ勾 馃巶</div>
+                <div class="remind-text">2027 · 01 · 28 · Y 与 M 一周年 🎂</div>
               </div>
               <div class="remind-item">
                 <div class="remind-dot" style="background:var(--warm)"></div>
-                <div class="remind-text">鎸佺画鏇存柊涓€︹€?缁?M 鐨勬儕鍠?/div>
+                <div class="remind-text">持续更新中…… 给 M 的惊喜</div>
               </div>
               <div class="remind-item">
                 <div class="remind-dot" style="background:var(--blue)"></div>
-                <div class="remind-text">鏈熷緟涓嬩竴娆＄害浼?馃尭</div>
+                <div class="remind-text">期待下一次约会 🌸</div>
               </div>
             </div>
           </div>
 
-          <!-- M 璇磋繃鐨勮瘽 -->
+          <!-- M 说过的话 -->
           <div class="panel-card">
-            <div class="panel-card-title">鉁?M 璇磋繃鐨勮瘽</div>
+            <div class="panel-card-title">✨ M 说过的话</div>
             <div style="font-style:italic;font-size:14px;color:var(--ink2);line-height:1.8;font-family:'DM Serif Display',serif;">
-              "濂姐€?
+              "好。"
             </div>
             <div style="margin-top:10px;font-size:12px;color:var(--ink3);font-family:'JetBrains Mono',monospace;font-weight:300;">
-              鈥?2026 路 01 路 28 路 閭ｄ竴澶╂渶閲嶈鐨勪竴涓瓧
+              — 2026 · 01 · 28 · 那一天最重要的一个字
             </div>
           </div>
 
-          <!-- 鎯冲 M 璇寸殑璇濓紙蹇€熻褰曪級-->
+          <!-- 想对 M 说的话（快速记录）-->
           <div class="panel-card">
-            <div class="panel-card-title">馃摑 鎯冲 M 璇?/div>
-            <textarea id="toLetter" class="message-input" rows="3" placeholder="姝ゅ埢鎯宠鐨勮瘽鈥︹€? style="font-size:13px"></textarea>
-            <button class="message-send" style="margin-top:10px;width:100%;text-align:center" onclick="showToast('馃拰 宸叉倓鎮勮褰曚笅鏉?)">淇濆瓨杩欏彞璇?/button>
+            <div class="panel-card-title">📝 想对 M 说</div>
+            <textarea class="message-input" rows="3" placeholder="此刻想说的话……" style="font-size:13px"></textarea>
+            <button class="message-send" style="margin-top:10px;width:100%;text-align:center" onclick="showToast('💌 已悄悄记录下来')">保存这句话</button>
           </div>
 
         </div>
@@ -373,12 +538,12 @@
     </div>
   </div>
 
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 涓撴敞妯″紡椤?FOCUS 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 -->
+  <!-- ══════════════════ 专注模式页 FOCUS ══════════════════ -->
   <div class="page" id="page-study">
     <div class="page-header">
-      <div class="page-eyebrow">focus 路 涓撴敞</div>
-      <h1 class="page-title">涓撴敞妯″紡 馃幆</h1>
-      <p class="page-subtitle">鐣寗宸ヤ綔娉?路 灞忚斀鍣煶锛岃繘鍏ュ績娴併€?/p>
+      <div class="page-eyebrow">focus · 专注</div>
+      <h1 class="page-title">专注模式 🎯</h1>
+      <p class="page-subtitle">番茄工作法 · 屏蔽噪音，进入心流。</p>
     </div>
     <div class="page-body">
       <div class="focus-layout">
@@ -387,83 +552,83 @@
           <div class="big-timer-label">POMODORO TIMER</div>
           <div class="big-timer-display" id="bigTimer">25:00</div>
           <div class="big-timer-mode">
-            <button class="mode-btn active" onclick="setMode(this,25)">涓撴敞 25min</button>
-            <button class="mode-btn" onclick="setMode(this,5)">鐭紤 5min</button>
-            <button class="mode-btn" onclick="setMode(this,15)">闀夸紤 15min</button>
+            <button class="mode-btn active" onclick="setMode(this,25)">专注 25min</button>
+            <button class="mode-btn" onclick="setMode(this,5)">短休 5min</button>
+            <button class="mode-btn" onclick="setMode(this,15)">长休 15min</button>
           </div>
           <div class="big-btns">
-            <button class="big-start-btn" id="bigTimerBtn" onclick="toggleBigTimer()">寮€濮嬩笓娉?/button>
-            <button class="big-reset-btn" onclick="resetBigTimer()">閲嶇疆</button>
+            <button class="big-start-btn" id="bigTimerBtn" onclick="toggleBigTimer()">开始专注</button>
+            <button class="big-reset-btn" onclick="resetBigTimer()">重置</button>
           </div>
         </div>
 
         <!-- Task queue -->
         <div class="task-queue">
-          <div class="checklist-col-title" style="margin-bottom:12px">浠诲姟闃熷垪 路 QUEUE</div>
+          <div class="checklist-col-title" style="margin-bottom:12px">任务队列 · QUEUE</div>
           <div id="task-queue-list">
             <div class="task-item">
               <div class="task-pri pri-high"></div>
               <div class="task-info">
-                <div class="task-name">瀹屾垚瀹炰範鍛ㄦ姤</div>
-                <div class="task-time">棰勮 路 30min</div>
+                <div class="task-name">完成实习周报</div>
+                <div class="task-time">预计 · 30min</div>
               </div>
               <div class="task-check" onclick="toggleTaskCheck(this)"></div>
             </div>
             <div class="task-item">
               <div class="task-pri pri-mid"></div>
               <div class="task-info">
-                <div class="task-name">鏁寸悊璁捐绋垮弽棣?/div>
-                <div class="task-time">棰勮 路 45min</div>
+                <div class="task-name">整理设计稿反馈</div>
+                <div class="task-time">预计 · 45min</div>
               </div>
               <div class="task-check" onclick="toggleTaskCheck(this)"></div>
             </div>
             <div class="task-item">
               <div class="task-pri pri-low"></div>
               <div class="task-info">
-                <div class="task-name">璇汇€婄敤鎴蜂綋楠岃绱犮€嬬涓夌珷</div>
-                <div class="task-time">棰勮 路 20min</div>
+                <div class="task-name">读《用户体验要素》第三章</div>
+                <div class="task-time">预计 · 20min</div>
               </div>
               <div class="task-check" onclick="toggleTaskCheck(this)"></div>
             </div>
             <div class="task-item">
               <div class="task-pri pri-low"></div>
               <div class="task-info">
-                <div class="task-name">鍥炲瀵煎笀鐨勯偖浠?/div>
-                <div class="task-time">棰勮 路 15min</div>
+                <div class="task-name">回复导师的邮件</div>
+                <div class="task-time">预计 · 15min</div>
               </div>
               <div class="task-check" onclick="toggleTaskCheck(this)"></div>
             </div>
           </div>
           <div class="add-item-row" style="margin-top:16px">
-            <input class="add-input" placeholder="娣诲姞浠诲姟鈥? id="taskInput" onkeydown="if(event.key==='Enter')addQueueTask()">
-            <button class="add-btn" onclick="addQueueTask()">+ 鍔犲叆</button>
+            <input class="add-input" placeholder="添加任务…" id="taskInput" onkeydown="if(event.key==='Enter')addQueueTask()">
+            <button class="add-btn" onclick="addQueueTask()">+ 加入</button>
           </div>
         </div>
 
         <!-- Stats -->
         <div class="stats-small">
-          <div class="checklist-col-title" style="margin-bottom:4px">浠婃棩鎴樻灉 路 TODAY</div>
+          <div class="checklist-col-title" style="margin-bottom:4px">今日战果 · TODAY</div>
           <div class="stat-row">
-            <div class="stat-row-label">馃崊 瀹屾垚鐣寗鏁?/div>
+            <div class="stat-row-label">🍅 完成番茄数</div>
             <div class="stat-row-val" id="pomodoroCount">0</div>
           </div>
           <div class="mini-bar"><div class="mini-bar-fill" id="pomodoroBar" style="width:0%"></div></div>
           <div class="stat-row">
-            <div class="stat-row-label">鈴?绱涓撴敞鏃堕暱</div>
+            <div class="stat-row-label">⏱ 累计专注时长</div>
             <div class="stat-row-val" id="totalFocus">0 min</div>
           </div>
           <div style="height:1px;background:var(--border);margin:4px 0"></div>
-          <div class="checklist-col-title" style="margin-bottom:4px;margin-top:4px">鏈懆骞冲潎 路 WEEK</div>
+          <div class="checklist-col-title" style="margin-bottom:4px;margin-top:4px">本周平均 · WEEK</div>
           <div class="stat-row">
-            <div class="stat-row-label">馃搮 鏃ュ潎涓撴敞</div>
+            <div class="stat-row-label">📅 日均专注</div>
             <div class="stat-row-val">3.2h</div>
           </div>
           <div class="stat-row">
-            <div class="stat-row-label">馃弳 鏈€闀胯繛缁?/div>
-            <div class="stat-row-val">4 涓?/div>
+            <div class="stat-row-label">🏆 最长连续</div>
+            <div class="stat-row-val">4 个</div>
           </div>
           <div class="stat-row">
-            <div class="stat-row-label">馃槾 骞冲潎浼戞伅</div>
+            <div class="stat-row-label">😴 平均休息</div>
             <div class="stat-row-val">6 min</div>
           </div>
         </div>
@@ -471,296 +636,288 @@
     </div>
   </div>
 
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
-       鍏朵綑 6 涓姛鑳芥ā鍧?
-       鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 -->
+  <!-- ══════════════════════════════════════════════════════════
+       其余 6 个功能模块
+       ══════════════════════════════════════════════════════════ -->
 
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 瀛︿範绗旇椤?NOTES 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 -->
+  <!-- ══════════════════ 学习笔记页 NOTES ══════════════════ -->
   <div class="page" id="page-notes">
     <div class="page-header">
-      <div class="page-eyebrow">knowledge 路 鐭ヨ瘑</div>
-      <h1 class="page-title">瀛︿範绗旇 馃</h1>
-      <p class="page-subtitle">闆舵暎鐨勬兂娉曪紝鍦ㄨ繖閲屽彉鎴愮郴缁熷寲鐨勭煡璇嗗簱銆傚崱鐗囧紡璁板綍锛岀伒娲诲垎绫汇€?/p>
+      <div class="page-eyebrow">knowledge · 知识</div>
+      <h1 class="page-title">学习笔记 🧠</h1>
+      <p class="page-subtitle">零散的想法，在这里变成系统化的知识库。卡片式记录，灵活分类。</p>
     </div>
     <div class="page-body">
       <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center">
-        <button class="message-send" onclick="openNoteModal()" style="padding:8px 16px">+ 鏂板缓绗旇</button>
-        <input id="noteSearch" class="message-input" type="text" placeholder="鎼滅储绗旇鈥? onkeyup="filterNotes()" style="max-width:200px;padding:8px 12px;height:40px;margin:0;flex:1;min-width:150px">
+        <button class="message-send" onclick="openNoteModal()" style="padding:8px 16px">+ 新建笔记</button>
+        <input id="noteSearch" class="message-input" type="text" placeholder="搜索笔记…" onkeyup="filterNotes()" style="max-width:200px;padding:8px 12px;height:40px;margin:0;flex:1;min-width:150px">
         <div style="display:flex;gap:8px;flex-wrap:wrap" id="tagFilters"></div>
       </div>
       <div id="notesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px">
-        <div style="grid-column:1/-1;text-align:center;color:var(--ink3);padding:40px">鐐瑰嚮銆屾柊寤虹瑪璁般€嶆潵寮€濮嬭褰?/div>
+        <div style="grid-column:1/-1;text-align:center;color:var(--ink3);padding:40px">点击「新建笔记」来开始记录</div>
       </div>
       <div id="noteModal" class="modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center">
         <div style="background:white;border-radius:16px;padding:24px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto">
-          <div style="font-size:18px;font-weight:600;margin-bottom:16px">鏂板缓绗旇</div>
-          <input id="noteTitle" class="message-input" type="text" placeholder="绗旇鏍囬" style="margin-bottom:12px;width:100%">
-          <textarea id="noteContent" class="message-input" rows="6" placeholder="璁板綍鎯虫硶鈥? style="margin-bottom:12px;width:100%"></textarea>
-          <div style="margin-bottom:12px">
-            <label for="noteTags" style="display:block;margin-bottom:6px;font-size:12px;color:var(--ink3)">鏍囩</label>
-            <div id="noteTags" style="display:flex;gap:8px;flex-wrap:wrap"></div>
-          </div>
+          <div style="font-size:18px;font-weight:600;margin-bottom:16px">新建笔记</div>
+          <input id="noteTitle" class="message-input" type="text" placeholder="笔记标题" style="margin-bottom:12px;width:100%">
+          <textarea id="noteContent" class="message-input" rows="6" placeholder="记录想法…" style="margin-bottom:12px;width:100%"></textarea>
           <div style="display:flex;gap:8px;justify-content:flex-end">
-            <button onclick="document.getElementById('noteModal').style.display='none'" style="padding:8px 16px;background:var(--surface2);border:none;border-radius:8px;cursor:pointer">鍙栨秷</button>
-            <button onclick="saveNote()" style="padding:8px 16px;background:var(--accent);color:white;border:none;border-radius:8px;cursor:pointer">淇濆瓨</button>
+            <button onclick="document.getElementById('noteModal').style.display='none'" style="padding:8px 16px;background:var(--surface2);border:none;border-radius:8px;cursor:pointer">取消</button>
+            <button onclick="saveNote()" style="padding:8px 16px;background:var(--accent);color:white;border:none;border-radius:8px;cursor:pointer">保存</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 椤圭洰璁板綍椤?PROJECTS 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 -->
+  <!-- ══════════════════ 项目记录页 PROJECTS ══════════════════ -->
   <div class="page" id="page-projects">
     <div class="page-header">
-      <div class="page-eyebrow">projects 路 浣滃搧</div>
-      <h1 class="page-title">椤圭洰璁板綍 馃搧</h1>
-      <p class="page-subtitle">浠庢兂娉曞埌涓婄嚎锛屾瘡涓」鐩兘鍊煎緱琚褰曘€傝拷韪繘搴︼紝灞曠ず瀹炲姏銆?/p>
+      <div class="page-eyebrow">projects · 作品</div>
+      <h1 class="page-title">项目记录 📁</h1>
+      <p class="page-subtitle">从想法到上线，每个项目都值得被记录。追踪进度，展示实力。</p>
     </div>
     <div class="page-body">
       <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap">
-        <button class="message-send" onclick="openProjectModal()" style="padding:8px 16px">+ 鏂板缓椤圭洰</button>
-        <input id="projectSearch" class="message-input" type="text" placeholder="鎼滅储椤圭洰鈥? onkeyup="filterProjects()" style="max-width:200px;height:40px;padding:8px 12px;margin:0;flex:1;min-width:150px">
+        <button class="message-send" onclick="openProjectModal()" style="padding:8px 16px">+ 新建项目</button>
+        <input id="projectSearch" class="message-input" type="text" placeholder="搜索项目…" onkeyup="filterProjects()" style="max-width:200px;height:40px;padding:8px 12px;margin:0;flex:1;min-width:150px">
         <select id="projectFilter" class="message-input" onchange="filterProjects()" style="max-width:150px;height:40px;padding:8px 12px;margin:0">
-          <option value="">鍏ㄩ儴鐘舵€?/option>
-          <option value="completed">鉁?宸插畬鎴?/option>
-          <option value="in-progress">鈴?杩涜涓?/option>
-          <option value="planned">馃搵 璁″垝</option>
+          <option value="">全部状态</option>
+          <option value="completed">✓ 已完成</option>
+          <option value="in-progress">⏳ 进行中</option>
+          <option value="planned">📋 计划</option>
         </select>
       </div>
       <div id="projectsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
-        <div style="grid-column:1/-1;text-align:center;color:var(--ink3);padding:40px">杩樻病鏈夐」鐩紝鐐瑰嚮銆屾柊寤洪」鐩€嶆坊鍔?/div>
+        <div style="grid-column:1/-1;text-align:center;color:var(--ink3);padding:40px">还没有项目，点击「新建项目」添加</div>
       </div>
       <div id="projectModal" class="modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;overflow-y:auto">
         <div style="background:white;border-radius:16px;padding:24px;max-width:500px;width:90%;margin:20px auto">
-          <div style="font-size:18px;font-weight:600;margin-bottom:16px">鏂板缓椤圭洰</div>
-          <input id="projTitle" class="message-input" type="text" placeholder="椤圭洰鍚嶇О" style="margin-bottom:12px;width:100%">
-          <textarea id="projDesc" class="message-input" rows="3" placeholder="椤圭洰鎻忚堪" style="margin-bottom:12px;width:100%"></textarea>
+          <div style="font-size:18px;font-weight:600;margin-bottom:16px">新建项目</div>
+          <input id="projTitle" class="message-input" type="text" placeholder="项目名称" style="margin-bottom:12px;width:100%">
+          <textarea id="projDesc" class="message-input" rows="3" placeholder="项目描述" style="margin-bottom:12px;width:100%"></textarea>
           <div style="display:flex;gap:12px;margin-bottom:12px">
             <input id="projStart" class="message-input" type="date" style="flex:1">
             <input id="projEnd" class="message-input" type="date" style="flex:1">
           </div>
           <div style="margin-bottom:12px">
-            <label for="projProgress" style="display:block;margin-bottom:6px;font-size:12px;color:var(--ink3)">椤圭洰杩涘害</label>
+            <label style="display:block;margin-bottom:6px;font-size:12px;color:var(--ink3)">项目进度</label>
             <input id="projProgress" class="message-input" type="range" min="0" max="100" value="0" style="width:100%;margin-bottom:4px">
             <span id="projProgressVal" style="font-size:12px">0%</span>
           </div>
           <div style="display:flex;gap:8px;justify-content:flex-end">
-            <button onclick="document.getElementById('projectModal').style.display='none'" style="padding:8px 16px;background:var(--surface2);border:none;border-radius:8px;cursor:pointer">鍙栨秷</button>
-            <button onclick="saveProject()" style="padding:8px 16px;background:var(--accent);color:white;border:none;border-radius:8px;cursor:pointer">淇濆瓨</button>
+            <button onclick="document.getElementById('projectModal').style.display='none'" style="padding:8px 16px;background:var(--surface2);border:none;border-radius:8px;cursor:pointer">取消</button>
+            <button onclick="saveProject()" style="padding:8px 16px;background:var(--accent);color:white;border:none;border-radius:8px;cursor:pointer">保存</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 姣忔棩鏉傝椤?JOURNAL 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 -->
+  <!-- ══════════════════ 每日杂记页 JOURNAL ══════════════════ -->
   <div class="page" id="page-journal">
     <div class="page-header">
-      <div class="page-eyebrow">journal 路 鏃ヨ</div>
-      <h1 class="page-title">姣忔棩鏉傝 馃摀</h1>
-      <p class="page-subtitle">涓嶈瘎鍒ゃ€佷笉瀹屾暣銆傚€惧€掕剳瀛愰噷鐨勪竴鍒囷紝璁板綍姝ゅ埢鐨勬劅鍙椼€?/p>
+      <div class="page-eyebrow">journal · 日记</div>
+      <h1 class="page-title">每日杂记 📓</h1>
+      <p class="page-subtitle">不评判、不完整。倾倒脑子里的一切，记录此刻的感受。</p>
     </div>
     <div class="page-body">
       <div class="checklist-card" style="margin-bottom:20px;background:#FFF8E7;border:1px solid #E8DCC8">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;color:#C9A84C">
-          <div style="font-weight:600">馃挱 鎬濈淮鎺掔┖妯″紡</div>
+          <div style="font-weight:600">💭 思维排空模式</div>
         </div>
-        <textarea id="journalQuickInput" class="message-input" rows="4" placeholder="鎯冲埌浠€涔堝氨鍐欎粈涔堚€? style="width:100%;margin-bottom:12px"></textarea>
+        <textarea id="journalQuickInput" class="message-input" rows="4" placeholder="想到什么就写什么…" style="width:100%;margin-bottom:12px"></textarea>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button onclick="journalManager ? journalManager.setMood('馃槾') : null" style="background:none;border:none;cursor:pointer;font-size:24px">馃槾</button>
-          <button onclick="journalManager ? journalManager.setMood('馃槓') : null" style="background:none;border:none;cursor:pointer;font-size:24px">馃槓</button>
-          <button onclick="journalManager ? journalManager.setMood('馃檪') : null" style="background:none;border:none;cursor:pointer;font-size:24px">馃檪</button>
-          <button onclick="journalManager ? journalManager.setMood('馃槉') : null" style="background:none;border:none;cursor:pointer;font-size:24px">馃槉</button>
-          <button onclick="journalManager ? journalManager.setMood('馃ぉ') : null" style="background:none;border:none;cursor:pointer;font-size:24px">馃ぉ</button>
+          <button onclick="journalManager ? journalManager.setMood('😴') : null" style="background:none;border:none;cursor:pointer;font-size:24px">😴</button>
+          <button onclick="journalManager ? journalManager.setMood('😐') : null" style="background:none;border:none;cursor:pointer;font-size:24px">😐</button>
+          <button onclick="journalManager ? journalManager.setMood('🙂') : null" style="background:none;border:none;cursor:pointer;font-size:24px">🙂</button>
+          <button onclick="journalManager ? journalManager.setMood('😊') : null" style="background:none;border:none;cursor:pointer;font-size:24px">😊</button>
+          <button onclick="journalManager ? journalManager.setMood('🤩') : null" style="background:none;border:none;cursor:pointer;font-size:24px">🤩</button>
         </div>
-        <button onclick="saveQuickJournal()" class="message-send" style="width:100%;text-align:center;margin-top:12px">淇濆瓨杩欎竴鍒?/button>
+        <button onclick="saveQuickJournal()" class="message-send" style="width:100%;text-align:center;margin-top:12px">保存这一刻</button>
       </div>
       <div style="display:flex;gap:12px;margin-bottom:16px">
-        <input id="journalSearch" class="message-input" type="text" placeholder="鎼滅储鏃ヨ鈥? onkeyup="filterJournals()" style="flex:1;height:40px;padding:8px 12px;margin:0">
+        <input id="journalSearch" class="message-input" type="text" placeholder="搜索日记…" onkeyup="filterJournals()" style="flex:1;height:40px;padding:8px 12px;margin:0">
         <input id="journalDateFilter" class="message-input" type="date" onchange="filterJournals()" style="height:40px;padding:8px 12px;margin:0">
       </div>
       <div id="journalTimeline">
-        <div style="text-align:center;color:var(--ink3);padding:40px">杩樻病鏈夋棩璁帮紝鍏堝湪涓婇潰鍐欎笅姝ゅ埢鐨勬兂娉?/div>
+        <div style="text-align:center;color:var(--ink3);padding:40px">还没有日记，先在上面写下此刻的想法</div>
       </div>
     </div>
   </div>
 
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 瀹炰範璁板綍椤?WORK 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 -->
+  <!-- ══════════════════ 实习记录页 WORK ══════════════════ -->
   <div class="page" id="page-work">
     <div class="page-header">
-      <div class="page-eyebrow">career 路 鑱屼笟</div>
-      <h1 class="page-title">瀹炰範璁板綍 馃捈</h1>
-      <p class="page-subtitle">姣忎竴澶╅兘鍦ㄦ垚闀裤€傚伐浣滄棩蹇椼€佹妧鑳借幏寰椼€佸畾鏈熷鐩橈紝璁板綍鑱屼笟杞ㄨ抗銆?/p>
+      <div class="page-eyebrow">career · 职业</div>
+      <h1 class="page-title">实习记录 💼</h1>
+      <p class="page-subtitle">每一天都在成长。工作日志、技能获得、定期复盘，记录职业轨迹。</p>
     </div>
     <div class="page-body">
       <div style="display:flex;gap:20px">
         <div style="flex-shrink:0;width:200px">
           <div class="checklist-card" style="margin-bottom:12px">
-            <div style="font-size:14px;font-weight:600;margin-bottom:8px">馃搳 缁熻鏁版嵁</div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:8px">📊 统计数据</div>
             <div style="font-size:13px;line-height:2;color:var(--ink2)">
-              <div>鎬诲伐浣滃ぉ鏁帮細<span id="workDays">0</span></div>
-              <div>鏈湀宸ユ椂锛?span id="monthHours">0</span>h</div>
-              <div>杩炵画宸ヤ綔锛?span id="consecutiveDays">0</span>澶?/div>
+              <div>总工作天数：<span id="workDays">0</span></div>
+              <div>本月工时：<span id="monthHours">0</span>h</div>
+              <div>连续工作：<span id="consecutiveDays">0</span>天</div>
             </div>
           </div>
-          <button onclick="openWorkLogModal()" class="message-send" style="width:100%;text-align:center">+ 鏂板缓鏃ュ織</button>
+          <button onclick="openWorkLogModal()" class="message-send" style="width:100%;text-align:center">+ 新建日志</button>
         </div>
         <div style="flex:1;min-width:0">
           <div style="display:flex;gap:8px;margin-bottom:16px">
-            <input id="workSearch" class="message-input" type="text" placeholder="鎼滅储鏃ュ織鈥? onkeyup="filterWorkLogs()" style="flex:1;height:40px;padding:8px 12px;margin:0">
+            <input id="workSearch" class="message-input" type="text" placeholder="搜索日志…" onkeyup="filterWorkLogs()" style="flex:1;height:40px;padding:8px 12px;margin:0">
           </div>
           <div id="workTimeline">
-            <div style="text-align:center;color:var(--ink3);padding:20px">杩樻病鏈夊伐浣滄棩蹇?/div>
+            <div style="text-align:center;color:var(--ink3);padding:20px">还没有工作日志</div>
           </div>
         </div>
       </div>
       <div id="workLogModal" class="modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;overflow-y:auto">
         <div style="background:white;border-radius:16px;padding:24px;max-width:600px;width:90%;margin:20px auto">
-          <div style="font-size:18px;font-weight:600;margin-bottom:16px">宸ヤ綔鏃ュ織</div>
+          <div style="font-size:18px;font-weight:600;margin-bottom:16px">工作日志</div>
           <input id="workDate" class="message-input" type="date" style="margin-bottom:12px;width:100%">
-          <input id="workTitle" class="message-input" type="text" placeholder="浠婃棩宸ヤ綔閲嶇偣" style="margin-bottom:12px;width:100%">
-          <textarea id="workTasks" class="message-input" rows="3" placeholder="瀹屾垚鐨勪换鍔? style="margin-bottom:12px;width:100%"></textarea>
-          <textarea id="workLearnings" class="message-input" rows="2" placeholder="瀛﹀埌鐨勭煡璇? style="margin-bottom:12px;width:100%"></textarea>
-          <input id="workHours" class="message-input" type="number" placeholder="宸ヤ綔灏忔椂鏁? min="0" max="24" style="margin-bottom:12px;width:100%">
+          <input id="workTitle" class="message-input" type="text" placeholder="今日工作重点" style="margin-bottom:12px;width:100%">
+          <textarea id="workTasks" class="message-input" rows="3" placeholder="完成的任务" style="margin-bottom:12px;width:100%"></textarea>
+          <textarea id="workLearnings" class="message-input" rows="2" placeholder="学到的知识" style="margin-bottom:12px;width:100%"></textarea>
+          <input id="workHours" class="message-input" type="number" placeholder="工作小时数" min="0" max="24" style="margin-bottom:12px;width:100%">
           <div style="display:flex;gap:8px;justify-content:flex-end">
-            <button onclick="document.getElementById('workLogModal').style.display='none'" style="padding:8px 16px;background:var(--surface2);border:none;border-radius:8px;cursor:pointer">鍙栨秷</button>
-            <button onclick="saveWorkLog()" style="padding:8px 16px;background:var(--accent);color:white;border:none;border-radius:8px;cursor:pointer">淇濆瓨</button>
+            <button onclick="document.getElementById('workLogModal').style.display='none'" style="padding:8px 16px;background:var(--surface2);border:none;border-radius:8px;cursor:pointer">取消</button>
+            <button onclick="saveWorkLog()" style="padding:8px 16px;background:var(--accent);color:white;border:none;border-radius:8px;cursor:pointer">保存</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 鑳介噺杩借釜椤?ENERGY 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 -->
+  <!-- ══════════════════ 能量追踪页 ENERGY ══════════════════ -->
   <div class="page" id="page-energy">
     <div class="page-header">
-      <div class="page-eyebrow">wellness 路 鐘舵€?/div>
-      <h1 class="page-title">鑳介噺杩借釜 鈿?/h1>
-      <p class="page-subtitle">ADHD 鍙嬪ソ璁捐锛氫簡瑙ｈ嚜宸辩殑鑳介噺鑺傚緥锛屾壘鍒版渶浣冲伐浣滄椂娈点€?/p>
+      <div class="page-eyebrow">wellness · 状态</div>
+      <h1 class="page-title">能量追踪 ⚡</h1>
+      <p class="page-subtitle">ADHD 友好设计：了解自己的能量节律，找到最佳工作时段。</p>
     </div>
     <div class="page-body">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
         <div class="checklist-card">
-          <div style="font-size:14px;font-weight:600;margin-bottom:12px">馃搳 浠婃棩璁板綍</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:12px">📊 今日记录</div>
           <div style="display:flex;flex-direction:column;gap:10px">
             <div>
-              <div style="font-size:11px;color:var(--ink3);margin-bottom:4px">鈿?鑳介噺鍊硷紙1-5锛?/div>
+              <div style="font-size:11px;color:var(--ink3);margin-bottom:4px">⚡ 能量值（1-5）</div>
               <select id="energyLevel" class="message-input" style="width:100%;padding:6px;height:32px">
-                <option value="1">1 路 寰堜綆</option>
-                <option value="2">2 路 浣?/option>
-                <option value="3" selected>3 路 涓?/option>
-                <option value="4">4 路 楂?/option>
-                <option value="5">5 路 寰堥珮</option>
+                <option value="1">1 · 很低</option>
+                <option value="2">2 · 低</option>
+                <option value="3" selected>3 · 中</option>
+                <option value="4">4 · 高</option>
+                <option value="5">5 · 很高</option>
               </select>
             </div>
             <div>
-              <div style="font-size:11px;color:var(--ink3);margin-bottom:4px">馃槾 鐫＄湢鏃堕暱锛堝皬鏃讹級</div>
+              <div style="font-size:11px;color:var(--ink3);margin-bottom:4px">😴 睡眠时长（小时）</div>
               <input id="energySleep" type="number" min="0" max="12" step="0.5" placeholder="8" style="width:100%;padding:6px;border:1px solid var(--border);border-radius:6px">
             </div>
             <div>
-              <div style="font-size:11px;color:var(--ink3);margin-bottom:4px">馃 涓撴敞搴?/div>
+              <div style="font-size:11px;color:var(--ink3);margin-bottom:4px">🧠 专注度</div>
               <div style="display:flex;gap:4px">
-                <button onclick="setFocus(this,1)" style="flex:1;padding:6px;background:#E8F0F8;border:1px solid var(--border);border-radius:6px;cursor:pointer">宸?/button>
-                <button onclick="setFocus(this,2)" style="flex:1;padding:6px;background:#E8F0F8;border:1px solid var(--border);border-radius:6px;cursor:pointer">涓€鑸?/button>
-                <button onclick="setFocus(this,3)" style="flex:1;padding:6px;background:#E8F0F8;border:1px solid var(--border);border-radius:6px;cursor:pointer">鑹ソ</button>
-                <button onclick="setFocus(this,4)" style="flex:1;padding:6px;background:#E8F0F8;border:1px solid var(--border);border-radius:6px;cursor:pointer">寰堝ソ</button>
+                <button onclick="setFocus(this,1)" style="flex:1;padding:6px;background:#E8F0F8;border:1px solid var(--border);border-radius:6px;cursor:pointer">差</button>
+                <button onclick="setFocus(this,2)" style="flex:1;padding:6px;background:#E8F0F8;border:1px solid var(--border);border-radius:6px;cursor:pointer">一般</button>
+                <button onclick="setFocus(this,3)" style="flex:1;padding:6px;background:#E8F0F8;border:1px solid var(--border);border-radius:6px;cursor:pointer">良好</button>
+                <button onclick="setFocus(this,4)" style="flex:1;padding:6px;background:#E8F0F8;border:1px solid var(--border);border-radius:6px;cursor:pointer">很好</button>
               </div>
             </div>
           </div>
-          <button onclick="saveEnergyRecord()" class="message-send" style="width:100%;margin-top:12px;text-align:center">淇濆瓨浠婃棩鑳介噺</button>
+          <button onclick="saveEnergyRecord()" class="message-send" style="width:100%;margin-top:12px;text-align:center">保存今日能量</button>
         </div>
         <div class="checklist-card">
-          <div style="font-size:14px;font-weight:600;margin-bottom:12px">馃搱 鏈懆缁熻</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:12px">📈 本周统计</div>
           <div style="font-size:13px;color:var(--ink2);line-height:2">
-            <div>馃寵 骞冲潎鐫＄湢锛?span id="avgSleep">--</span>h</div>
-            <div>鈿?骞冲潎鑳介噺锛?span id="avgEnergy">--</span></div>
-            <div>馃 鏈€浣虫椂娈碉細<span id="bestTime">鏁版嵁涓?/span></div>
-            <div>馃槾 鏈€鐤叉儷鏃ワ細<span id="worstDay">--</span></div>
+            <div>🌙 平均睡眠：<span id="avgSleep">--</span>h</div>
+            <div>⚡ 平均能量：<span id="avgEnergy">--</span></div>
+            <div>🧠 最佳时段：<span id="bestTime">数据中</span></div>
+            <div>😴 最疲惫日：<span id="worstDay">--</span></div>
           </div>
         </div>
       </div>
       <div class="checklist-card">
-        <div style="font-size:14px;font-weight:600;margin-bottom:12px">馃搳 鑳介噺鏇茬嚎锛堣繎7澶╋級</div>
+        <div style="font-size:14px;font-weight:600;margin-bottom:12px">📊 能量曲线（近7天）</div>
         <div id="energyChart" style="display:flex;align-items:flex-end;gap:8px;height:150px;justify-content:space-around">
-          <div style="color:var(--ink3)">鍔犺浇涓€?/div>
+          <div style="color:var(--ink3)">加载中…</div>
         </div>
       </div>
       <div class="checklist-card">
-        <div style="font-size:14px;font-weight:600;margin-bottom:12px">馃搵 鑳介噺鍘嗗彶</div>
+        <div style="font-size:14px;font-weight:600;margin-bottom:12px">📋 能量历史</div>
         <div id="energyHistory" style="max-height:300px;overflow-y:auto">
-          <div style="text-align:center;color:var(--ink3);padding:20px">杩樻病鏈夋暟鎹?/div>
+          <div style="text-align:center;color:var(--ink3);padding:20px">还没有数据</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 鍏充簬鎴戦〉 PROFILE 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 -->
+  <!-- ══════════════════ 关于我页 PROFILE ══════════════════ -->
   <div class="page" id="page-profile">
     <div class="page-header">
-      <div class="page-eyebrow">about 路 鍏充簬</div>
-      <h1 class="page-title">鍏充簬鎴?馃尶</h1>
-      <p class="page-subtitle">杩欐槸鎴戠殑瀹屾暣鏁呬簨銆傜畝鍘嗐€佹妧鑳姐€佹垚灏憋紝鍜屾垜涓€璧锋垚闀裤€?/p>
+      <div class="page-eyebrow">about · 关于</div>
+      <h1 class="page-title">关于我 🌿</h1>
+      <p class="page-subtitle">这是我的完整故事。简历、技能、成就，和我一起成长。</p>
     </div>
     <div class="page-body">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
         <div>
           <div class="checklist-card" style="margin-bottom:16px">
-            <div style="font-size:14px;font-weight:600;margin-bottom:12px">馃懁 鍩烘湰淇℃伅</div>
-            <input id="profileName" class="message-input" type="text" placeholder="浣犵殑鍚嶅瓧" style="margin-bottom:8px;width:100%">
-            <input id="profileTitle" class="message-input" type="text" placeholder="鑱屼綅/韬唤" style="margin-bottom:8px;width:100%">
-            <textarea id="profileBio" class="message-input" rows="3" placeholder="涓汉绛惧悕" style="margin-bottom:8px;width:100%"></textarea>
-            <button onclick="saveProfileBasic()" class="message-send" style="width:100%;text-align:center">淇濆瓨</button>
+            <div style="font-size:14px;font-weight:600;margin-bottom:12px">👤 基本信息</div>
+            <input id="profileName" class="message-input" type="text" placeholder="你的名字" style="margin-bottom:8px;width:100%">
+            <input id="profileTitle" class="message-input" type="text" placeholder="职位/身份" style="margin-bottom:8px;width:100%">
+            <textarea id="profileBio" class="message-input" rows="3" placeholder="个人签名" style="margin-bottom:8px;width:100%"></textarea>
+            <button onclick="saveProfileBasic()" class="message-send" style="width:100%;text-align:center">保存</button>
           </div>
           <div class="checklist-card">
-            <div style="font-size:14px;font-weight:600;margin-bottom:12px">馃尦 鎶€鑳芥爲</div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:12px">🌳 技能树</div>
             <div id="skillsList" style="margin-bottom:12px;display:flex;flex-wrap:wrap;gap:6px">
-              <div style="font-size:12px;color:var(--ink3);width:100%">鐐瑰嚮涓嬫柟娣诲姞鎶€鑳?/div>
+              <div style="font-size:12px;color:var(--ink3);width:100%">点击下方添加技能</div>
             </div>
             <div style="display:flex;gap:8px">
-              <input id="skillInput" class="message-input" type="text" placeholder="鏂版妧鑳藉悕绉? style="flex:1;padding:6px;height:32px;">
-              <button onclick="addSkill()" style="padding:6px 12px;background:var(--accent);color:white;border:none;border-radius:6px;cursor:pointer">+ 娣诲姞</button>
+              <input id="skillInput" class="message-input" type="text" placeholder="新技能名称" style="flex:1;padding:6px;height:32px;">
+              <button onclick="addSkill()" style="padding:6px 12px;background:var(--accent);color:white;border:none;border-radius:6px;cursor:pointer">+ 添加</button>
             </div>
           </div>
         </div>
         <div>
           <div class="checklist-card" style="margin-bottom:16px">
-            <div style="font-size:14px;font-weight:600;margin-bottom:12px">馃敆 绀句氦閾炬帴</div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:12px">🔗 社交链接</div>
             <input id="linkGithub" class="message-input" type="text" placeholder="GitHub" style="width:100%;padding:6px;margin-bottom:6px;height:32px">
-            <input id="linkPortfolio" class="message-input" type="text" placeholder="涓汉浣滃搧闆? style="width:100%;padding:6px;margin-bottom:6px;height:32px">
+            <input id="linkPortfolio" class="message-input" type="text" placeholder="个人作品集" style="width:100%;padding:6px;margin-bottom:6px;height:32px">
             <input id="linkLinkedin" class="message-input" type="text" placeholder="LinkedIn" style="width:100%;padding:6px;margin-bottom:6px;height:32px">
-            <input id="linkEmail" class="message-input" type="email" placeholder="閭" style="width:100%;padding:6px;margin-bottom:8px;height:32px">
-            <button onclick="saveProfileLinks()" class="message-send" style="width:100%;text-align:center;font-size:12px">淇濆瓨</button>
+            <input id="linkEmail" class="message-input" type="email" placeholder="邮箱" style="width:100%;padding:6px;margin-bottom:8px;height:32px">
+            <button onclick="saveProfileLinks()" class="message-send" style="width:100%;text-align:center;font-size:12px">保存</button>
           </div>
           <div class="checklist-card">
-            <div style="font-size:14px;font-weight:600;margin-bottom:12px">馃弳 鎴愬氨</div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:12px">🏆 成就</div>
             <div id="achievementsList" style="margin-bottom:12px;display:flex;flex-wrap:wrap;gap:6px;max-height:100px;overflow-y:auto">
-              <div style="font-size:12px;color:var(--ink3);width:100%">鐐瑰嚮涓嬫柟娣诲姞</div>
+              <div style="font-size:12px;color:var(--ink3);width:100%">点击下方添加</div>
             </div>
             <div style="display:flex;gap:8px">
-              <input id="achievementInput" class="message-input" type="text" placeholder="鏂版垚灏? style="flex:1;padding:6px;height:32px">
-              <button onclick="addAchievement()" style="padding:6px 12px;background:var(--accent);color:white;border:none;border-radius:6px;cursor:pointer;font-size:12px">娣诲姞</button>
+              <input id="achievementInput" class="message-input" type="text" placeholder="新成就" style="flex:1;padding:6px;height:32px">
+              <button onclick="addAchievement()" style="padding:6px 12px;background:var(--accent);color:white;border:none;border-radius:6px;cursor:pointer;font-size:12px">添加</button>
             </div>
           </div>
         </div>
       </div>
       <div style="margin-top:20px;text-align:center">
-        <button onclick="exportProfile()" class="message-send" style="padding:12px 24px">馃搫 瀵煎嚭妗ｆ</button>
+        <button onclick="exportProfile()" class="message-send" style="padding:12px 24px">📄 导御档案</button>
       </div>
     </div>
   </div>
 
 </main>
 
-<!-- 鍏ㄥ眬杞绘彁绀猴紙鍙充笅瑙掑脊绐楋級-->
+<!-- 全局轻提示（右下角弹窗）-->
 <div class="toast" id="toast"></div>
 
-<!-- [Fix] 鍒犻櫎涓存椂鍒濆鍖?鍏滃簳璋冭瘯鑴氭湰锛岄伩鍏嶄笌 app.js 鐨勫垏椤甸€昏緫浜掔浉瑕嗙洊 -->
-
-<!-- 澶栭摼 JS锛堜粠 static/js/app.js 鍔犺浇锛?->
+<!-- 外链 JS（从 static/js/app.js 加载）-->
 <script src="{{ url_for('static', filename='js/app.js', v=asset_version) }}"></script>
-<!-- 澶栭摼 JS锛堝姛鑳芥ā鍧楁墿灞曪級-->
+<!-- 外链 JS（功能模块扩展）-->
 <script src="{{ url_for('static', filename='js/modules.js', v=asset_version) }}"></script>
 </body>
 </html>
-
-
